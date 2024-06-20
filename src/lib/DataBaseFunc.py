@@ -45,10 +45,9 @@ def userUpdate(user:User)->bool:
     cur = conn.cursor()#创建游标
     username = User.getUname()#获得name
     password = User.getUpassword()#获得password
-    newpassword = User.getUnewpassword()#获得新password
     if username and password:
         sql = "update userMess set Upassword=? where Uname=?"
-        cur.execute(sql,(newpassword,username))
+        cur.execute(sql,(password,username))
         return True
     conn.commit()
     cur.close()

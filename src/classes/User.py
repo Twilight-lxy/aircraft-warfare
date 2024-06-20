@@ -2,7 +2,6 @@ class User:
     username = ""
     password = ""
     id = ""
-    newpassword = ""
 
     def __init__(self,username:str,password:str,id:str) -> None:
         self.username = username
@@ -33,13 +32,6 @@ class User:
     def setUname(self,password):
         self._password = password
 
-    @property
-    def getUnewpassword(self):
-        return self._newpassword
-    
-    @newpassword.setter
-    def setUewpassword(self,newpassword):
-        self._newpassword = newpassword
 
 class UserException(Exception):
     def __init__(self, info: str) -> None:
