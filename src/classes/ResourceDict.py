@@ -4,7 +4,7 @@ class ResourceDict:
     def __init__(self) -> None:
         self.clear()
 
-    def addResourse(self, resourceName: str, resourceObject: object) -> None:
+    def addResourse(self, resourceName: str, resourceObject: any) -> None:
         if self.resourceDict.get(resourceName, "null") != "null":
             raise ResourceMapException(
                 "A resource called " + resourceName + " already exists"
@@ -12,7 +12,7 @@ class ResourceDict:
         else:
             self.resourceDict.update({resourceName: resourceObject})
 
-    def getResource(self, resourceName: str) -> object:
+    def getResource(self, resourceName: str) -> any:
         if self.resourceDict.get(resourceName, "null") != "null":
             raise ResourceMapException(
                 "A resource called " + resourceName + " does not exist"
@@ -40,28 +40,28 @@ class AllResourceDict:
     def __init__(self) -> None:
         self.clearAll()
 
-    def addSound(self, resourceName: str, resourceObject: object) -> None:
+    def addSound(self, resourceName: str, resourceObject: any) -> None:
         self.soundResourceDict.addResourse(resourceName, resourceObject)
 
-    def getSound(self, resourceName: str) -> object:
+    def getSound(self, resourceName: str) -> any:
         return self.soundResourceDict.getResource(resourceName)
 
     def removeSound(self, resourceName: str) -> None:
         self.soundResourceDict.removeResource(resourceName)
 
-    def addImage(self, resourceName: str, resourceObject: object) -> None:
+    def addImage(self, resourceName: str, resourceObject: any) -> None:
         self.imageResourceDict.addResourse(resourceName, resourceObject)
 
-    def getImage(self, resourceName: str) -> object:
+    def getImage(self, resourceName: str) -> any:
         return self.imageResourceDict.getResource(resourceName)
 
     def removeImage(self, resourceName: str) -> None:
         self.imageResourceDict.removeResource(resourceName)
 
-    def addValue(self, resourceName: str, resourceObject: object) -> None:
+    def addValue(self, resourceName: str, resourceObject: any) -> None:
         self.valueResourceDict.addResourse(resourceName, resourceObject)
 
-    def getValue(self, resourceName: str) -> object:
+    def getValue(self, resourceName: str) -> any:
         return self.valueResourceDict.getResource(resourceName)
 
     def removeValue(self, resourceName: str) -> None:

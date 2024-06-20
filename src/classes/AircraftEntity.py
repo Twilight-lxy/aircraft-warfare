@@ -13,7 +13,7 @@ class aircraftEntity(pygame.sprite.Sprite):
     Y = 0
     normalWeapon = None
 
-    def __init__(self, iFF: bool, allRes: AllResourceDict, mainClock: pygame.time.Clock):
+    def __init__(self, iFF: bool, allRes: AllResourceDict, mainClock: pygame.time.Clock, weaponBulletGroup: pygame.sprite.Group):
         super().__init__()
         self.image = pygame.image.load(
             allRes.getImage("basicImage")

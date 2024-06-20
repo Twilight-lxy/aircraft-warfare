@@ -8,11 +8,11 @@ import src.lib.LoadResource
 import traceback
 import src.lib.Logo
 import src.lib.textBox
-from src.classes.ResourceDict import ResourceDict
+from src.classes.ResourceDict import ResourceDict, AllResourceDict
 import src.lib.LoginAndRegester
 import src.lib.MainPage
-
-
+import src.enitiy.hero
+import src.lib.MainGame
 def initGame():
     global screen
     pygame.init()
@@ -67,11 +67,15 @@ def initGame():
 
 def loadresource(name: str, queue: Queue):
     global soundResourceDict
+    global allResourceDict
+    global resourceDict
+    resourceDict = ResourceDict()
     queue.put(("loading", "0"))
     pygame.mixer.music.load("sound/game_music.ogg")
     pygame.mixer.music.set_volume(0.2)
     queue.put(("loading", "10"))
     background = pygame.image.load("images/background.png").convert()
+    resourceDict.addResourse("hero",src.enitiy.hero.loadHeroAllResource())
     queue.put(("loading", "20"))
     soundResourceDict = src.lib.LoadResource.loadSoundResource()
     queue.put(("loading", "100"))
@@ -168,6 +172,7 @@ def main():
     global soundResourceDict
     global threadQueue
     global mainClock
+    global resourceDict
     mainClock = pygame.time.Clock()
     threadQueue = Queue()
     initGame()
@@ -175,10 +180,12 @@ def main():
     while True:
         username = logIn()
         retmess = src.lib.MainPage.mainPage(screen, mainClock, username)
-        if retmess == "START":
-            pass  # startGame()
-        elif retmess == "Ranking List":
+        if retmess == "start":
+            src.lib.MainGame.startGame(screen,resourceDict,mainClock,username)
+        elif retmess == "ranking":
             pass  # showRankingList()
+        elif retmess == "back":
+            pass
         else:
             continue
         for event in pygame.event.get():  # 获取用户事件

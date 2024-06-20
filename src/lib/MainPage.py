@@ -82,7 +82,7 @@ def mainPage(
                 if mouseInStartTextBox:
                     return "start"
                 if mouseInRankingTextBox:
-                    return "rankin"
+                    return "ranking"
                 if mouseInQuitTextBox:
                     return "back"
         if mouseInWelcomeTextBox:
