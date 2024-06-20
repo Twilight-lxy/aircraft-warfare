@@ -123,7 +123,7 @@ def logIn():
                     mouseInloginQuitBox = False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if mouseInloginTextBox:
-                    pass  # openLoginWindow()
+                    pass  # getLoginMess(threadQueue)
                 if mouseInloginQuitBox:
                     pygame.quit()
                     break
