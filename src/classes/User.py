@@ -8,4 +8,6 @@ class UserException(Exception):
     def __init__(self, info: str) -> None:
         super().__init__(self)
         self.errorinfo = info
+    def __str__(self) -> str:
+        return self.errorinfo
 

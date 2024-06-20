@@ -1,28 +1,28 @@
 class ResourceDict:
-    resourceDict = dict()
 
     def __init__(self) -> None:
+        self.resourceDict = dict()
         self.clear()
 
     def addResourse(self, resourceName: str, resourceObject: any) -> None:
         if self.resourceDict.get(resourceName, "null") != "null":
-            raise ResourceMapException(
+            raise ResourceDictException(
                 "A resource called " + resourceName + " already exists"
             )
         else:
             self.resourceDict.update({resourceName: resourceObject})
 
     def getResource(self, resourceName: str) -> any:
-        if self.resourceDict.get(resourceName, "null") != "null":
-            raise ResourceMapException(
+        if self.resourceDict.get(resourceName, "null") == "null":
+            raise ResourceDictException(
                 "A resource called " + resourceName + " does not exist"
             )
         else:
             return self.resourceDict.get(resourceName)
 
     def removeResource(self, resourceName: str) -> None:
-        if self.resourceDict.get(resourceName, "null") != "null":
-            raise ResourceMapException(
+        if self.resourceDict.get(resourceName, "null") == "null":
+            raise ResourceDictException(
                 "A resource called " + resourceName + " does not exist"
             )
         else:
@@ -33,11 +33,11 @@ class ResourceDict:
 
 
 class AllResourceDict:
-    soundResourceDict = ResourceDict()
-    imageResourceDict = ResourceDict()
-    valueResourceDict = ResourceDict()
 
     def __init__(self) -> None:
+        self.soundResourceDict = ResourceDict()
+        self.imageResourceDict = ResourceDict()
+        self.valueResourceDict = ResourceDict()
         self.clearAll()
 
     def addSound(self, resourceName: str, resourceObject: any) -> None:
@@ -82,7 +82,10 @@ class AllResourceDict:
         self.clearValue()
 
 
-class ResourceMapException(Exception):
+class ResourceDictException(Exception):
     def __init__(self, info: str) -> None:
         super().__init__(self)
         self.errorinfo = info
+
+    def __str__(self) -> str:
+        return self.errorinfo

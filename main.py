@@ -67,7 +67,6 @@ def initGame():
 
 def loadresource(name: str, queue: Queue):
     global soundResourceDict
-    global allResourceDict
     global resourceDict
     resourceDict = ResourceDict()
     queue.put(("loading", "0"))

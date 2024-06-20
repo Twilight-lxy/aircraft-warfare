@@ -13,11 +13,16 @@ class aircraftEntity(pygame.sprite.Sprite):
     Y = 0
     normalWeapon = None
 
-    def __init__(self, iFF: bool, allRes: AllResourceDict, mainClock: pygame.time.Clock, weaponBulletGroup: pygame.sprite.Group):
+    def __init__(
+        self,
+        iFF: bool,
+        allRes: AllResourceDict,
+        mainClock: pygame.time.Clock,
+        weaponBulletGroup: pygame.sprite.Group,
+    ):
         super().__init__()
-        self.image = pygame.image.load(
-            allRes.getImage("basicImage")
-        )
+        self.image = allRes.getImage("normal")
+
         self.rect = self.image.get_rect()
         self.iFF = iFF
         self.normalWeapon = AircraftWeapon(mainClock)
@@ -39,5 +44,5 @@ class aircraftEntity(pygame.sprite.Sprite):
 
     def update(self):
         self.move()
-        self.rect.move()
+        # self.rect.move()
         # normalWeapon.use()
