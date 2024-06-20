@@ -1,6 +1,6 @@
 from queue import Queue
 def getLoginMess(threadQueue:Queue) -> None:
-    username = str()
+    username = 'test'
 
 
 

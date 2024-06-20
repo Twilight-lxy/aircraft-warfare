@@ -9,3 +9,5 @@ GREEN = (0, 255, 0)
 RED = (255, 0, 0)
 # 默认字体
 DEFALTFONT = str("Times_New_Roman")
+# 页面FPS
+FPS = 60

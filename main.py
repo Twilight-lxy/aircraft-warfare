@@ -3,12 +3,14 @@ import threading
 from queue import Queue
 import time
 import pygame
-from src.lib.Constants import WINDOWS_SIZE, WIDTH, WHITE, RED
+from src.lib.Constants import WINDOWS_SIZE, WIDTH, WHITE, RED, FPS
 import src.lib.LoadResource
 import traceback
 import src.lib.Logo
 import src.lib.textBox
 from src.classes.ResourceDict import ResourceDict
+import src.lib.LoginAndRegester
+import src.lib.MainPage
 
 
 def initGame():
@@ -76,16 +78,15 @@ def loadresource(name: str, queue: Queue):
     queue.put(("loaded", "100"))
 
 
-def logIn():
+def logIn() -> str:
     global screen
     global threadQueue
     global mainClock
-    src.lib.Logo.movingLogoFromTo(screen)
     while not threadQueue.empty():
         threadQueue.get()
     mess, username = ("login", "null")
     mouseInloginTextBox = False
-    mouseInloginQuitBox = False
+    mouseInQuitTextBox = False
     while True:
         screen.fill(WHITE)
         src.lib.Logo.showLogo(screen, 0, 100)
@@ -118,13 +119,13 @@ def logIn():
                 else:
                     mouseInloginTextBox = False
                 if quitTextBox.collidepoint(mouse_position):
-                    mouseInloginQuitBox = True
+                    mouseInQuitTextBox = True
                 else:
-                    mouseInloginQuitBox = False
+                    mouseInQuitTextBox = False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if mouseInloginTextBox:
-                    pass  # getLoginMess(threadQueue)
-                if mouseInloginQuitBox:
+                    src.lib.LoginAndRegester.getLoginMess(threadQueue)
+                if mouseInQuitTextBox:
                     pygame.quit()
                     break
         if mess == "logined":
@@ -141,7 +142,7 @@ def logIn():
                 textColor=WHITE,
                 textBoxSideWidth=0,
             )
-        if mouseInloginQuitBox:
+        if mouseInQuitTextBox:
             loginTextBox = src.lib.textBox.draw_text_box(
                 screen,
                 mess="quit",
@@ -158,7 +159,8 @@ def logIn():
         except:
             pass
         pygame.display.flip()
-        mainClock.tick(60)
+        mainClock.tick(FPS)
+    return username
 
 
 def main():
@@ -169,23 +171,28 @@ def main():
     mainClock = pygame.time.Clock()
     threadQueue = Queue()
     initGame()
-    logIn()
+    src.lib.Logo.movingLogoFromTo(screen)
     while True:
+        username = logIn()
+        retmess = src.lib.MainPage.mainPage(screen, mainClock, username)
+        if retmess == "START":
+            pass  # startGame()
+        elif retmess == "Ranking List":
+            pass  # showRankingList()
+        else:
+            continue
         for event in pygame.event.get():  # 获取用户事件
             if event.type == pygame.QUIT:  # 如果事件为关闭窗口
                 # 退出pygame
                 pygame.quit()
                 break
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                pygame.mouse.get_pos()
 
 
 if __name__ == "__main__":
     try:
         main()
-    except SystemExit:
-        pass
+    except pygame.error:
+        print("GoodBye")
     except:
         traceback.print_exc()
-        pygame.quit()
         # input()
