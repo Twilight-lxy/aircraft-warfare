@@ -3,34 +3,28 @@ class User:
     password = ""
     id = ""
 
-    def __init__(self,username:str,password:str,id:str) -> None:
+    def __init__(self,username:str,password:str,id:str="") -> None:
         self.username = username
         self.password = password
         self.id = id
     
-    @property
     def getUid(self):
-        return self._id
+        return self.id
     
-    @id.setter
     def setUid(self,id):
-        self._id= id
+        self.id= id
     
-    @property
     def getUname(self):
-        return self._username
+        return self.username
     
-    @username.setter
     def setUname(self,username):
-        self._username = username
+        self.username = username
     
-    @property
     def getUpassword(self):
-        return self._password
+        return self.password
     
-    @password.setter
     def setUname(self,password):
-        self._password = password
+        self.password = password
 
 
 class UserException(Exception):

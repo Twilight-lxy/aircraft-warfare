@@ -158,7 +158,7 @@ def logIn() -> str:
                 textBoxSideWidth=0,
             )
         try:
-            (mess, per) = threadQueue.get(False)
+            (mess, username) = threadQueue.get(False)
         except:
             pass
         pygame.display.flip()

@@ -5,17 +5,18 @@ from datetime import datetime
 
 #注册
 def userInsert(user:User)->bool:#注册
-    conn = sqlite3.connect("userMess.db")#连接数据库
+    conn = sqlite3.connect("otherresource/userMess.db")#连接数据库
     cur = conn.cursor()#创建游标
     cur.execute("SELECT MAX(Uid) FROM userMess")#设置id
     max_id = cur.fetchone()[0]
-    userid = User.setUid(max_id + 1)
-    username = User.getUname()#获得name
-    password = User.getUpassword()#获得password
-    sql = "select * from userMess where Uid=?"#判断是否存在
-    cur.execute(sql,(userid,))
+    user.setUid(str(int(max_id) + 1))
+    userid = user.getUid()
+    username = user.getUname()#获得name
+    password = user.getUpassword()#获得password
+    sql = "select * from userMess where Uname=?"#判断是否存在
+    cur.execute(sql,(username,))
     data = cur.fetchall()
-    if data is not None:
+    if len(data) == 0:
         sql = "insert into userMess(Uid,Uname,Upassword) values(?,?,?)"#插入
         cur.execute(sql,(userid,username,password))
     else:return False
@@ -26,11 +27,11 @@ def userInsert(user:User)->bool:#注册
 
 #登录
 def checkLogin(user:User)->bool:
-    conn = sqlite3.connect("userMess.db")#连接数据库
+    conn = sqlite3.connect("otherresource/userMess.db")#连接数据库
     cur = conn.cursor()#创建游标
-    username = User.getUname()#获得name
-    password = User.getUpassword()#获得password
-    sql = "select Uname,Upassword from userMess where Uname=?,Upassword=?"
+    username = user.getUname()#获得name
+    password = user.getUpassword()#获得password
+    sql = "select Uname,Upassword from userMess where Uname=? and Upassword=?"
     cur.execute(sql,(username,password))
     data = cur.fetchall()
     if data:
@@ -41,10 +42,10 @@ def checkLogin(user:User)->bool:
 
 #修改
 def userUpdate(user:User)->bool:
-    conn = sqlite3.connect("userMess.db")#连接数据库
+    conn = sqlite3.connect("otherresource/userMess.db")#连接数据库
     cur = conn.cursor()#创建游标
-    username = User.getUname()#获得name
-    password = User.getUpassword()#获得password
+    username = user.getUname()#获得name
+    password = user.getUpassword()#获得password
     if username and password:
         sql = "update userMess set Upassword=? where Uname=?"
         cur.execute(sql,(password,username))
@@ -55,7 +56,7 @@ def userUpdate(user:User)->bool:
     return False
 
 def addToRankingList(gameRecord:GameRecord)->list:#list:
-    conn = sqlite3.connect("record.db")#连接数据库
+    conn = sqlite3.connect("otherresource/record.db")#连接数据库
     cur = conn.cursor()#创建游标
     username = GameRecord.getUname()
     userid = GameRecord.getRid()
