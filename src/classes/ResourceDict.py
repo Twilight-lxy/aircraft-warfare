@@ -34,6 +34,14 @@ class ResourceDict:
     def clear(self) -> None:
         self.resourceDict.clear()
 
+    def updateResource(self, resourceName: str, resourceObject: object) -> None:
+        if self.resourceDict.get(resourceName, "null") == "null":
+            raise ResourceDictException(
+                "A resource called " + resourceName + " does not exist"
+            )
+        else:
+            self.resourceDict.update({resourceName: resourceObject})
+
 
 class AllResourceDict:
 
@@ -69,6 +77,9 @@ class AllResourceDict:
 
     def removeValue(self, resourceName: str) -> None:
         self.valueResourceDict.removeResource(resourceName)
+
+    def updateValue(self, resourceName: str, resourceObject: object) -> None:
+        self.valueResourceDict.updateResource(resourceName, resourceObject)
 
     def clearSound(self):
         self.soundResourceDict.clear()

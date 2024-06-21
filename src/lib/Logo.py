@@ -1,7 +1,7 @@
 import time
 import pygame
 from pygame.surface import Surface
-from src.lib.Constants import *
+import src.lib.Constants as CONSTANTS
 
 LOGO_A = [
     "",
@@ -23,23 +23,22 @@ LOGO_A = [
 ]
 
 
-def showLogo(screen: Surface, x: int = 0, y: int = (HEIGHT / 2 - 100)) -> None:
-    screen.fill(WHITE)
-    logoFont = pygame.font.SysFont(DEFALTFONT, 10)
+def showLogo(x: int = 0, y: int = (CONSTANTS.HEIGHT / 2 - 100)) -> None:
+    CONSTANTS.screen.fill(CONSTANTS.WHITE)
+    logoFont = pygame.font.SysFont(CONSTANTS.DEFALTFONT, 10)
     for i, line in enumerate(LOGO_A):
-        text_surface = logoFont.render(line, True, BLACK)
-        screen.blit(text_surface, (x, y + i * 10))
+        text_surface = logoFont.render(line, True, CONSTANTS.BLACK)
+        CONSTANTS.screen.blit(text_surface, (x, y + i * 10))
 
 
 def movingLogoFromTo(
-    screen: Surface,
     startX: int = 0,
-    startY: int = (HEIGHT / 2 - 100),
+    startY: int = (CONSTANTS.HEIGHT / 2 - 100),
     endX: int = 0,
     endY: int = 100,
     speed: int = 10,
 ) -> None:
-    showLogo(screen)
+    showLogo()
     pygame.display.flip()
     nowX = startX
     nowY = startY
@@ -48,6 +47,6 @@ def movingLogoFromTo(
     while not (nowX == endX and nowY == endY):
         nowX += speedX
         nowY += speedY
-        showLogo(screen, nowX, nowY)
+        showLogo(nowX, nowY)
         pygame.display.flip()
         time.sleep(0.05)

@@ -1,27 +1,25 @@
 import pygame
-from src.lib.Constants import *
+import src.lib.Constants as CONSTANTS
 import traceback
 import src.lib.textBox
 from src.lib.LoginAndRegester import *
 from queue import Queue
 screen = None
-def init():
-    global screen 
+def init(): 
     pygame.init()
     pygame.mixer.init()
-    screen = pygame.display.set_mode(WINDOWS_SIZE)
+    screen = pygame.display.set_mode(CONSTANTS.WINDOWS_SIZE)
     pygame.display.set_caption("PygamTest")
 
 def main():
     # clock = pygame.time.Clock()
-    # global screen
     # init()
     # screen.fill(WHITE)
     # loadevent = pygame.event.Event(pygame.USEREVENT,tip="load")
     # pygame.event.post(loadevent)
 
     # pygame.event.set_timer(event, 500)
-    # src.lib.textBox.draw_text_box(screen,mess="test",textBoxWidth=100)
+    # src.lib.textBox.draw_text_box(mess="test",textBoxWidth=100)
     # pygame.display.flip()
     # loadflag=0
     # while True:
@@ -45,7 +43,7 @@ def main():
     #                         loadflag=2
     #                         break
     #                     y+=1
-    #                     src.lib.textBox.draw_text_box(screen,mess="test",textBoxWidth=100,textBoxMidX=200,textBoxMidY=y)
+    #                     src.lib.textBox.draw_text_box(mess="test",textBoxWidth=100,textBoxMidX=200,textBoxMidY=y)
     #                     pygame.display.flip()
     #                     clock.tick(1)
     #     clock.tick(30)

@@ -3,8 +3,9 @@ import threading
 from queue import Queue
 import time
 import pygame
-from src.enitiy.Hero import Hero
-from src.lib.Constants import *
+from src.enitiy.hero import Hero
+from src.enitiy.normalBullet import NormalBullet
+import src.lib.Constants as CONSTANTS
 import src.lib.LoadResource
 import traceback
 import src.lib.Logo
@@ -13,107 +14,100 @@ from src.classes.ResourceDict import ResourceDict, AllResourceDict
 import src.lib.LoginAndRegester
 import src.lib.MainPage
 import src.lib.MainGame
+
+
 def initGame():
-    global screen
-    global threadQueue
-    global mainClock
-    mainClock = pygame.time.Clock()
-    threadQueue = Queue()
+    CONSTANTS.mainClock = pygame.time.Clock()
     pygame.init()
+    CONSTANTS.superResourceDict = ResourceDict()
+    CONSTANTS.screen = pygame.display.set_mode(CONSTANTS.WINDOWS_SIZE)
+    CONSTANTS.threadQueue = Queue()
     pygame.mixer.init()
-    screen = pygame.display.set_mode(WINDOWS_SIZE)
     pygame.display.set_caption("飞机大战")
-    loadResourceThreading = threading.Thread(
-        target=loadresource, name="loadresource", args=("loadresource", threadQueue)
-    )
+    loadResourceThreading = threading.Thread(target=loadresource, name="loadresource")
     loadResourceThreading.daemon = True
     loadResourceThreading.start()
     mess, per = ("load", "0")
-    while not threadQueue.empty():
-        threadQueue.get()
+    while not CONSTANTS.threadQueue.empty():
+        CONSTANTS.threadQueue.get()
     while True:
-        screen.fill(WHITE)
-        src.lib.Logo.showLogo(screen)
+        CONSTANTS.screen.fill(CONSTANTS.WHITE)
+        src.lib.Logo.showLogo()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
         if mess == "loaded":
             src.lib.textBox.draw_text_box(
-                screen,
                 mess="loading is complete!",
                 fontSize=25,
                 textBoxHeight=50,
                 textBoxWidth=300,
                 textBoxMidY=500,
-                textBoxMidX=WIDTH / 2,
+                textBoxMidX=CONSTANTS.WIDTH / 2,
             )
             pygame.display.flip()
             break
         else:
             src.lib.textBox.draw_text_box(
-                screen,
                 mess="loading..." + per + "%",
                 fontSize=25,
                 textBoxHeight=50,
                 textBoxWidth=200,
                 textBoxMidY=500,
-                textBoxMidX=WIDTH / 2,
+                textBoxMidX=CONSTANTS.WIDTH / 2,
             )
         pygame.display.flip()
-        (mess, per) = threadQueue.get(True, 20)
+        (mess, per) = CONSTANTS.threadQueue.get(True, 20)
     loadResourceThreading.join()
     pygame.mixer.music.play()
     time.sleep(1)
-    screen.fill(WHITE)
-    src.lib.Logo.showLogo(screen)
+    CONSTANTS.screen.fill(CONSTANTS.WHITE)
+    src.lib.Logo.showLogo()
     pygame.display.flip()
 
 
-def loadresource(name: str, queue: Queue):
-    global soundResourceDict
-    global superResourceDict
-    superResourceDict = ResourceDict()
-    queue.put(("loading", "0"))
+def loadresource():
+    CONSTANTS.threadQueue.put(("loading", "0"))
     pygame.mixer.music.load("sound/game_music.ogg")
     pygame.mixer.music.set_volume(0.2)
-    queue.put(("loading", "10"))
+    CONSTANTS.threadQueue.put(("loading", "10"))
     backgroundImage = pygame.image.load("images/background.png").convert()
-    superResourceDict.addResourse("hero",Hero.loadHeroAllResource())
-    queue.put(("loading", "20"))
+    CONSTANTS.superResourceDict.addResourse(
+        CONSTANTS.HEROAIRCRAFT, Hero.loadHeroAllResource()
+    )
+    CONSTANTS.superResourceDict.addResourse(
+        CONSTANTS.NORMALBULLET, NormalBullet.loadNormalBulletAllResource()
+    )
+    CONSTANTS.threadQueue.put(("loading", "20"))
     soundResourceDict = src.lib.LoadResource.loadSoundResource()
-    queue.put(("loading", "100"))
-    queue.put(("loaded", "100"))
+    CONSTANTS.threadQueue.put(("loading", "100"))
+    CONSTANTS.threadQueue.put(("loaded", "100"))
 
 
 def logIn() -> str:
-    global screen
-    global threadQueue
-    global mainClock
-    while not threadQueue.empty():
-        threadQueue.get()
+    while not CONSTANTS.threadQueue.empty():
+        CONSTANTS.threadQueue.get()
     mess, username = ("logined", "null")
     mouseInloginTextBox = False
     mouseInQuitTextBox = False
     while True:
-        screen.fill(WHITE)
-        src.lib.Logo.showLogo(screen, 0, 100)
+        CONSTANTS.screen.fill(CONSTANTS.WHITE)
+        src.lib.Logo.showLogo(0, 100)
         loginTextBox = src.lib.textBox.draw_text_box(
-            screen,
             mess="login or register",
             fontSize=25,
             textBoxHeight=50,
             textBoxWidth=300,
             textBoxMidY=450,
-            textBoxMidX=WIDTH / 2,
+            textBoxMidX=CONSTANTS.WIDTH / 2,
         )
         quitTextBox = src.lib.textBox.draw_text_box(
-            screen,
             mess="quit",
             fontSize=25,
             textBoxHeight=50,
             textBoxWidth=300,
             textBoxMidY=550,
-            textBoxMidX=WIDTH / 2,
+            textBoxMidX=CONSTANTS.WIDTH / 2,
         )
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -131,7 +125,7 @@ def logIn() -> str:
                     mouseInQuitTextBox = False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if mouseInloginTextBox:
-                    src.lib.LoginAndRegester.getLoginMess(threadQueue)
+                    src.lib.LoginAndRegester.getLoginMess(CONSTANTS.threadQueue)
                 if mouseInQuitTextBox:
                     pygame.quit()
                     break
@@ -139,50 +133,43 @@ def logIn() -> str:
             break
         if mouseInloginTextBox:
             loginTextBox = src.lib.textBox.draw_text_box(
-                screen,
                 mess="login or register",
                 fontSize=25,
                 textBoxHeight=50,
                 textBoxWidth=300,
                 textBoxMidY=450,
-                textBoxMidX=WIDTH / 2,
-                textColor=WHITE,
+                textBoxMidX=CONSTANTS.WIDTH / 2,
+                textColor=CONSTANTS.WHITE,
                 textBoxSideWidth=0,
             )
         if mouseInQuitTextBox:
             loginTextBox = src.lib.textBox.draw_text_box(
-                screen,
                 mess="quit",
                 fontSize=25,
                 textBoxHeight=50,
                 textBoxWidth=300,
                 textBoxMidY=550,
-                textBoxMidX=WIDTH / 2,
-                textColor=WHITE,
+                textBoxMidX=CONSTANTS.WIDTH / 2,
+                textColor=CONSTANTS.WHITE,
                 textBoxSideWidth=0,
             )
         try:
-            (mess, username) = threadQueue.get(False)
+            (mess, username) = CONSTANTS.threadQueue.get(False)
         except:
             pass
         pygame.display.flip()
-        mainClock.tick(FPS)
+        CONSTANTS.mainClock.tick(CONSTANTS.FPS)
     return username
 
 
 def main():
-    global screen # 主界面
-    global soundResourceDict # 音频资源集
-    global threadQueue # 内部消息队列
-    global mainClock # 主时钟
-    global superResourceDict # 全部资源集
     initGame()
-    src.lib.Logo.movingLogoFromTo(screen)
+    src.lib.Logo.movingLogoFromTo()
     while True:
         username = logIn()
-        retmess = src.lib.MainPage.mainPage(screen, mainClock, username)
+        retmess = src.lib.MainPage.mainPage(username)
         if retmess == "start":
-            src.lib.MainGame.startGame(screen,superResourceDict,mainClock,username)
+            src.lib.MainGame.startGame(username)
         elif retmess == "ranking":
             pass  # showRankingList()
         elif retmess == "back":

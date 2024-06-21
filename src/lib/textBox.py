@@ -1,21 +1,20 @@
 import pygame
 from pygame.surface import Surface
 from src.lib.typrDefine import ColorType, FontType
-from src.lib.Constants import *
+import src.lib.Constants as CONSTANTS
 
 
 # 渲染文本框
 def draw_text_box(
-    screen: Surface,
-    fontName: str = DEFALTFONT,
+    fontName: str = CONSTANTS.DEFALTFONT,
     fontSize: int = 20,
     mess: str = "",
-    textColor: ColorType = BLACK,
-    textBoxColor: ColorType = BLACK,
+    textColor: ColorType = CONSTANTS.BLACK,
+    textBoxColor: ColorType = CONSTANTS.BLACK,
     textBoxSideWidth: int = 1,
     textBoxMidX: float | int = 0,
     textBoxMidY: float | int = 0,
-    textBoxWidth: float | int = WIDTH,
+    textBoxWidth: float | int = CONSTANTS.WIDTH,
     textBoxHeight: float | int = 25,
 ):
     # 使用字体对象渲染文本
@@ -41,11 +40,14 @@ def draw_text_box(
     textRectTop = textBoxMidY - textBoxHeight / 2
     # 设置文本框
     text_rect = pygame.draw.rect(
-        screen, BLACK, (textRectLeft, textRectTop, textBoxWidth, textBoxHeight), 1
+        CONSTANTS.screen,
+        CONSTANTS.BLACK,
+        (textRectLeft, textRectTop, textBoxWidth, textBoxHeight),
+        1,
     )
     # 绘制文本框
-    pygame.draw.rect(screen, textBoxColor, text_rect, textBoxSideWidth)
+    pygame.draw.rect(CONSTANTS.screen, textBoxColor, text_rect, textBoxSideWidth)
     # 绘制文本
-    screen.blit(text_surface, (textLeft, textTop))
+    CONSTANTS.screen.blit(text_surface, (textLeft, textTop))
 
     return text_rect

@@ -1,7 +1,16 @@
+import copy
 import pygame
+from pygame.sprite import Group
 
 
 class AircraftWeapon:
-    mainClock=None
-    def __init__(self,mainClock:pygame.time.Clock) -> None:
-        self.mainClock = mainClock
+    def __init__(self,iFF: bool,weaponBulletGroup: Group,loadedX:int,loadedY:int) -> None:
+        self.weaponBulletGroup=weaponBulletGroup
+        self.iFF = iFF
+        self.loadedX=loadedX
+        self.loadedY=loadedY
+
+    def getNewWeaponBullet(self):
+        return None
+    def openfire(self):
+        pass
