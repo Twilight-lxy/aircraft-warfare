@@ -1,5 +1,5 @@
 import pygame
-from src.lib.Constants import FPS, WHITE, WIDTH
+from src.lib.Constants import *
 from src.classes.User import User, UserException
 from src.lib.Logo import showLogo
 from src.lib.textBox import draw_text_box

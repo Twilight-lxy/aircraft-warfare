@@ -1,5 +1,5 @@
 import pygame
-from src.lib.Constants import WINDOWS_SIZE,BLACK,WHITE
+from src.lib.Constants import *
 import traceback
 import src.lib.textBox
 from src.lib.LoginAndRegester import *

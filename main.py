@@ -3,7 +3,8 @@ import threading
 from queue import Queue
 import time
 import pygame
-from src.lib.Constants import WINDOWS_SIZE, WIDTH, WHITE, RED, FPS
+from src.enitiy.Hero import Hero
+from src.lib.Constants import *
 import src.lib.LoadResource
 import traceback
 import src.lib.Logo
@@ -11,10 +12,13 @@ import src.lib.textBox
 from src.classes.ResourceDict import ResourceDict, AllResourceDict
 import src.lib.LoginAndRegester
 import src.lib.MainPage
-import src.enitiy.hero
 import src.lib.MainGame
 def initGame():
     global screen
+    global threadQueue
+    global mainClock
+    mainClock = pygame.time.Clock()
+    threadQueue = Queue()
     pygame.init()
     pygame.mixer.init()
     screen = pygame.display.set_mode(WINDOWS_SIZE)
@@ -67,14 +71,14 @@ def initGame():
 
 def loadresource(name: str, queue: Queue):
     global soundResourceDict
-    global resourceDict
-    resourceDict = ResourceDict()
+    global superResourceDict
+    superResourceDict = ResourceDict()
     queue.put(("loading", "0"))
     pygame.mixer.music.load("sound/game_music.ogg")
     pygame.mixer.music.set_volume(0.2)
     queue.put(("loading", "10"))
-    background = pygame.image.load("images/background.png").convert()
-    resourceDict.addResourse("hero",src.enitiy.hero.loadHeroAllResource())
+    backgroundImage = pygame.image.load("images/background.png").convert()
+    superResourceDict.addResourse("hero",Hero.loadHeroAllResource())
     queue.put(("loading", "20"))
     soundResourceDict = src.lib.LoadResource.loadSoundResource()
     queue.put(("loading", "100"))
@@ -87,7 +91,7 @@ def logIn() -> str:
     global mainClock
     while not threadQueue.empty():
         threadQueue.get()
-    mess, username = ("login", "null")
+    mess, username = ("logined", "null")
     mouseInloginTextBox = False
     mouseInQuitTextBox = False
     while True:
@@ -167,20 +171,18 @@ def logIn() -> str:
 
 
 def main():
-    global screen
-    global soundResourceDict
-    global threadQueue
-    global mainClock
-    global resourceDict
-    mainClock = pygame.time.Clock()
-    threadQueue = Queue()
+    global screen # 主界面
+    global soundResourceDict # 音频资源集
+    global threadQueue # 内部消息队列
+    global mainClock # 主时钟
+    global superResourceDict # 全部资源集
     initGame()
     src.lib.Logo.movingLogoFromTo(screen)
     while True:
         username = logIn()
         retmess = src.lib.MainPage.mainPage(screen, mainClock, username)
         if retmess == "start":
-            src.lib.MainGame.startGame(screen,resourceDict,mainClock,username)
+            src.lib.MainGame.startGame(screen,superResourceDict,mainClock,username)
         elif retmess == "ranking":
             pass  # showRankingList()
         elif retmess == "back":

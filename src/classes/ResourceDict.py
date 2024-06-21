@@ -1,10 +1,13 @@
+import pygame
+
+
 class ResourceDict:
 
     def __init__(self) -> None:
         self.resourceDict = dict()
         self.clear()
 
-    def addResourse(self, resourceName: str, resourceObject: any) -> None:
+    def addResourse(self, resourceName: str, resourceObject: object) -> None:
         if self.resourceDict.get(resourceName, "null") != "null":
             raise ResourceDictException(
                 "A resource called " + resourceName + " already exists"
@@ -12,7 +15,7 @@ class ResourceDict:
         else:
             self.resourceDict.update({resourceName: resourceObject})
 
-    def getResource(self, resourceName: str) -> any:
+    def getResource(self, resourceName: str) -> object:
         if self.resourceDict.get(resourceName, "null") == "null":
             raise ResourceDictException(
                 "A resource called " + resourceName + " does not exist"
@@ -40,28 +43,28 @@ class AllResourceDict:
         self.valueResourceDict = ResourceDict()
         self.clearAll()
 
-    def addSound(self, resourceName: str, resourceObject: any) -> None:
+    def addSound(self, resourceName: str, resourceObject: pygame.mixer.Sound) -> None:
         self.soundResourceDict.addResourse(resourceName, resourceObject)
 
-    def getSound(self, resourceName: str) -> any:
+    def getSound(self, resourceName: str) -> pygame.mixer.Sound:
         return self.soundResourceDict.getResource(resourceName)
 
     def removeSound(self, resourceName: str) -> None:
         self.soundResourceDict.removeResource(resourceName)
 
-    def addImage(self, resourceName: str, resourceObject: any) -> None:
+    def addImage(self, resourceName: str, resourceObject: pygame.image) -> None:
         self.imageResourceDict.addResourse(resourceName, resourceObject)
 
-    def getImage(self, resourceName: str) -> any:
+    def getImage(self, resourceName: str) -> pygame.image:
         return self.imageResourceDict.getResource(resourceName)
 
     def removeImage(self, resourceName: str) -> None:
         self.imageResourceDict.removeResource(resourceName)
 
-    def addValue(self, resourceName: str, resourceObject: any) -> None:
+    def addValue(self, resourceName: str, resourceObject: object) -> None:
         self.valueResourceDict.addResourse(resourceName, resourceObject)
 
-    def getValue(self, resourceName: str) -> any:
+    def getValue(self, resourceName: str) -> object:
         return self.valueResourceDict.getResource(resourceName)
 
     def removeValue(self, resourceName: str) -> None:

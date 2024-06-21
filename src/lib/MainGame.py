@@ -1,18 +1,19 @@
 import pygame
 from pygame import Surface
-from src.lib.Constants import FPS
+from src.lib.Constants import *
 from src.classes.GameRecord import GameRecord
 from src.classes.User import User
 from src.classes.ResourceDict import ResourceDict
-import src.enitiy.hero
-def startGame(screen:Surface,allresource:ResourceDict,mainClock:pygame.time.Clock,username:User) -> GameRecord:
+from src.enitiy.Hero import Hero
+def startGame(screen:Surface,superResourceDict:ResourceDict,mainClock:pygame.time.Clock,username:User) -> GameRecord:
     gameRecord = GameRecord
     aircraftEntityGroup = pygame.sprite.Group()
     weaponBulletGroup = pygame.sprite.Group()
     gameContinue = True
     pygame.mixer.music.play(-1)
-    hero = src.enitiy.hero.crateHero(allresource.getResource("hero"), mainClock ,weaponBulletGroup)
-    hero.move(100,500)
+    screen.fill(WHITE)
+    hero = Hero(superResourceDict.getResource("hero"), mainClock ,weaponBulletGroup)
+    hero.move(0,0)
     aircraftEntityGroup.add(hero)
     aircraftEntityGroup.draw(screen)
     while gameContinue:

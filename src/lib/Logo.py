@@ -1,7 +1,7 @@
 import time
 import pygame
 from pygame.surface import Surface
-from src.lib.Constants import WHITE, BLACK, HEIGHT, DEFALTFONT
+from src.lib.Constants import *
 
 LOGO_A = [
     "",

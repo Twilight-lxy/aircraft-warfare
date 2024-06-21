@@ -1,7 +1,7 @@
 import pygame
 from pygame.surface import Surface
 from src.lib.typrDefine import ColorType, FontType
-from src.lib.Constants import WHITE, BLACK, WIDTH, DEFALTFONT
+from src.lib.Constants import *
 
 
 # 渲染文本框

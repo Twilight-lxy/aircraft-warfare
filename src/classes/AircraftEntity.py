@@ -1,5 +1,6 @@
+import copy
 import pygame
-
+from pygame import image
 from src.classes.AircraftWeapon import AircraftWeapon
 from src.classes.ResourceDict import ResourceDict, AllResourceDict
 
@@ -21,9 +22,10 @@ class aircraftEntity(pygame.sprite.Sprite):
         weaponBulletGroup: pygame.sprite.Group,
     ):
         super().__init__()
-        self.image = allRes.getImage("normal")
+        self.allRes = copy.deepcopy(allRes)
+        self.image = self.allRes.getImage("normalImage")
 
-        self.rect = self.image.get_rect()
+        self.rect= pygame.Rect(self.image.get_rect())
         self.iFF = iFF
         self.normalWeapon = AircraftWeapon(mainClock)
 
@@ -41,8 +43,10 @@ class aircraftEntity(pygame.sprite.Sprite):
         else:
             self.X = x
             self.Y = y
-
+        self.X -= self.rect.width/2
+        self.Y -= self.rect.height/2
+        self.rect.x=self.X
+        self.rect.y=self.Y
     def update(self):
-        self.move()
-        # self.rect.move()
-        # normalWeapon.use()
+        if self.autoMove:
+            self.move()
