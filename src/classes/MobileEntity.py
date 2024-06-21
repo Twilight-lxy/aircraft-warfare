@@ -1,33 +1,30 @@
-import copy
 import pygame
-from pygame import image
-from src.classes.AircraftWeapon import AircraftWeapon
-from src.classes.ResourceDict import ResourceDict, AllResourceDict
+from src.classes.ResourceDict import AllResourceDict
 import src.lib.Constants as CONSTANTS
 
 
-class aircraftEntity(pygame.sprite.Sprite):
-    iFF = False
-    autoMove = False
-    autoMoveSpeedX = 0
-    autoMoveSpeedY = 0
-    X = 0
-    Y = 0
-    normalWeapon = None
+class MobileEntity(pygame.sprite.Sprite):
 
     def __init__(
         self,
         iFF: bool,
         allRes: AllResourceDict,
-        weaponBulletGroup: pygame.sprite.Group,
+        X: int = 0,
+        Y: int = 0,
+        autoMove: bool = False,
+        autoMoveSpeedX: int = 0,
+        autoMoveSpeedY: int = 0,
     ):
         super().__init__()
         self.allRes = allRes
         self.image = self.allRes.getImage(CONSTANTS.NORMALIMAGE)
-
+        self.autoMove = autoMove
+        self.autoMoveSpeedX = autoMoveSpeedX
+        self.autoMoveSpeedY = autoMoveSpeedY
+        self.X = X
+        self.Y = Y
         self.rect = pygame.Rect(self.image.get_rect())
         self.iFF = iFF
-        self.normalWeapon = None
 
     def setAutoMove(
         self, autoMove: bool = True, autoMoveSpeedX: int = 0, autoMoveSpeedY: int = 1
@@ -71,3 +68,8 @@ class aircraftEntity(pygame.sprite.Sprite):
         self.image = self.allRes.getImage(ImageResourceName)
         self.rect = pygame.Rect(self.image.get_rect())
         self.move()
+    def getMidX(self):
+        print(type(self.X))
+        return int(self.X + self.rect.width/2)
+    def getMidY(self):
+        return int(self.Y + self.rect.height/2)

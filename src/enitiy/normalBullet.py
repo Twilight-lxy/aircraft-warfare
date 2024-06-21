@@ -1,8 +1,9 @@
+import copy
 import pygame
 from pygame.sprite import Group
 from pygame.time import Clock
-from src.classes.AircraftEntity import aircraftEntity
-from src.classes.ResourceDict import AllResourceDict
+from src.classes.MobileEntity import MobileEntity
+from src.classes.ResourceDict import AllResourceDict, copyAllResourceDict
 import src.lib.Constants as CONSTANTS
 from src.classes.WeaponBullet import WeaponBullet
 
@@ -14,13 +15,12 @@ class NormalBullet(WeaponBullet):
         FireX: int,
         FireY: int,
     ):
-        allRes = CONSTANTS.superResourceDict.getResource(CONSTANTS.NORMALBULLET)
-        super().__init__(iFF, allRes, None)
+        super().__init__(iFF, copyAllResourceDict(CONSTANTS.superResourceDict.getResource(CONSTANTS.NORMALBULLET)), None)
         self.moveTo(FireX, FireY)
         if iFF == True:
-            allRes.updateValue(CONSTANTS.MOVESPEEDX, allRes.getValue(CONSTANTS.MOVESPEEDX) * -1)
-            allRes.updateValue(CONSTANTS.MOVESPEEDY, allRes.getValue(CONSTANTS.MOVESPEEDY) * -1)
-        self.setAutoMove(True, allRes.getValue(CONSTANTS.MOVESPEEDX), allRes.getValue(CONSTANTS.MOVESPEEDY))
+            self.allRes.updateValue(CONSTANTS.MOVESPEEDX, self.allRes.getValue(CONSTANTS.MOVESPEEDX) * -1)
+            self.allRes.updateValue(CONSTANTS.MOVESPEEDY, self.allRes.getValue(CONSTANTS.MOVESPEEDY) * -1)
+        self.setAutoMove(True, self.allRes.getValue(CONSTANTS.MOVESPEEDX), self.allRes.getValue(CONSTANTS.MOVESPEEDY))
 
     def loadNormalBulletAllResource() -> AllResourceDict:
         allRes = AllResourceDict()
@@ -30,7 +30,7 @@ class NormalBullet(WeaponBullet):
         allRes.addValue(CONSTANTS.MOVESPEEDY, 10)
         return allRes
 
-    def hurt(aim: aircraftEntity):
+    def hurt(aim: MobileEntity):
         try:
             aim.allRes.updateValue(CONSTANTS.HP, aim.allRes.getValue(CONSTANTS.HP) - 10)
         except:

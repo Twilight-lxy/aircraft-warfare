@@ -28,6 +28,6 @@ class AircraftGun(AircraftWeapon):
     def getNewWeaponBullet(self):
         return NormalBullet(self.iFF,self.loadedX,self.loadedY)
     
-    def openfire(self):
+    def openFire(self):
         newBullet = self.getNewWeaponBullet()
         self.weaponBulletGroup.add(newBullet)

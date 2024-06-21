@@ -1,18 +1,25 @@
+import copy
 import pygame
 from pygame.sprite import Group
 from pygame.time import Clock
-from src.classes.ResourceDict import ResourceDict, AllResourceDict
-from src.classes.AircraftEntity import aircraftEntity
+from src.classes.ResourceDict import ResourceDict, AllResourceDict, copyAllResourceDict
+from src.classes.Aircraft import Aircraft
 import src.lib.Constants as CONSTANTS
 from src.enitiy.aircraftGun import AircraftGun
 from src.lib.keyBoard import isDowm
-class Hero(aircraftEntity):
-    def __init__(
-        self, weaponBulletGroup: Group
-    ):
-        super().__init__(True, CONSTANTS.superResourceDict.getResource(CONSTANTS.HEROAIRCRAFT) , weaponBulletGroup)
+
+
+class Hero(Aircraft):
+    def __init__(self, weaponBulletGroup: Group):
+        super().__init__(
+            True,
+            copyAllResourceDict(CONSTANTS.superResourceDict.getResource(CONSTANTS.HEROAIRCRAFT)),
+            weaponBulletGroup,
+        )
         self.moveTo(CONSTANTS.WIDTH / 2, CONSTANTS.HEIGHT - self.rect.height / 2)
-        self.normalWeapon = AircraftGun(True,weaponBulletGroup,self.X-self.rect.width,self.Y-self.rect.height)
+        self.normalWeapon = AircraftGun(
+            True, weaponBulletGroup, self.getMidX(), self.Y
+        )
 
     def loadHeroAllResource() -> AllResourceDict:
         allRes = AllResourceDict()
@@ -35,7 +42,7 @@ class Hero(aircraftEntity):
         allRes.addValue(CONSTANTS.MOVESPEED, 5)
         allRes.addValue(CONSTANTS.HIGHSPEEDMOVESPEED, 10)
         allRes.addValue(CONSTANTS.HIGHSPEEDMOVEFUEL, 1000)
-        allRes.addValue(CONSTANTS.HP,1000)
+        allRes.addValue(CONSTANTS.HP, 1000)
         return allRes
 
     def moveByKeyboard(self, keyPressedList):
@@ -44,25 +51,30 @@ class Hero(aircraftEntity):
         fuel = self.allRes.getValue(CONSTANTS.HIGHSPEEDMOVEFUEL)
         ismove = False
         isInHighSpeed = False
-        if isDowm(CONSTANTS.HIGHSPEEDCONTROKEYLIST,keyPressedList) and fuel > 0:
+        if isDowm(CONSTANTS.HIGHSPEEDCONTROKEYLIST, keyPressedList) and fuel > 0:
             speed += self.allRes.getValue(CONSTANTS.HIGHSPEEDMOVESPEED)
             isInHighSpeed = True
-        if isDowm(CONSTANTS.LEFTCONTROKEYLIST,keyPressedList):
+        if isDowm(CONSTANTS.LEFTCONTROKEYLIST, keyPressedList):
             self.move(x=self.X - speed)
             ismove = True
-        if isDowm(CONSTANTS.RIGHTCONTROKEYLIST,keyPressedList):
+        if isDowm(CONSTANTS.RIGHTCONTROKEYLIST, keyPressedList):
             self.move(x=self.X + speed)
             ismove = True
-        if isDowm(CONSTANTS.UPCONTROKEYLIST,keyPressedList):
+        if isDowm(CONSTANTS.UPCONTROKEYLIST, keyPressedList):
             self.move(y=self.Y - speed)
             ismove = True
-        if isDowm(CONSTANTS.DOWNCONTROKEYLIST,keyPressedList):
+        if isDowm(CONSTANTS.DOWNCONTROKEYLIST, keyPressedList):
             self.move(y=self.Y + speed)
             ismove = True
         if isInHighSpeed:
             self.changeImage(CONSTANTS.HIGHSPEEDIMAGE)
             if ismove:
                 self.allRes.updateValue(CONSTANTS.HIGHSPEEDMOVEFUEL, fuel - 1)
-        if(isDowm(CONSTANTS.FIRECONTROKEYLIST,keyPressedList)):
-            self.normalWeapon.openfire()
-
+        if isDowm(CONSTANTS.FIRECONTROKEYLIST, keyPressedList):
+            self.useWeapon()
+    def useWeapon(self):
+        try:
+            self.normalWeapon.updateLoadedXY(self.getMidX(), self.Y)
+            self.normalWeapon.openFire()
+        except:
+            pass

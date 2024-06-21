@@ -1,3 +1,4 @@
+import copy
 import pygame
 
 
@@ -94,6 +95,25 @@ class AllResourceDict:
         self.clearImage()
         self.clearSound()
         self.clearValue()
+
+def copyAllResource(fromResourceDict:ResourceDict):
+        copyDict = ResourceDict()
+        for key,value in fromResourceDict.resourceDict.items():
+            copyValue=value
+            try:
+                copyValue = copy.deepcopy(value)
+            except:
+                pass
+            copyDict.addResourse(key,copyValue)
+        return copyDict
+
+
+def copyAllResourceDict(allResourceDict:AllResourceDict):
+    copyAllResourceDict = AllResourceDict()
+    copyAllResourceDict.imageResourceDict=copyAllResource(allResourceDict.imageResourceDict)
+    copyAllResourceDict.soundResourceDict=copyAllResource(allResourceDict.soundResourceDict)
+    copyAllResourceDict.valueResourceDict=copyAllResource(allResourceDict.valueResourceDict)
+    return copyAllResourceDict
 
 
 class ResourceDictException(Exception):

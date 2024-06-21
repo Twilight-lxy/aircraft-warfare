@@ -9,8 +9,12 @@ class AircraftWeapon:
         self.iFF = iFF
         self.loadedX=loadedX
         self.loadedY=loadedY
-
+    def updateLoadedXY(self,loadedX:int,loadedY:int):
+        self.loadedX=loadedX
+        self.loadedY=loadedY
     def getNewWeaponBullet(self):
         return None
-    def openfire(self):
+    def openFire(self):
+        pass
+    def getNewWeaponBullet(self):
         pass
