@@ -3,7 +3,7 @@ import pygame
 from pygame.sprite import Group
 from pygame.time import Clock
 from src.classes.MobileEntity import MobileEntity
-from src.classes.ResourceDict import AllResourceDict, copyAllResourceDict
+from src.classes.ResourceDict import AllResourceDict
 import src.lib.Constants as CONSTANTS
 from src.classes.WeaponBullet import WeaponBullet
 
@@ -15,7 +15,7 @@ class NormalBullet(WeaponBullet):
         FireX: int,
         FireY: int,
     ):
-        super().__init__(iFF, copyAllResourceDict(CONSTANTS.superResourceDict.getResource(CONSTANTS.NORMALBULLET)), None)
+        super().__init__(iFF, CONSTANTS.superResourceDict.getResource(CONSTANTS.NORMALBULLET).copyAllResourceDict(), None)
         self.moveTo(FireX, FireY)
         if iFF == True:
             self.allRes.updateValue(CONSTANTS.MOVESPEEDX, self.allRes.getValue(CONSTANTS.MOVESPEEDX) * -1)
@@ -28,6 +28,7 @@ class NormalBullet(WeaponBullet):
         allRes.addImage(CONSTANTS.NORMALIMAGE, normalImage)
         allRes.addValue(CONSTANTS.MOVESPEEDX, 0)
         allRes.addValue(CONSTANTS.MOVESPEEDY, 10)
+        allRes.addValue(CONSTANTS.DEATHIMAGENUM, 0)
         return allRes
 
     def hurt(aim: MobileEntity):

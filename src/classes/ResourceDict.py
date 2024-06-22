@@ -43,6 +43,17 @@ class ResourceDict:
         else:
             self.resourceDict.update({resourceName: resourceObject})
 
+    def copyAllResource(self):
+        copyDict = ResourceDict()
+        for key, value in self.resourceDict.items():
+            copyValue = value
+            try:
+                copyValue = copy.deepcopy(value)
+            except:
+                pass
+            copyDict.addResourse(key, copyValue)
+        return copyDict
+
 
 class AllResourceDict:
 
@@ -56,7 +67,10 @@ class AllResourceDict:
         self.soundResourceDict.addResourse(resourceName, resourceObject)
 
     def getSound(self, resourceName: str) -> pygame.mixer.Sound:
-        return self.soundResourceDict.getResource(resourceName)
+        try:
+            return self.soundResourceDict.getResource(resourceName)
+        except:
+            return pygame.mixer.Sound("sound/nonesound.wav")
 
     def removeSound(self, resourceName: str) -> None:
         self.soundResourceDict.removeResource(resourceName)
@@ -65,7 +79,10 @@ class AllResourceDict:
         self.imageResourceDict.addResourse(resourceName, resourceObject)
 
     def getImage(self, resourceName: str) -> pygame.image:
-        return self.imageResourceDict.getResource(resourceName)
+        try:
+            return self.imageResourceDict.getResource(resourceName)
+        except:
+            return pygame.image.load("images/transparent.png").convert_alpha()
 
     def removeImage(self, resourceName: str) -> None:
         self.imageResourceDict.removeResource(resourceName)
@@ -74,7 +91,10 @@ class AllResourceDict:
         self.valueResourceDict.addResourse(resourceName, resourceObject)
 
     def getValue(self, resourceName: str) -> object:
-        return self.valueResourceDict.getResource(resourceName)
+        try:
+            return self.valueResourceDict.getResource(resourceName)
+        except:
+            return -1
 
     def removeValue(self, resourceName: str) -> None:
         self.valueResourceDict.removeResource(resourceName)
@@ -96,24 +116,12 @@ class AllResourceDict:
         self.clearSound()
         self.clearValue()
 
-def copyAllResource(fromResourceDict:ResourceDict):
-        copyDict = ResourceDict()
-        for key,value in fromResourceDict.resourceDict.items():
-            copyValue=value
-            try:
-                copyValue = copy.deepcopy(value)
-            except:
-                pass
-            copyDict.addResourse(key,copyValue)
-        return copyDict
-
-
-def copyAllResourceDict(allResourceDict:AllResourceDict):
-    copyAllResourceDict = AllResourceDict()
-    copyAllResourceDict.imageResourceDict=copyAllResource(allResourceDict.imageResourceDict)
-    copyAllResourceDict.soundResourceDict=copyAllResource(allResourceDict.soundResourceDict)
-    copyAllResourceDict.valueResourceDict=copyAllResource(allResourceDict.valueResourceDict)
-    return copyAllResourceDict
+    def copyAllResourceDict(self):
+        copyAllResourceDict = AllResourceDict()
+        copyAllResourceDict.imageResourceDict = self.imageResourceDict.copyAllResource()
+        copyAllResourceDict.soundResourceDict = self.soundResourceDict.copyAllResource()
+        copyAllResourceDict.valueResourceDict = self.valueResourceDict.copyAllResource()
+        return copyAllResourceDict
 
 
 class ResourceDictException(Exception):

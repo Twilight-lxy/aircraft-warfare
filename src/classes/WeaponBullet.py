@@ -4,7 +4,7 @@ from pygame.time import Clock
 
 from src.classes.ResourceDict import AllResourceDict
 from src.classes.MobileEntity import MobileEntity
-
+import src.lib.Constants as CONSTANTS
 
 class WeaponBullet(MobileEntity):
     def __init__(
@@ -13,11 +13,15 @@ class WeaponBullet(MobileEntity):
         allRes: AllResourceDict,
         X: int = 0,
         Y: int = 0,
-        autoMove: bool = False,
+        autoMoveOn: bool = False,
         autoMoveSpeedX: int = 0,
         autoMoveSpeedY: int = 0,
     ):
-        super().__init__(iFF, allRes, X, Y, autoMove, autoMoveSpeedX, autoMoveSpeedY)
-
+        super().__init__(iFF, allRes, X, Y, autoMoveOn, autoMoveSpeedX, autoMoveSpeedY)
+        self.setAutoDeath(True)
     def update(self):
         super().update()
+    def createCopy(self):
+        newCopy=super().createCopy()
+        newCopy.setAutoDeath(True)
+        return newCopy

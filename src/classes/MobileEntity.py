@@ -11,25 +11,27 @@ class MobileEntity(pygame.sprite.Sprite):
         allRes: AllResourceDict,
         X: int = 0,
         Y: int = 0,
-        autoMove: bool = False,
+        autoMoveOn: bool = False,
         autoMoveSpeedX: int = 0,
         autoMoveSpeedY: int = 0,
     ):
         super().__init__()
         self.allRes = allRes
         self.image = self.allRes.getImage(CONSTANTS.NORMALIMAGE)
-        self.autoMove = autoMove
+        self.autoMoveOn = autoMoveOn
         self.autoMoveSpeedX = autoMoveSpeedX
         self.autoMoveSpeedY = autoMoveSpeedY
         self.X = X
         self.Y = Y
         self.rect = pygame.Rect(self.image.get_rect())
         self.iFF = iFF
+        self.deathing = -1
+        self.autoDeathOn = False
 
     def setAutoMove(
-        self, autoMove: bool = True, autoMoveSpeedX: int = 0, autoMoveSpeedY: int = 1
+        self, autoMoveOn: bool = True, autoMoveSpeedX: int = 0, autoMoveSpeedY: int = 1
     ):
-        self.autoMove = autoMove
+        self.autoMoveOn = autoMoveOn
         self.autoMoveSpeedX = autoMoveSpeedX
         self.autoMoveSpeedY = autoMoveSpeedY
 
@@ -39,15 +41,9 @@ class MobileEntity(pygame.sprite.Sprite):
         self.move()
 
     def move(self, x: int = -100, y: int = -100):
-        if x == -100:
-            x = self.X
-        if y == -100:
-            y = self.Y
-        if self.autoMove:
-            self.X += self.autoMoveSpeedX
-            self.Y += self.autoMoveSpeedY
-        else:
+        if x != -100:
             self.X = x
+        if y != -100:
             self.Y = y
         if self.X + self.rect.width / 2 < 0:
             self.X = 0 - self.rect.width / 2
@@ -60,16 +56,66 @@ class MobileEntity(pygame.sprite.Sprite):
         self.rect.x = self.X
         self.rect.y = self.Y
 
+    def autoMove(self):
+        self.X += self.autoMoveSpeedX
+        self.Y += self.autoMoveSpeedY
+        self.move()
+        
     def update(self):
-        if self.autoMove:
-            self.move()
+        if self.autoMoveOn:
+            self.autoMove()
+        if self.autoDeathOn:
+            self.autoDeath()
 
     def changeImage(self, ImageResourceName):
         self.image = self.allRes.getImage(ImageResourceName)
         self.rect = pygame.Rect(self.image.get_rect())
         self.move()
+
     def getMidX(self):
-        print(type(self.X))
-        return int(self.X + self.rect.width/2)
+        # print(type(self.X))
+        return int(self.X + self.rect.width / 2)
+
     def getMidY(self):
-        return int(self.Y + self.rect.height/2)
+        return int(self.Y + self.rect.height / 2)
+
+    def death(self):
+        if self.deathing == -1:
+            self.deathing = self.allRes.getValue(CONSTANTS.DEATHIMAGENUM)
+            self.allRes.getSound(CONSTANTS.DEATHSOUND).play()
+        if self.deathing != -1:
+            self.updateDeathImage()
+
+    def updateDeathImage(self):
+        if self.deathing == 6:
+            self.image = self.allRes.getImage(CONSTANTS.DEATHIMAGEF)
+        elif self.deathing == 5:
+            self.image = self.allRes.getImage(CONSTANTS.DEATHIMAGEE)
+        elif self.deathing == 4:
+            self.image = self.allRes.getImage(CONSTANTS.DEATHIMAGED)
+        elif self.deathing == 3:
+            self.image = self.allRes.getImage(CONSTANTS.DEATHIMAGEC)
+        elif self.deathing == 2:
+            self.image = self.allRes.getImage(CONSTANTS.DEATHIMAGEB)
+        elif self.deathing == 1:
+            self.image = self.allRes.getImage(CONSTANTS.DEATHIMAGEA)
+        elif self.deathing == 0:
+            self.kill()
+        self.deathing -= 1
+
+    def autoDeath(self):
+        isOUT = False
+        if(self.deathing != -1):
+            return
+        if self.Y + self.rect.height / 2 <= 0:
+            isOUT=True
+        elif self.Y + self.rect.height / 2 >= CONSTANTS.HEIGHT:
+            isOUT=True
+        if isOUT:
+            self.death()
+    
+    def setAutoDeath(self,autoDeath:bool):
+        self.autoDeathOn = autoDeath
+    def createCopy(self):
+        newCopy = MobileEntity(self.iFF,self.allRes.copyAllResourceDict(),self.X,self.Y,self.autoMoveOn,self.autoMoveSpeedX,self.autoMoveSpeedY)
+        return newCopy

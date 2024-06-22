@@ -2,7 +2,7 @@ import copy
 import pygame
 from pygame.sprite import Group
 from pygame.time import Clock
-from src.classes.ResourceDict import ResourceDict, AllResourceDict, copyAllResourceDict
+from src.classes.ResourceDict import ResourceDict, AllResourceDict
 from src.classes.Aircraft import Aircraft
 import src.lib.Constants as CONSTANTS
 from src.enitiy.aircraftGun import AircraftGun
@@ -10,16 +10,14 @@ from src.lib.keyBoard import isDowm
 
 
 class Hero(Aircraft):
-    def __init__(self, weaponBulletGroup: Group):
+    def __init__(self):
         super().__init__(
             True,
-            copyAllResourceDict(CONSTANTS.superResourceDict.getResource(CONSTANTS.HEROAIRCRAFT)),
-            weaponBulletGroup,
+                CONSTANTS.superResourceDict.getResource(CONSTANTS.HEROAIRCRAFT).copyAllResourceDict()
+            ,
         )
         self.moveTo(CONSTANTS.WIDTH / 2, CONSTANTS.HEIGHT - self.rect.height / 2)
-        self.normalWeapon = AircraftGun(
-            True, weaponBulletGroup, self.getMidX(), self.Y
-        )
+        self.normalWeapon = AircraftGun(True, self.getMidX(), self.Y)
 
     def loadHeroAllResource() -> AllResourceDict:
         allRes = AllResourceDict()
@@ -72,9 +70,8 @@ class Hero(Aircraft):
                 self.allRes.updateValue(CONSTANTS.HIGHSPEEDMOVEFUEL, fuel - 1)
         if isDowm(CONSTANTS.FIRECONTROKEYLIST, keyPressedList):
             self.useWeapon()
+
     def useWeapon(self):
-        try:
-            self.normalWeapon.updateLoadedXY(self.getMidX(), self.Y)
-            self.normalWeapon.openFire()
-        except:
-            pass
+
+        self.normalWeapon.updateLoadedXY(self.getMidX(), self.Y)
+        self.normalWeapon.openFire()

@@ -11,26 +11,27 @@ class Aircraft(MobileEntity):
         self,
         iFF: bool,
         allRes: AllResourceDict,
-        weaponBulletGroup:Group,
         X: int = 0,
         Y: int = 0,
-        autoMove: bool = False,
+        autoMoveOn: bool = False,
         autoMoveSpeedX: int = 0,
         autoMoveSpeedY: int = 0,
         normalWeapon: AircraftWeapon = None,
     ):
-        self.weaponBulletGroup=weaponBulletGroup
-        super().__init__(iFF, allRes, X, Y, autoMove, autoMoveSpeedX, autoMoveSpeedY)
+        super().__init__(iFF, allRes, X, Y, autoMoveOn, autoMoveSpeedX, autoMoveSpeedY)
         if normalWeapon == None:
-            normalWeapon = AircraftWeapon(iFF, self.weaponBulletGroup, self.getMidX(), self.getMidY())
+            normalWeapon = AircraftWeapon(
+                iFF, AllResourceDict(), self.getMidX(), self.getMidY()
+            )
         self.normalWeapon = normalWeapon
 
     def update(self):
         super().update()
-        
+
     def useWeapon(self):
         try:
             self.normalWeapon.updateLoadedXY(self.getMidX(), self.getMidY())
             self.normalWeapon.openFire()
         except:
             pass
+    

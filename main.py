@@ -3,6 +3,7 @@ import threading
 from queue import Queue
 import time
 import pygame
+from src.enitiy.aircraftGun import AircraftGun
 from src.enitiy.hero import Hero
 from src.enitiy.normalBullet import NormalBullet
 import src.lib.Constants as CONSTANTS
@@ -74,6 +75,9 @@ def loadresource():
     backgroundImage = pygame.image.load("images/background.png").convert()
     CONSTANTS.superResourceDict.addResourse(
         CONSTANTS.HEROAIRCRAFT, Hero.loadHeroAllResource()
+    )
+    CONSTANTS.superResourceDict.addResourse(
+        CONSTANTS.AIRCRAFTGUN, AircraftGun.loadAircraftGunAllResource()
     )
     CONSTANTS.superResourceDict.addResourse(
         CONSTANTS.NORMALBULLET, NormalBullet.loadNormalBulletAllResource()

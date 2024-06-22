@@ -9,6 +9,8 @@ superResourceDict: ResourceDict
 screen: pygame.display.set_mode
 threadQueue: Queue
 mainClock: Clock
+weaponBulletGroup: pygame.sprite.Group
+aircraftGroup: pygame.sprite.Group
 # 窗口大小
 WIDTH, HEIGHT = int(480), int(700)
 WINDOWS_SIZE = WIDTH, HEIGHT
@@ -45,7 +47,8 @@ DEATHIMAGENUM = "DeathImageNum"  # 死亡模型数量
 HP = "HP"  # 生命值
 # 武器
 BULLETSOUND = "BulletSound"  # 射击音效
-BULLETSPEED = "BulletSpeed"  # 射速
+FIREINTERVAL = "FireInterval"  # 射速
+AIRCRAFTGUN = "AircraftGun"
 # 子弹
 NORMALBULLET = "normalBullet"  # 普通子弹
 # 英雄

@@ -6,28 +6,26 @@ import src.lib.Constants as CONSTANTS
 from src.classes.AircraftWeapon import AircraftWeapon
 from src.enitiy.normalBullet import NormalBullet
 
+
 class AircraftGun(AircraftWeapon):
     def __init__(
         self,
         iFF: bool,
-        weaponBulletGroup: Group,
         loadedX: int,
         loadedY: int,
     ) -> None:
-        
-        super().__init__(iFF, weaponBulletGroup, loadedX, loadedY)
+        super().__init__(
+            iFF,
+            CONSTANTS.superResourceDict.getResource(CONSTANTS.AIRCRAFTGUN),
+            loadedX,
+            loadedY,
+        )
+        self.setNewWeaponBullet(NormalBullet(self.iFF, self.loadedX, self.loadedY))
 
     def loadAircraftGunAllResource() -> AllResourceDict:
         allRes = AllResourceDict()
         deathSound = pygame.mixer.Sound("sound/bullet.wav")
         deathSound.set_volume(0.2)
         allRes.addSound(CONSTANTS.BULLETSOUND, deathSound)
-        allRes.addValue(CONSTANTS.BULLETSPEED, 100)
+        allRes.addValue(CONSTANTS.FIREINTERVAL, 100)
         return allRes
-    
-    def getNewWeaponBullet(self):
-        return NormalBullet(self.iFF,self.loadedX,self.loadedY)
-    
-    def openFire(self):
-        newBullet = self.getNewWeaponBullet()
-        self.weaponBulletGroup.add(newBullet)
