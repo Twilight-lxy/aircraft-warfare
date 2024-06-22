@@ -21,7 +21,7 @@ def submit(username,password,repassword,root:tk.Tk,froot:tk.Tk,threadQueue:Queue
 def register(froot:tk.Tk,threadQueue:Queue):
     froot.destroy()
     root = tk.Tk()
-    root.title('注册')
+    root.overrideredirect(True) 
     scw = root.winfo_screenwidth()
     sch = root.winfo_screenheight()
     height = 150
@@ -54,7 +54,7 @@ def getLoginMess(threadQueue:Queue,root:tk.Tk=None) -> None:
         root.destroy()
     username = str()
     root = tk.Tk()
-    root.title('登录')
+    root.overrideredirect(True) 
     scw=root.winfo_screenwidth()
     sch=root.winfo_screenheight()
     height=150
