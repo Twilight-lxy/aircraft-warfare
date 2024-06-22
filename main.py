@@ -3,6 +3,8 @@ import threading
 from queue import Queue
 import time
 import pygame
+from src.enitiy.smallEnemy import SmallEnemy
+import src.lib.LoginPage
 from src.enitiy.aircraftGun import AircraftGun
 from src.enitiy.hero import Hero
 from src.enitiy.normalBullet import NormalBullet
@@ -82,105 +84,32 @@ def loadresource():
     CONSTANTS.superResourceDict.addResourse(
         CONSTANTS.NORMALBULLET, NormalBullet.loadNormalBulletAllResource()
     )
+    CONSTANTS.superResourceDict.addResourse(
+        CONSTANTS.SMALLENEMY, SmallEnemy.loadSmallEnemyAllResource()
+    )
     CONSTANTS.threadQueue.put(("loading", "20"))
     soundResourceDict = src.lib.LoadResource.loadSoundResource()
     CONSTANTS.threadQueue.put(("loading", "100"))
     CONSTANTS.threadQueue.put(("loaded", "100"))
 
 
-def logIn() -> str:
-    while not CONSTANTS.threadQueue.empty():
-        CONSTANTS.threadQueue.get()
-    mess, username = ("logined", "null")
-    mouseInloginTextBox = False
-    mouseInQuitTextBox = False
-    while True:
-        CONSTANTS.screen.fill(CONSTANTS.WHITE)
-        src.lib.Logo.showLogo(0, 100)
-        loginTextBox = src.lib.textBox.draw_text_box(
-            mess="login or register",
-            fontSize=25,
-            textBoxHeight=50,
-            textBoxWidth=300,
-            textBoxMidY=450,
-            textBoxMidX=CONSTANTS.WIDTH / 2,
-        )
-        quitTextBox = src.lib.textBox.draw_text_box(
-            mess="quit",
-            fontSize=25,
-            textBoxHeight=50,
-            textBoxWidth=300,
-            textBoxMidY=550,
-            textBoxMidX=CONSTANTS.WIDTH / 2,
-        )
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                break
-            if event.type == pygame.MOUSEMOTION:
-                mouse_position = pygame.mouse.get_pos()
-                if loginTextBox.collidepoint(mouse_position):
-                    mouseInloginTextBox = True
-                else:
-                    mouseInloginTextBox = False
-                if quitTextBox.collidepoint(mouse_position):
-                    mouseInQuitTextBox = True
-                else:
-                    mouseInQuitTextBox = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if mouseInloginTextBox:
-                    src.lib.LoginAndRegester.getLoginMess(CONSTANTS.threadQueue)
-                if mouseInQuitTextBox:
-                    pygame.quit()
-                    break
-        if mess == "logined":
-            break
-        if mouseInloginTextBox:
-            loginTextBox = src.lib.textBox.draw_text_box(
-                mess="login or register",
-                fontSize=25,
-                textBoxHeight=50,
-                textBoxWidth=300,
-                textBoxMidY=450,
-                textBoxMidX=CONSTANTS.WIDTH / 2,
-                textColor=CONSTANTS.WHITE,
-                textBoxSideWidth=0,
-            )
-        if mouseInQuitTextBox:
-            loginTextBox = src.lib.textBox.draw_text_box(
-                mess="quit",
-                fontSize=25,
-                textBoxHeight=50,
-                textBoxWidth=300,
-                textBoxMidY=550,
-                textBoxMidX=CONSTANTS.WIDTH / 2,
-                textColor=CONSTANTS.WHITE,
-                textBoxSideWidth=0,
-            )
-        try:
-            (mess, username) = CONSTANTS.threadQueue.get(False)
-        except:
-            pass
-        pygame.display.flip()
-        CONSTANTS.mainClock.tick(CONSTANTS.FPS)
-    return username
-
-
 def main():
     initGame()
     src.lib.Logo.movingLogoFromTo()
     while True:
-        username = logIn()
+        username = src.lib.LoginPage.logIn()
         retmess = src.lib.MainPage.mainPage(username)
         if retmess == "start":
             src.lib.MainGame.startGame(username)
         elif retmess == "ranking":
             pass  # showRankingList()
+        elif retmess == "changePassword":
+            pass  # showUserMess()
         elif retmess == "back":
             pass
         else:
             continue
-        for event in pygame.event.get():  # 获取用户事件
+        for event in pygame.event.get():  # 获取用户事件a
             if event.type == pygame.QUIT:  # 如果事件为关闭窗口
                 # 退出pygame
                 pygame.quit()

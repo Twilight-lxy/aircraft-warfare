@@ -1,5 +1,6 @@
 import pygame
 from pygame import Surface
+from src.enitiy.smallEnemy import SmallEnemy
 import src.lib.Constants as CONSTANTS
 from src.classes.GameRecord import GameRecord
 from src.classes.User import User
@@ -14,9 +15,10 @@ def startGame(username:User) -> GameRecord:
     pygame.mixer.music.play(-1)
     CONSTANTS.screen.fill(CONSTANTS.WHITE)
     hero = Hero()
-    testbullet = NormalBullet(False,10,10)
+    # testbullet = NormalBullet(False,100,10)
     CONSTANTS.aircraftGroup.add(hero)
-    CONSTANTS.weaponBulletGroup.add(testbullet)
+    # CONSTANTS.weaponBulletGroup.add(testbullet)
+    CONSTANTS.aircraftGroup.add(SmallEnemy(200,20))
     while gameContinue:
         CONSTANTS.screen.fill(CONSTANTS.WHITE)
         CONSTANTS.aircraftGroup.update()
@@ -29,7 +31,21 @@ def startGame(username:User) -> GameRecord:
         hero.moveByKeyboard(pygame.key.get_pressed())
         CONSTANTS.weaponBulletGroup.draw(CONSTANTS.screen)
         CONSTANTS.aircraftGroup.draw(CONSTANTS.screen)
+        groupCollideAns=pygame.sprite.groupcollide(CONSTANTS.aircraftGroup,CONSTANTS.weaponBulletGroup,0,0)
+        for hitFrom,hitlist in groupCollideAns.items():
+            for hitaim in hitlist:
+                doGroupCollode(hitFrom,hitaim)
+        # print(testsmallenemy.allRes.getValue(CONSTANTS.HP))
+        # test = NormalBullet(True,100,10)
+        # test.setAutoMove(True,0,10)
+        # CONSTANTS.weaponBulletGroup.add(test)
         pygame.display.flip()
         CONSTANTS.mainClock.tick(CONSTANTS.FPS)
 
     return gameRecord
+
+def doGroupCollode(aircraft,bullet):
+    if bullet.deathing == -1:
+        aircraft.hit(bullet)
+    if aircraft.deathing == -1:
+        bullet.hit(aircraft)

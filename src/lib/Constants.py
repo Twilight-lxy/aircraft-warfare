@@ -43,6 +43,8 @@ DEATHSOUND = "DeathSound"  # 死亡音效
 MOVESPEED = "MoveSpeed"  # XY移动速度
 MOVESPEEDX = "MoveSpeedX"  # X移动速度
 MOVESPEEDY = "MoveSpeedY"  # Y移动速度
+AUTOMOVESPEEDX = "AutoMoveSpeedX"  # X自动移动速度
+AUTOMOVESPEEDY = "AutoMoveSpeedY"  # Y自动移动速度
 DEATHIMAGENUM = "DeathImageNum"  # 死亡模型数量
 HP = "HP"  # 生命值
 # 武器
@@ -51,8 +53,11 @@ FIREINTERVAL = "FireInterval"  # 射速
 AIRCRAFTGUN = "AircraftGun"
 # 子弹
 NORMALBULLET = "normalBullet"  # 普通子弹
+DAMAGEVALUE = "DamageValue"  # 伤害
 # 英雄
 HEROAIRCRAFT = "HeroAircraft"  # 英雄
 HIGHSPEEDIMAGE = "HighSpeedImage"  # 加速模型
 HIGHSPEEDMOVESPEED = "HighSpeedMoveSpeed"  # 加速移动速度增量
 HIGHSPEEDMOVEFUEL = "HighSpeedMoveFule"  # 加速移动燃料
+#敌人
+SMALLENEMY = "SmallEnemy" # 小型敌人

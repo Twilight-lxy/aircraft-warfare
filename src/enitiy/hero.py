@@ -13,11 +13,13 @@ class Hero(Aircraft):
     def __init__(self):
         super().__init__(
             True,
-                CONSTANTS.superResourceDict.getResource(CONSTANTS.HEROAIRCRAFT).copyAllResourceDict()
-            ,
+            CONSTANTS.superResourceDict.getResource(
+                CONSTANTS.HEROAIRCRAFT
+            ).copyAllResourceDict(),
         )
         self.moveTo(CONSTANTS.WIDTH / 2, CONSTANTS.HEIGHT - self.rect.height / 2)
         self.normalWeapon = AircraftGun(True, self.getMidX(), self.Y)
+        self.setAutoDeath(True)
 
     def loadHeroAllResource() -> AllResourceDict:
         allRes = AllResourceDict()
@@ -25,13 +27,13 @@ class Hero(Aircraft):
         allRes.addImage(CONSTANTS.NORMALIMAGE, normalImage)
         speedImage = pygame.image.load("images/me1.png").convert_alpha()
         allRes.addImage(CONSTANTS.HIGHSPEEDIMAGE, speedImage)
-        deathImage1 = pygame.image.load("images/me_destroy_1.png").convert_alpha()
+        deathImage1 = pygame.image.load("images/me_destroy_4.png").convert_alpha()
         allRes.addImage(CONSTANTS.DEATHIMAGEA, deathImage1)
-        deathImage2 = pygame.image.load("images/me_destroy_2.png").convert_alpha()
+        deathImage2 = pygame.image.load("images/me_destroy_3.png").convert_alpha()
         allRes.addImage(CONSTANTS.DEATHIMAGEB, deathImage2)
-        deathImage3 = pygame.image.load("images/me_destroy_3.png").convert_alpha()
+        deathImage3 = pygame.image.load("images/me_destroy_2.png").convert_alpha()
         allRes.addImage(CONSTANTS.DEATHIMAGEC, deathImage3)
-        deathImage4 = pygame.image.load("images/me_destroy_4.png").convert_alpha()
+        deathImage4 = pygame.image.load("images/me_destroy_1.png").convert_alpha()
         allRes.addImage(CONSTANTS.DEATHIMAGED, deathImage4)
         allRes.addValue(CONSTANTS.DEATHIMAGENUM, 4)
         deathSound = pygame.mixer.Sound("sound/me_down.wav")
@@ -40,7 +42,8 @@ class Hero(Aircraft):
         allRes.addValue(CONSTANTS.MOVESPEED, 5)
         allRes.addValue(CONSTANTS.HIGHSPEEDMOVESPEED, 10)
         allRes.addValue(CONSTANTS.HIGHSPEEDMOVEFUEL, 1000)
-        allRes.addValue(CONSTANTS.HP, 1000)
+        allRes.addValue(CONSTANTS.HP, 5)
+        allRes.addValue(CONSTANTS.DAMAGEVALUE, 10)
         return allRes
 
     def moveByKeyboard(self, keyPressedList):
@@ -75,3 +78,6 @@ class Hero(Aircraft):
 
         self.normalWeapon.updateLoadedXY(self.getMidX(), self.Y)
         self.normalWeapon.openFire()
+
+    def hit(self, hitAim):
+        super().hit(hitAim)

@@ -15,24 +15,28 @@ class NormalBullet(WeaponBullet):
         FireX: int,
         FireY: int,
     ):
-        super().__init__(iFF, CONSTANTS.superResourceDict.getResource(CONSTANTS.NORMALBULLET).copyAllResourceDict(), None)
+        super().__init__(iFF, CONSTANTS.superResourceDict.getResource(CONSTANTS.NORMALBULLET).copyAllResourceDict())
         self.moveTo(FireX, FireY)
         if iFF == True:
-            self.allRes.updateValue(CONSTANTS.MOVESPEEDX, self.allRes.getValue(CONSTANTS.MOVESPEEDX) * -1)
-            self.allRes.updateValue(CONSTANTS.MOVESPEEDY, self.allRes.getValue(CONSTANTS.MOVESPEEDY) * -1)
-        self.setAutoMove(True, self.allRes.getValue(CONSTANTS.MOVESPEEDX), self.allRes.getValue(CONSTANTS.MOVESPEEDY))
+            self.allRes.updateValue(CONSTANTS.AUTOMOVESPEEDX, self.allRes.getValue(CONSTANTS.AUTOMOVESPEEDX) * -1)
+            self.allRes.updateValue(CONSTANTS.AUTOMOVESPEEDY, self.allRes.getValue(CONSTANTS.AUTOMOVESPEEDY) * -1)
+        self.setAutoMove(True)
 
     def loadNormalBulletAllResource() -> AllResourceDict:
         allRes = AllResourceDict()
         normalImage = pygame.image.load("images/bullet2.png").convert_alpha()
         allRes.addImage(CONSTANTS.NORMALIMAGE, normalImage)
-        allRes.addValue(CONSTANTS.MOVESPEEDX, 0)
-        allRes.addValue(CONSTANTS.MOVESPEEDY, 10)
+        allRes.addValue(CONSTANTS.AUTOMOVESPEEDX, 0)
+        allRes.addValue(CONSTANTS.AUTOMOVESPEEDY, 10)
         allRes.addValue(CONSTANTS.DEATHIMAGENUM, 0)
+        allRes.addValue(CONSTANTS.HP, 10)
+        allRes.addValue(CONSTANTS.DAMAGEVALUE, 10)
         return allRes
 
-    def hurt(aim: MobileEntity):
-        try:
-            aim.allRes.updateValue(CONSTANTS.HP, aim.allRes.getValue(CONSTANTS.HP) - 10)
-        except:
-            pass
+    def hit(self, hitAim):
+        super().hit(hitAim)
+    
+    def createCopy(self):
+        newCopy = super().createCopy()
+        newCopy.__class__=NormalBullet
+        return newCopy

@@ -73,8 +73,8 @@ def mainPage(
                 else:
                     mouseInQuitTextBox = False
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if welcomeTextBox:
-                    pass  # showUserMess()
+                if mouseInWelcomeTextBox:
+                    return "changePassword"
                 if mouseInStartTextBox:
                     return "start"
                 if mouseInRankingTextBox:

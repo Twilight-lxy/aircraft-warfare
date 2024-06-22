@@ -27,11 +27,19 @@ class MobileEntity(pygame.sprite.Sprite):
         self.iFF = iFF
         self.deathing = -1
         self.autoDeathOn = False
+        self.lastupdate = 0
+        self.lastdeath = 0
 
     def setAutoMove(
         self, autoMoveOn: bool = True, autoMoveSpeedX: int = 0, autoMoveSpeedY: int = 1
     ):
         self.autoMoveOn = autoMoveOn
+        x = self.allRes.getValue(CONSTANTS.AUTOMOVESPEEDX)
+        y = self.allRes.getValue(CONSTANTS.AUTOMOVESPEEDY)
+        if x != -1:
+            autoMoveSpeedX = x
+        if y != -1:
+            autoMoveSpeedY = y
         self.autoMoveSpeedX = autoMoveSpeedX
         self.autoMoveSpeedY = autoMoveSpeedY
 
@@ -60,12 +68,14 @@ class MobileEntity(pygame.sprite.Sprite):
         self.X += self.autoMoveSpeedX
         self.Y += self.autoMoveSpeedY
         self.move()
-        
-    def update(self):
+
+    def update(self, updateLastupdate: bool = True):
         if self.autoMoveOn:
             self.autoMove()
         if self.autoDeathOn:
             self.autoDeath()
+        if updateLastupdate:
+            self.lastupdate = pygame.time.get_ticks()
 
     def changeImage(self, ImageResourceName):
         self.image = self.allRes.getImage(ImageResourceName)
@@ -101,21 +111,36 @@ class MobileEntity(pygame.sprite.Sprite):
             self.image = self.allRes.getImage(CONSTANTS.DEATHIMAGEA)
         elif self.deathing == 0:
             self.kill()
+            return
         self.deathing -= 1
+        self.lastdeath = pygame.time.get_ticks()
 
     def autoDeath(self):
         isOUT = False
-        if(self.deathing != -1):
-            return
+        if self.deathing == -1:
+            if pygame.time.get_ticks() - self.lastdeath < 30:
+                return
         if self.Y + self.rect.height / 2 <= 0:
-            isOUT=True
+            isOUT = True
         elif self.Y + self.rect.height / 2 >= CONSTANTS.HEIGHT:
-            isOUT=True
-        if isOUT:
+            isOUT = True
+        if isOUT or self.allRes.getValue(CONSTANTS.HP) <= 0:
             self.death()
-    
-    def setAutoDeath(self,autoDeath:bool):
+
+    def setAutoDeath(self, autoDeath: bool):
         self.autoDeathOn = autoDeath
+
     def createCopy(self):
-        newCopy = MobileEntity(self.iFF,self.allRes.copyAllResourceDict(),self.X,self.Y,self.autoMoveOn,self.autoMoveSpeedX,self.autoMoveSpeedY)
+        newCopy = MobileEntity(
+            self.iFF,
+            self.allRes.copyAllResourceDict(),
+            self.X,
+            self.Y,
+            self.autoMoveOn,
+            self.autoMoveSpeedX,
+            self.autoMoveSpeedY,
+        )
         return newCopy
+
+    def hit(self, hitAim):
+        pass

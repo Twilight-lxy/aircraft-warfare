@@ -6,6 +6,7 @@ from src.classes.ResourceDict import AllResourceDict
 from src.classes.MobileEntity import MobileEntity
 import src.lib.Constants as CONSTANTS
 
+
 class WeaponBullet(MobileEntity):
     def __init__(
         self,
@@ -19,9 +20,23 @@ class WeaponBullet(MobileEntity):
     ):
         super().__init__(iFF, allRes, X, Y, autoMoveOn, autoMoveSpeedX, autoMoveSpeedY)
         self.setAutoDeath(True)
-    def update(self):
-        super().update()
+
+    def update(self,updateLastupdate:bool=True):
+        super().update(False)
+        if(updateLastupdate):
+            self.lastupdate = pygame.time.get_ticks()
+
     def createCopy(self):
-        newCopy=super().createCopy()
+        newCopy = super().createCopy()
         newCopy.setAutoDeath(True)
+        newCopy.__class__ = WeaponBullet
         return newCopy
+
+    def hit(self, hitAim):
+        if hitAim.iFF == self.iFF:
+            return
+        hitAim.allRes.updateValue(
+            CONSTANTS.HP,
+            hitAim.allRes.getValue(CONSTANTS.HP)
+            - self.allRes.getValue(CONSTANTS.DAMAGEVALUE),
+        )
