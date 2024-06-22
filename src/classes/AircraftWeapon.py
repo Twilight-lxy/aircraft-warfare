@@ -19,7 +19,8 @@ class AircraftWeapon:
         self.loadedY = loadedY
         self.lastOpenFireTick = 0
         self.weaponBullet = None
-
+        self.fullbulltNum = allRes.getValue(CONSTANTS.BULLETNUM)
+        self.bulltNum = allRes.getValue(CONSTANTS.BULLETNUM)
     def updateLoadedXY(self, loadedX: int, loadedY: int):
         self.loadedX = loadedX
         self.loadedY = loadedY
@@ -30,11 +31,12 @@ class AircraftWeapon:
     def openFire(self):
         bulletSpeed = self.allRes.getValue(CONSTANTS.FIREINTERVAL)
         nowtime=pygame.time.get_ticks()
-        if nowtime - self.lastOpenFireTick > bulletSpeed:
+        if nowtime - self.lastOpenFireTick > bulletSpeed and self.bulltNum>0:
             newBullet = self.getNewWeaponBullet()
             newBullet.moveTo(self.loadedX,self.loadedY)
             CONSTANTS.weaponBulletGroup.add(newBullet)
             self.lastOpenFireTick = pygame.time.get_ticks()
+            self.bulltNum -=1
 
     def setNewWeaponBullet(self, weaponBullet):
         self.weaponBullet = weaponBullet

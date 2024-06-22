@@ -13,12 +13,14 @@ weaponBulletGroup: pygame.sprite.Group
 aircraftGroup: pygame.sprite.Group
 # 窗口大小
 WIDTH, HEIGHT = int(480), int(700)
-WINDOWS_SIZE = WIDTH, HEIGHT
+UIHEIGHT = int(123)
+WINDOWS_SIZE = WIDTH, HEIGHT + UIHEIGHT
 # 颜色
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
+BLUE = (0, 0, 255)
 # 默认字体
 DEFALTFONT = "Times_New_Roman"
 # 页面FPS
@@ -31,8 +33,13 @@ RIGHTCONTROKEYLIST = [pygame.K_d, pygame.K_RIGHT]
 HIGHSPEEDCONTROKEYLIST = [pygame.K_LSHIFT, pygame.K_RSHIFT]
 FIRECONTROKEYLIST = [pygame.K_j]
 PAUSECONTROKEYLIST = [pygame.K_ESCAPE]
+WEAPON1CONTROKEYLIST = [pygame.K_1]
+WEAPON2CONTROKEYLIST = [pygame.K_2]
+WEAPON3CONTROKEYLIST = [pygame.K_3]
+
 # 单位资源及属性名称
 # 通用
+NAME = "Name"  # 名称
 NORMALIMAGE = "NormalImage"  # 基础模型
 DEATHIMAGEA = "DeathImageA"  # 死亡模型1
 DEATHIMAGEB = "DeathImageB"  # 死亡模型2
@@ -48,10 +55,13 @@ AUTOMOVESPEEDX = "AutoMoveSpeedX"  # X自动移动速度
 AUTOMOVESPEEDY = "AutoMoveSpeedY"  # Y自动移动速度
 DEATHIMAGENUM = "DeathImageNum"  # 死亡模型数量
 HP = "HP"  # 生命值
+KILLSCORE = "KillScore"  # 分值
+SCORE = "Score"  # 得分
 # 武器
 BULLETSOUND = "BulletSound"  # 射击音效
 FIREINTERVAL = "FireInterval"  # 射速
 AIRCRAFTGUN = "AircraftGun"
+BULLETNUM = "BulletNum"
 # 子弹
 NORMALBULLET = "normalBullet"  # 普通子弹
 DAMAGEVALUE = "DamageValue"  # 伤害
@@ -60,5 +70,5 @@ HEROAIRCRAFT = "HeroAircraft"  # 英雄
 HIGHSPEEDIMAGE = "HighSpeedImage"  # 加速模型
 HIGHSPEEDMOVESPEED = "HighSpeedMoveSpeed"  # 加速移动速度增量
 HIGHSPEEDMOVEFUEL = "HighSpeedMoveFule"  # 加速移动燃料
-#敌人
-SMALLENEMY = "SmallEnemy" # 小型敌人
+# 敌人
+SMALLENEMY = "SmallEnemy"  # 小型敌人

@@ -19,7 +19,7 @@ class SmallEnemy(Aircraft):
         self.normalWeapon = AircraftGun(False, self.getMidX(), self.Y)
         self.setAutoMove(True)
         self.setAutoDeath(True)
-        self.setAutoUseWeapon(True)
+        # self.setAutoUseWeapon(True)
 
     def loadSmallEnemyAllResource() -> AllResourceDict:
         allRes = AllResourceDict()
@@ -40,7 +40,9 @@ class SmallEnemy(Aircraft):
         allRes.addValue(CONSTANTS.AUTOMOVESPEEDX, 0)
         allRes.addValue(CONSTANTS.AUTOMOVESPEEDY, 1)
         allRes.addValue(CONSTANTS.DAMAGEVALUE, 10)
-        allRes.addValue(CONSTANTS.HP, 5)
+        allRes.addValue(CONSTANTS.HP, 20)
+        allRes.addValue(CONSTANTS.KILLSCORE,5)
+        allRes.addValue(CONSTANTS.NAME, "SmallEnemy")
         return allRes
     def hit(self, hitAim):
         super().hit(hitAim)

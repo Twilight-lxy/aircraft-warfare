@@ -30,7 +30,8 @@ class NormalBullet(WeaponBullet):
         allRes.addValue(CONSTANTS.AUTOMOVESPEEDY, 10)
         allRes.addValue(CONSTANTS.DEATHIMAGENUM, 0)
         allRes.addValue(CONSTANTS.HP, 10)
-        allRes.addValue(CONSTANTS.DAMAGEVALUE, 10)
+        allRes.addValue(CONSTANTS.DAMAGEVALUE, 1000)
+        allRes.addValue(CONSTANTS.NAME, "Normal")
         return allRes
 
     def hit(self, hitAim):

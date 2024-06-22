@@ -27,5 +27,7 @@ class AircraftGun(AircraftWeapon):
         deathSound = pygame.mixer.Sound("sound/bullet.wav")
         deathSound.set_volume(0.2)
         allRes.addSound(CONSTANTS.BULLETSOUND, deathSound)
-        allRes.addValue(CONSTANTS.FIREINTERVAL, 100)
+        allRes.addValue(CONSTANTS.FIREINTERVAL, 1000)
+        allRes.addValue(CONSTANTS.NAME, "Gun")
+        allRes.addValue(CONSTANTS.BULLETNUM,1000)
         return allRes

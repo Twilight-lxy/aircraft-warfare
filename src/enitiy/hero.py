@@ -18,8 +18,10 @@ class Hero(Aircraft):
             ).copyAllResourceDict(),
         )
         self.moveTo(CONSTANTS.WIDTH / 2, CONSTANTS.HEIGHT - self.rect.height / 2)
-        self.normalWeapon = AircraftGun(True, self.getMidX(), self.Y)
-        self.setAutoDeath(True)
+        self.weaponList = [None,weapon1,AircraftGun(True, self.getMidX(), self.getMidY())]
+        self.nowWeapon = 1
+        self.normalWeapon = self.weaponList[1]
+        # self.setAutoDeath(True)
 
     def loadHeroAllResource() -> AllResourceDict:
         allRes = AllResourceDict()
@@ -42,8 +44,10 @@ class Hero(Aircraft):
         allRes.addValue(CONSTANTS.MOVESPEED, 5)
         allRes.addValue(CONSTANTS.HIGHSPEEDMOVESPEED, 10)
         allRes.addValue(CONSTANTS.HIGHSPEEDMOVEFUEL, 1000)
-        allRes.addValue(CONSTANTS.HP, 5)
+        allRes.addValue(CONSTANTS.HP, 100)
         allRes.addValue(CONSTANTS.DAMAGEVALUE, 10)
+        allRes.addValue(CONSTANTS.SCORE, 0)
+        allRes.addValue(CONSTANTS.NAME, "Hero")
         return allRes
 
     def moveByKeyboard(self, keyPressedList):
@@ -51,6 +55,16 @@ class Hero(Aircraft):
             return "Pause"
         if self.deathing != -1:
             return "GameOver"
+        if isDowm(CONSTANTS.WEAPON1CONTROKEYLIST, keyPressedList) and self.weaponState(1)[0]!='None':
+            self.nowWeapon = 1
+            self.normalWeapon = self.weaponList[1]
+        if isDowm(CONSTANTS.WEAPON2CONTROKEYLIST, keyPressedList) and self.weaponState(2)[0]!='None':
+            self.nowWeapon = 2
+            self.normalWeapon = self.weaponList[2]
+        if isDowm(CONSTANTS.WEAPON3CONTROKEYLIST, keyPressedList) and self.weaponState(3)[0]!='None':
+            self.nowWeapon = 3
+            self.normalWeapon = self.weaponList[3]
+        
         self.changeImage(CONSTANTS.NORMALIMAGE)
         speed = self.allRes.getValue(CONSTANTS.MOVESPEED)
         fuel = self.allRes.getValue(CONSTANTS.HIGHSPEEDMOVEFUEL)
@@ -85,3 +99,20 @@ class Hero(Aircraft):
 
     def hit(self, hitAim):
         super().hit(hitAim)
+
+    def weaponState(self, id: int = 0):
+        nowtime = pygame.time.get_ticks()
+        if id == 0:
+            id = self.nowWeapon
+        if len(self.weaponList)<id+1:
+            return ("None","None",0,0,0,0)
+        info = (
+            self.weaponList[id].allRes.getValue(CONSTANTS.NAME),
+            self.weaponList[id].weaponBullet.allRes.getValue(CONSTANTS.NAME),
+            self.weaponList[id].bulltNum,
+            self.weaponList[id].fullbulltNum,
+            self.weaponList[id].lastOpenFireTick,
+            self.weaponList[id].allRes.getValue(CONSTANTS.FIREINTERVAL),
+        )
+
+        return info

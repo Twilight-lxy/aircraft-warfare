@@ -16,14 +16,33 @@ def draw_text_box(
     textBoxMidY: float | int = 0,
     textBoxWidth: float | int = CONSTANTS.WIDTH,
     textBoxHeight: float | int = 25,
+    autoWidth: bool = True,
+    autoHeight: bool = True,
 ):
     # 使用字体对象渲染文本
     text_surface = pygame.font.SysFont(fontName, fontSize).render(mess, True, textColor)
 
-    if text_surface.get_rect().width > textBoxWidth:
+    if text_surface.get_rect().width > textBoxWidth and autoWidth:
         textBoxWidth = text_surface.get_rect().width
-    if text_surface.get_rect().height > textBoxHeight:
+    if text_surface.get_rect().height > textBoxHeight and autoHeight:
         textBoxHeight = text_surface.get_rect().height
+    # 设置文本框的位置
+    textRectLeft = textBoxMidX - textBoxWidth / 2
+    textRectTop = textBoxMidY - textBoxHeight / 2
+    textRectRight = textBoxMidX + textBoxWidth / 2
+    textRectBottom = textBoxMidY + textBoxHeight / 2
+    if textRectLeft < 0:
+        textBoxMidX += 0 - textRectLeft
+    if textRectTop < 0:
+        textBoxMidY += 0 - textRectTop
+    if textRectRight > CONSTANTS.WIDTH:
+        textRectRight -= CONSTANTS.WIDTH - textRectRight
+    if textRectBottom > CONSTANTS.HEIGHT:
+        textRectBottom -= CONSTANTS.HEIGHT - textRectBottom
+    textRectLeft = textBoxMidX - textBoxWidth / 2
+    textRectTop = textBoxMidY - textBoxHeight / 2
+    textRectRight = textBoxMidX + textBoxWidth / 2
+    textRectBottom = textBoxMidY + textBoxHeight / 2
     # 设置文本位置
     textLeft = (
         textBoxMidX
@@ -35,9 +54,7 @@ def draw_text_box(
         - textBoxHeight / 2
         + (textBoxHeight - text_surface.get_rect().height) / 2
     )
-    # 设置文本框的位置
-    textRectLeft = textBoxMidX - textBoxWidth / 2
-    textRectTop = textBoxMidY - textBoxHeight / 2
+
     # 设置文本框
     text_rect = pygame.draw.rect(
         CONSTANTS.screen,
