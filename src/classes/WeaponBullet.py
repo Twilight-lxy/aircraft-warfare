@@ -21,10 +21,8 @@ class WeaponBullet(MobileEntity):
         super().__init__(iFF, allRes, X, Y, autoMoveOn, autoMoveSpeedX, autoMoveSpeedY)
         self.setAutoDeath(True)
 
-    def update(self,updateLastupdate:bool=True):
-        super().update(False)
-        if(updateLastupdate):
-            self.lastupdate = pygame.time.get_ticks()
+    def update(self):
+        super().update()
 
     def createCopy(self):
         newCopy = super().createCopy()

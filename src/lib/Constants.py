@@ -29,7 +29,8 @@ DOWNCONTROKEYLIST = [pygame.K_s, pygame.K_DOWN]
 LEFTCONTROKEYLIST = [pygame.K_a, pygame.K_LEFT]
 RIGHTCONTROKEYLIST = [pygame.K_d, pygame.K_RIGHT]
 HIGHSPEEDCONTROKEYLIST = [pygame.K_LSHIFT, pygame.K_RSHIFT]
-FIRECONTROKEYLIST = [pygame.K_o]
+FIRECONTROKEYLIST = [pygame.K_j]
+PAUSECONTROKEYLIST = [pygame.K_ESCAPE]
 # 单位资源及属性名称
 # 通用
 NORMALIMAGE = "NormalImage"  # 基础模型

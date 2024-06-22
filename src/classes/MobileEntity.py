@@ -27,7 +27,6 @@ class MobileEntity(pygame.sprite.Sprite):
         self.iFF = iFF
         self.deathing = -1
         self.autoDeathOn = False
-        self.lastupdate = 0
         self.lastdeath = 0
 
     def setAutoMove(
@@ -69,13 +68,11 @@ class MobileEntity(pygame.sprite.Sprite):
         self.Y += self.autoMoveSpeedY
         self.move()
 
-    def update(self, updateLastupdate: bool = True):
+    def update(self):
         if self.autoMoveOn:
             self.autoMove()
         if self.autoDeathOn:
             self.autoDeath()
-        if updateLastupdate:
-            self.lastupdate = pygame.time.get_ticks()
 
     def changeImage(self, ImageResourceName):
         self.image = self.allRes.getImage(ImageResourceName)
@@ -117,7 +114,7 @@ class MobileEntity(pygame.sprite.Sprite):
 
     def autoDeath(self):
         isOUT = False
-        if self.deathing == -1:
+        if self.deathing != -1:
             if pygame.time.get_ticks() - self.lastdeath < 30:
                 return
         if self.Y + self.rect.height / 2 <= 0:

@@ -27,12 +27,10 @@ class Aircraft(MobileEntity):
         self.normalWeapon = normalWeapon
         self.isAutoUseWeapon = isAutoUseWeapon
 
-    def update(self,updateLastupdate:bool=True):
-        super().update(False)
+    def update(self):
+        super().update()
         if self.isAutoUseWeapon:
             self.useWeapon()
-        if(updateLastupdate):
-            self.lastupdate = pygame.time.get_ticks()
 
     def useWeapon(self):
         self.normalWeapon.updateLoadedXY(self.getMidX(), self.getMidY())

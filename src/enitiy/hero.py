@@ -47,6 +47,10 @@ class Hero(Aircraft):
         return allRes
 
     def moveByKeyboard(self, keyPressedList):
+        if isDowm(CONSTANTS.PAUSECONTROKEYLIST, keyPressedList):
+            return "Pause"
+        if self.deathing != -1:
+            return "GameOver"
         self.changeImage(CONSTANTS.NORMALIMAGE)
         speed = self.allRes.getValue(CONSTANTS.MOVESPEED)
         fuel = self.allRes.getValue(CONSTANTS.HIGHSPEEDMOVEFUEL)

@@ -28,7 +28,11 @@ def startGame(username:User) -> GameRecord:
                 # 退出pygame
                 pygame.quit()
                 break
-        hero.moveByKeyboard(pygame.key.get_pressed())
+        mess = hero.moveByKeyboard(pygame.key.get_pressed())
+        if(mess == "Pause"):
+            
+        if(mess == "GameOver"):
+            gameContinue = False
         CONSTANTS.weaponBulletGroup.draw(CONSTANTS.screen)
         CONSTANTS.aircraftGroup.draw(CONSTANTS.screen)
         groupCollideAns=pygame.sprite.groupcollide(CONSTANTS.aircraftGroup,CONSTANTS.weaponBulletGroup,0,0)
@@ -39,6 +43,7 @@ def startGame(username:User) -> GameRecord:
         # test = NormalBullet(True,100,10)
         # test.setAutoMove(True,0,10)
         # CONSTANTS.weaponBulletGroup.add(test)
+
         pygame.display.flip()
         CONSTANTS.mainClock.tick(CONSTANTS.FPS)
 
