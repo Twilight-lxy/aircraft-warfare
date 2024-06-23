@@ -162,15 +162,10 @@ def addEnemy(queue:Queue,airGroup):
         time.sleep(0.5)
         if nowTime-lastAddAddHpBulletTime > 1000:
             random.seed()  
-            if random.randint(1,100) > 95:
+            if random.randint(1,100) > 90:
                 airGroup.add(AddHpBullet(False,random.randint(20,CONSTANTS.WIDTH), 0))
             lastAddSmallEnemyTime=nowTime
         time.sleep(0.5)
-        if nowTime-lastAddAddHpBulletTime > 1000:
-            random.seed()  
-            if random.randint(1,100) > 95:
-                airGroup.add(AddHpBullet(False,random.randint(20,CONSTANTS.WIDTH), 0))
-            lastAddSmallEnemyTime=nowTime
 
 def updateUI(heroScore, hero: Hero):
     draw_text_box(
