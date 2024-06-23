@@ -4,6 +4,7 @@ import threading
 import time
 import pygame
 from pygame import Surface
+from src.enitiy.bigEnemy import BigEnemy
 from src.lib.pauseWindow import pasueMain
 from src.enitiy.smallEnemy import SmallEnemy
 import src.lib.Constants as CONSTANTS
@@ -136,6 +137,7 @@ def addEnemy(queue:Queue,airGroup):
         if nowTime-lastAddSmallEnemyTime > 1000:  
             if random.randint(1,100) > 50:
                 airGroup.add(SmallEnemy(random.randint(20,CONSTANTS.WIDTH), 20))
+                airGroup.add(BigEnemy(random.randint(20,CONSTANTS.WIDTH), 20))
             lastAddSmallEnemyTime=nowTime
 
 def updateUI(heroScore, hero: Hero):
