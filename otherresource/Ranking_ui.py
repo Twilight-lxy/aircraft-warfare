@@ -29,7 +29,7 @@ class Ui_MainWindow(object):
         self.tableWidget.setAutoFillBackground(False)
         self.tableWidget.setObjectName("tableWidget")
         self.tableWidget.setColumnCount(4)
-        self.tableWidget.setRowCount(12)
+        self.tableWidget.setRowCount(1)
         # self.tableWidget.setVerticalScrollBarPolicy(
         #     QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOn
         # )

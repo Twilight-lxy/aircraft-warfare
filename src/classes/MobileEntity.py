@@ -30,7 +30,9 @@ class MobileEntity(pygame.sprite.Sprite):
         self.lastdeath = 0
         self.HP = self.allRes.getValue(CONSTANTS.HP)
         self.fullHp = self.allRes.getValue(CONSTANTS.HP)
-        self.damageValue=self.allRes.getValue(CONSTANTS.DAMAGEVALUE)
+        self.damageValue = self.allRes.getValue(CONSTANTS.DAMAGEVALUE)
+        self.canBeBullet = True
+
     def setAutoMove(
         self, autoMoveOn: bool = True, autoMoveSpeedX: int = 0, autoMoveSpeedY: int = 0
     ):
@@ -71,6 +73,8 @@ class MobileEntity(pygame.sprite.Sprite):
         self.move()
 
     def update(self):
+        if self.HP > self.fullHp:
+            self.HP = self.fullHp
         if self.autoMoveOn:
             self.autoMove()
         if self.autoDeathOn:
@@ -91,7 +95,12 @@ class MobileEntity(pygame.sprite.Sprite):
     def death(self):
         if self.deathing == -1:
             self.deathing = self.allRes.getValue(CONSTANTS.DEATHIMAGENUM)
-            self.allRes.getSound(CONSTANTS.DEATHSOUND).play()
+            try:
+                pygame.mixer.find_channel().play(
+                    self.allRes.getSound(CONSTANTS.DEATHSOUND)
+                )
+            except:
+                pass
         if self.deathing != -1:
             self.updateDeathImage()
 
@@ -145,3 +154,6 @@ class MobileEntity(pygame.sprite.Sprite):
         if hitAim.iFF == self.iFF:
             return
         hitAim.HP -= self.damageValue
+
+    def serCanBeBullet(self,canBeBullet:bool):
+        self.canBeBullet = canBeBullet

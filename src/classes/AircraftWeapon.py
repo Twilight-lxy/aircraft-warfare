@@ -22,7 +22,8 @@ class AircraftWeapon:
         self.fullbulltNum = allRes.getValue(CONSTANTS.BULLETNUM)
         self.bulltNum = allRes.getValue(CONSTANTS.BULLETNUM)
         self.fireInterval = self.allRes.getValue(CONSTANTS.FIREINTERVAL)
-
+        self.fireSound = self.allRes.getSound(CONSTANTS.BULLETSOUND)
+        self.isPlaySound = True
     def updateLoadedXY(self, loadedX: int, loadedY: int):
         self.loadedX = loadedX
         self.loadedY = loadedY
@@ -36,6 +37,11 @@ class AircraftWeapon:
             newBullet = self.getNewWeaponBullet()
             newBullet.moveTo(self.loadedX,self.loadedY)
             CONSTANTS.weaponBulletGroup.add(newBullet)
+            if self.isPlaySound:
+                try:
+                    pygame.mixer.find_channel().play(self.fireSound)
+                except:
+                    pass
             self.lastOpenFireTick = pygame.time.get_ticks()
             self.bulltNum -=1
 

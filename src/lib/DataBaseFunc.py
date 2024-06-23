@@ -9,6 +9,8 @@ def userInsert(user:User)->bool:#注册
     cur = conn.cursor()#创建游标
     cur.execute("SELECT MAX(Uid) FROM userMess")#设置id
     max_id = cur.fetchone()[0]
+    if max_id  == None:
+        max_id=0
     user.setUid(str(int(max_id) + 1))
     userid = user.getUid()
     username = user.getUname()#获得name
@@ -56,12 +58,14 @@ def userUpdate(user:User)->bool:
     return False
 
 #添加记录
-def addToRankingList(gameRecord:GameRecord)->list:#list:
+def addToRankingList(gameRecord:GameRecord):#list:
     conn = sqlite3.connect("otherresource/record.db")#连接数据库
     cur = conn.cursor()#创建游标
     username = gameRecord.getUsername()
-    cur.execute("SELECT MAX(Uid) FROM record")#设置id
+    cur.execute("SELECT MAX(Rid) FROM record")#设置id
     max_id = cur.fetchone()[0]
+    if max_id  == None:
+        max_id=0
     gameRecord.setUid(str(int(max_id) + 1))
     userid = gameRecord.getUid()
     userscore = gameRecord.getUscore()
@@ -69,20 +73,15 @@ def addToRankingList(gameRecord:GameRecord)->list:#list:
     formatted_datetime = now.strftime('%Y-%m-%d %H:%M:%S')#格式化日期和时间
     sql = "insert into record(Rid,Uname,Uscore,Rtime) values(?,?,?,?)"
     conn.execute(sql, (userid,username,userscore,formatted_datetime,))#插入记录
-    result = cur.fetchall()
-    table_list = []
-    for r in result:
-        table_list.append(list(r))
     conn.commit() 
     cur.close()
     conn.close()#关闭数据库连接
-    return list[table_list]
 
 #获取记录
 def getRankingList()->list:#list:
     conn = sqlite3.connect("otherresource/record.db")#连接数据库
     cur = conn.cursor()#创建游标
-    cur.execute("select * from record")
+    cur.execute("select * from record order by Uscore desc")
     records = cur.fetchall()
     table_list = []
     for r in records:

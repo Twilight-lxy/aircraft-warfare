@@ -17,6 +17,7 @@ class SmallEnemy(Aircraft):
         )
         self.moveTo(x, y)
         self.normalWeapon = MachingGun(False, self.getMidX(), self.Y)
+        self.normalWeapon.isPlaySound = False
         self.setAutoMove(True)
         self.setAutoDeath(True)
         self.setAutoUseWeapon(True)

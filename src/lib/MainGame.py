@@ -4,6 +4,8 @@ import threading
 import time
 import pygame
 from pygame import Surface
+from src.enitiy.addHpBullet import AddHpBullet
+from src.lib.DataBaseFunc import addToRankingList
 from src.lib.pauseWindow import pasueMain
 from src.enitiy.smallEnemy import SmallEnemy
 import src.lib.Constants as CONSTANTS
@@ -50,6 +52,7 @@ def startGame(username: User):
                 mess = ""
                 addMessQueue.put("STOP")
                 addEnemyThread.join()
+                addToRankingList(GameRecord(username,heroScore,""))
                 return username
             pygame.display.flip()
             CONSTANTS.mainClock.tick(CONSTANTS.FPS)
@@ -72,20 +75,26 @@ def startGame(username: User):
                 keymess = hero.moveByKeyboard(pygame.key.get_pressed())
                 pygame.event.pump()
             pauseThreading = threading.Thread(
-                target=pasueMain, name="loadresource", args=(queue,)
+                target=pasueMain, name="pasueMain", args=(queue,)
             )
             pauseThreading.daemon = True
             pauseThreading.start()
             addMessQueue.put(pauseThreading)
         if keymess == "GameOver":
-            gamePause = False
-            mess == "esc"
+            gamePause = True
+            mess = "esc"
 
         CONSTANTS.weaponBulletGroup.draw(CONSTANTS.screen)
         CONSTANTS.aircraftGroup.draw(CONSTANTS.screen)
         groupCollideAns = pygame.sprite.groupcollide(
             CONSTANTS.aircraftGroup, CONSTANTS.weaponBulletGroup, 0, 0
         )
+        for hitFrom, hitlist in groupCollideAns.items():
+            for hitaim in hitlist:
+                heroScore += doGroupCollode(hitFrom, hitaim,True)
+        groupCollideAns = ( pygame.sprite.groupcollide(
+            CONSTANTS.aircraftGroup, CONSTANTS.aircraftGroup, 0, 0
+        ))
         for hitFrom, hitlist in groupCollideAns.items():
             for hitaim in hitlist:
                 heroScore += doGroupCollode(hitFrom, hitaim)
@@ -101,11 +110,19 @@ def startGame(username: User):
     return ""
 
 
-def doGroupCollode(aircraft, bullet):
+def doGroupCollode(aircraft, bullet, doCanBeBullet:bool=False):
+    if aircraft == bullet:
+        return 0
     if aircraft.HP > 0:
-        aircraft.hit(bullet)
+        if doCanBeBullet and bullet.canBeBullet == False:
+            pass
+        else:
+            aircraft.hit(bullet)
     if aircraft.HP > 0:
-        bullet.hit(aircraft)
+        if doCanBeBullet and aircraft.canBeBullet == False:
+            pass
+        else:
+            bullet.hit(aircraft)
     if aircraft.HP <= 0 and aircraft.deathing == -1:
         addScore = aircraft.allRes.getValue(CONSTANTS.KILLSCORE)
         if addScore != -1:
@@ -115,6 +132,7 @@ def doGroupCollode(aircraft, bullet):
 
 def addEnemy(queue:Queue,airGroup):
     lastAddSmallEnemyTime=0
+    lastAddAddHpBulletTime=0
     while True:
         time.sleep(0.5)
         mess = None
@@ -133,9 +151,17 @@ def addEnemy(queue:Queue,airGroup):
         if len(CONSTANTS.aircraftGroup.sprites())>20:
             time.sleep(0.5)
             continue
-        if nowTime-lastAddSmallEnemyTime > 1000:  
-            if random.randint(1,100) > 50:
+        time.sleep(0.5)
+        if nowTime-lastAddSmallEnemyTime > 1000:
+            random.seed()
+            if random.randint(1,100) > 10:
                 airGroup.add(SmallEnemy(random.randint(20,CONSTANTS.WIDTH), 20))
+            lastAddSmallEnemyTime=nowTime
+        time.sleep(0.5)
+        if nowTime-lastAddAddHpBulletTime > 1000:
+            random.seed()  
+            if random.randint(1,100) > 95:
+                airGroup.add(AddHpBullet(False,random.randint(20,CONSTANTS.WIDTH), 0))
             lastAddSmallEnemyTime=nowTime
 
 def updateUI(heroScore, hero: Hero):

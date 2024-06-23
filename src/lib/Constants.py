@@ -68,6 +68,7 @@ UNIVERSALLAUNCHER = "universalLauncher"
 NORMALBULLET = "normalBullet"  # 普通子弹
 GUNBULLET = "GunBullet"
 DAMAGEVALUE = "DamageValue"  # 伤害
+ADDHPBULLET ="AddHpBullet"
 # 英雄
 HEROAIRCRAFT = "HeroAircraft"  # 英雄
 HIGHSPEEDIMAGE = "HighSpeedImage"  # 加速模型

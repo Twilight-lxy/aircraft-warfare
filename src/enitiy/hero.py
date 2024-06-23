@@ -22,7 +22,6 @@ class Hero(Aircraft):
         self.weaponList = [None,MachingGun(True,self.getMidX(), self.getMidY()),AircraftGun(True, self.getMidX(), self.getMidY())]
         self.nowWeapon = 1
         self.normalWeapon = self.weaponList[1]
-        # self.setAutoDeath(True)
         self.speed = self.allRes.getValue(CONSTANTS.MOVESPEED)
         self.fullfuel = self.allRes.getValue(CONSTANTS.HIGHSPEEDMOVEFUEL)
         self.fuel = self.allRes.getValue(CONSTANTS.HIGHSPEEDMOVEFUEL)
@@ -49,7 +48,7 @@ class Hero(Aircraft):
         allRes.addValue(CONSTANTS.MOVESPEED, 5)
         allRes.addValue(CONSTANTS.HIGHSPEEDMOVESPEED, 10)
         allRes.addValue(CONSTANTS.HIGHSPEEDMOVEFUEL, 1000)
-        allRes.addValue(CONSTANTS.HP, 100)
+        allRes.addValue(CONSTANTS.HP, 1000)
         allRes.addValue(CONSTANTS.DAMAGEVALUE, 10)
         allRes.addValue(CONSTANTS.SCORE, 0)
         allRes.addValue(CONSTANTS.NAME, "Hero")
@@ -58,7 +57,7 @@ class Hero(Aircraft):
     def moveByKeyboard(self, keyPressedList):
         if isDowm(CONSTANTS.PAUSECONTROKEYLIST, keyPressedList):
             return "Pause"
-        if self.deathing != -1:
+        if self.deathing == 0:
             return "GameOver"
         if isDowm(CONSTANTS.WEAPON1CONTROKEYLIST, keyPressedList) and self.weaponState(1)[0]!='None':
             self.nowWeapon = 1
@@ -120,3 +119,9 @@ class Hero(Aircraft):
         )
 
         return info
+
+    
+    def update(self):
+        super().update()
+        if self.HP<=0:
+            self.setAutoDeath(True)

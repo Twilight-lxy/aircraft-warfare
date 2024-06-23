@@ -16,18 +16,18 @@ class UniversalLauncher(AircraftWeapon):
     ) -> None:
         super().__init__(
             iFF,
-            CONSTANTS.superResourceDict.getResource(CONSTANTS.AIRCRAFTGUN),
+            CONSTANTS.superResourceDict.getResource(CONSTANTS.UNIVERSALLAUNCHER),
             loadedX,
             loadedY,
         )
-        self.setNewWeaponBullet(GunBullet(self.iFF, self.loadedX, self.loadedY))
+        self.setNewWeaponBullet()
 
     def loadAllResource() -> AllResourceDict:
         allRes = AllResourceDict()
-        deathSound = pygame.mixer.Sound("sound/bullet.wav")
+        deathSound = pygame.mixer.Sound("sound/supply.wav")
         deathSound.set_volume(1)
         allRes.addSound(CONSTANTS.BULLETSOUND, deathSound)
-        allRes.addValue(CONSTANTS.FIREINTERVAL, 1000)
+        allRes.addValue(CONSTANTS.FIREINTERVAL, 5000)
         allRes.addValue(CONSTANTS.NAME, "UniversalLauncher")
         allRes.addValue(CONSTANTS.BULLETNUM,10)
         return allRes

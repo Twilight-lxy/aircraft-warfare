@@ -38,6 +38,7 @@ class Aircraft(MobileEntity):
         if isAuto:
             nowtime=pygame.time.get_ticks()
             if nowtime - self.normalWeapon.lastOpenFireTick > self.normalWeapon.fireInterval:
+                random.seed()
                 if random.randint(1,100) > 80:
                     self.normalWeapon.openFire()
                 self.normalWeapon.lastOpenFireTick = nowtime

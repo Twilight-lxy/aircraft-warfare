@@ -25,8 +25,10 @@ import src.lib.rankingList
 import otherresource.Ranking_ui
 from src.lib.rankingList import showRankingList
 from multiprocessing import Process
+
+
 def initGame():
-    
+
     CONSTANTS.mainClock = pygame.time.Clock()
     pygame.init()
     CONSTANTS.superResourceDict = ResourceDict()
@@ -34,7 +36,7 @@ def initGame():
     CONSTANTS.threadQueue = Queue()
     pygame.mixer.init()
     pygame.display.set_caption("飞机大战")
-    loadResourceThreading = threading.Thread(target=loadresource, name="loadresource")
+    loadResourceThreading = threading.Thread(target=src.lib.LoadResource.loadresource, name="loadresource")
     loadResourceThreading.daemon = True
     loadResourceThreading.start()
     mess, per = ("load", "0")
@@ -76,51 +78,20 @@ def initGame():
     pygame.display.flip()
 
 
-def loadresource():
-    CONSTANTS.threadQueue.put(("loading", "0"))
-    pygame.mixer.music.load("sound/game_music.ogg")
-    pygame.mixer.music.set_volume(0.2)
-    CONSTANTS.threadQueue.put(("loading", "10"))
-    backgroundImage = pygame.image.load("images/background.png").convert()
-    CONSTANTS.superResourceDict.addResourse(
-        CONSTANTS.HEROAIRCRAFT, Hero.loadAllResource()
-    )
-    CONSTANTS.superResourceDict.addResourse(
-        CONSTANTS.AIRCRAFTGUN, AircraftGun.loadAllResource()
-    )
-    CONSTANTS.superResourceDict.addResourse(
-        CONSTANTS.NORMALBULLET, NormalBullet.loadAllResource()
-    )
-    CONSTANTS.superResourceDict.addResourse(
-        CONSTANTS.SMALLENEMY, SmallEnemy.loadAllResource()
-    )
-
-    CONSTANTS.superResourceDict.addResourse(
-        CONSTANTS.MACHINGGUN, MachingGun.loadAllResource()
-    )
-    CONSTANTS.superResourceDict.addResourse(
-        CONSTANTS.GUNBULLET, GunBullet.loadAllResource()
-    )
-
-    CONSTANTS.threadQueue.put(("loading", "20"))
-    # soundResourceDict = src.lib.LoadResource.loadSoundResource()
-    CONSTANTS.threadQueue.put(("loading", "100"))
-    CONSTANTS.threadQueue.put(("loaded", "100"))
-
-
 def main():
     initGame()
     src.lib.Logo.movingLogoFromTo()
     queue = multiprocessing.Queue()
     queue.put(("close"))
     global killaim
-    killaim=None
+    killaim = None
+    username = None
     while True:
         if username == None:
             username = src.lib.LoginPage.logIn()
         retmess = src.lib.MainPage.mainPage(username)
         if retmess == "start":
-            username=src.lib.MainGame.startGame(username)
+            username = src.lib.MainGame.startGame(username)
         elif retmess == "ranking":
             closemess = ""
             try:
@@ -128,10 +99,10 @@ def main():
             except:
                 pass
             if closemess == "close":
-                p1 = Process(target=showRankingList,args=(queue,))
+                p1 = Process(target=showRankingList, args=(queue,))
                 p1.start()
                 killaim = p1
-                
+
         elif retmess == "back":
             username = None
             pass
@@ -146,7 +117,7 @@ def main():
 
 if __name__ == "__main__":
     global killaim
-    killaim=None
+    killaim = None
     try:
         main()
     except pygame.error:
