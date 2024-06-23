@@ -3,6 +3,7 @@ import threading
 from queue import Queue
 import time
 import pygame
+from src.lib.changePassword import changePassword
 from src.enitiy.smallEnemy import SmallEnemy
 import src.lib.LoginPage
 from src.enitiy.aircraftGun import AircraftGun
@@ -96,16 +97,19 @@ def loadresource():
 def main():
     initGame()
     src.lib.Logo.movingLogoFromTo()
+    username = None
     while True:
-        username = src.lib.LoginPage.logIn()
+        if username == None:
+            username = src.lib.LoginPage.logIn()
         retmess = src.lib.MainPage.mainPage(username)
         if retmess == "start":
-            src.lib.MainGame.startGame(username)
+            username=src.lib.MainGame.startGame(username)
         elif retmess == "ranking":
             pass  # showRankingList()
         elif retmess == "changePassword":
-            pass  # showUserMess()
+            changePassword(username)
         elif retmess == "back":
+            username = None
             pass
         else:
             continue

@@ -15,7 +15,7 @@ from src.lib.textBox import draw_text_box
 from src.lib.healthBar import drawHealthBar
 
 
-def startGame(username: User) -> GameRecord:
+def startGame(username: User):
     heroScore = 0
     gameRecord = GameRecord
     CONSTANTS.aircraftGroup = pygame.sprite.Group()
@@ -41,8 +41,7 @@ def startGame(username: User) -> GameRecord:
                 gamePause = False
             if mess == "esc":
                 mess = ""
-                gameover()
-                break
+                return username
             pygame.display.flip()
             CONSTANTS.mainClock.tick(CONSTANTS.FPS)
             pygame.event.pump()
@@ -88,11 +87,8 @@ def startGame(username: User) -> GameRecord:
         CONSTANTS.mainClock.tick(CONSTANTS.FPS)
         pygame.event.pump()
 
-    return gameRecord
+    return ""
 
-
-def gameover():
-    pass
 
 def doGroupCollode(aircraft, bullet):
     if aircraft.HP > 0:
