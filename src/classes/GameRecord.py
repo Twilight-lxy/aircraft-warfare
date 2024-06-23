@@ -13,7 +13,7 @@ class GameRecord:
         self.username = username
     def getUid(self):
         return self.id
-    def getUid(self,id):
+    def setUid(self,id):
         self.id = id
     def getUtime(self):
         return self.time
