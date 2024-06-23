@@ -63,6 +63,7 @@ FIREINTERVAL = "FireInterval"  # 射速
 AIRCRAFTGUN = "AircraftGun"
 MACHINGGUN = "MachingGun"
 BULLETNUM = "BulletNum"
+UNIVERSALLAUNCHER = "universalLauncher"
 # 子弹
 NORMALBULLET = "normalBullet"  # 普通子弹
 GUNBULLET = "GunBullet"
