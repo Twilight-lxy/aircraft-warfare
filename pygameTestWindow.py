@@ -1,4 +1,5 @@
 import pygame
+from src.lib.pauseWindow import pasueMain
 import src.lib.Constants as CONSTANTS
 import traceback
 import src.lib.textBox
@@ -49,6 +50,7 @@ def main():
     #     clock.tick(30)
     #     pygame.display.flip()
     queue = Queue()
+    pasueMain(queue)
     getLoginMess(queue)
 
 if __name__ == "__main__":
