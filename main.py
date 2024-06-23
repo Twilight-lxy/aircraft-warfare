@@ -4,6 +4,7 @@ import threading
 from queue import Queue
 import time
 import pygame
+from src.enitiy.bigEnemy import BigEnemy
 from src.enitiy.gunBullet import GunBullet
 from src.enitiy.machingGun import MachingGun
 from src.lib.changePassword import changePassword

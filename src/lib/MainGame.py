@@ -6,6 +6,7 @@ import pygame
 from pygame import Surface
 from src.enitiy.addHpBullet import AddHpBullet
 from src.lib.DataBaseFunc import addToRankingList
+from src.enitiy.bigEnemy import BigEnemy
 from src.lib.pauseWindow import pasueMain
 from src.enitiy.smallEnemy import SmallEnemy
 import src.lib.Constants as CONSTANTS
@@ -156,6 +157,13 @@ def addEnemy(queue:Queue,airGroup):
             random.seed()
             if random.randint(1,100) > 10:
                 airGroup.add(SmallEnemy(random.randint(20,CONSTANTS.WIDTH), 20))
+                airGroup.add(BigEnemy(random.randint(20,CONSTANTS.WIDTH), 20))
+            lastAddSmallEnemyTime=nowTime
+        time.sleep(0.5)
+        if nowTime-lastAddAddHpBulletTime > 1000:
+            random.seed()  
+            if random.randint(1,100) > 95:
+                airGroup.add(AddHpBullet(False,random.randint(20,CONSTANTS.WIDTH), 0))
             lastAddSmallEnemyTime=nowTime
         time.sleep(0.5)
         if nowTime-lastAddAddHpBulletTime > 1000:

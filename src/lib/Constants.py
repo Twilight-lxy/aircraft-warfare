@@ -76,3 +76,4 @@ HIGHSPEEDMOVESPEED = "HighSpeedMoveSpeed"  # 加速移动速度增量
 HIGHSPEEDMOVEFUEL = "HighSpeedMoveFule"  # 加速移动燃料
 # 敌人
 SMALLENEMY = "SmallEnemy"  # 小型敌人
+BIGENEMY = "BigEnemy"  # 大型敌人
