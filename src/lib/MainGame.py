@@ -1,5 +1,9 @@
+from queue import Queue
+import threading
+import time
 import pygame
 from pygame import Surface
+from src.lib.pauseWindow import pasueMain
 from src.enitiy.smallEnemy import SmallEnemy
 import src.lib.Constants as CONSTANTS
 from src.classes.GameRecord import GameRecord
@@ -16,7 +20,9 @@ def startGame(username: User) -> GameRecord:
     gameRecord = GameRecord
     CONSTANTS.aircraftGroup = pygame.sprite.Group()
     CONSTANTS.weaponBulletGroup = pygame.sprite.Group()
-    gameContinue = True
+    gamePause = False
+    queue = Queue()
+    mess = ""
     pygame.mixer.music.play(-1)
     CONSTANTS.screen.fill(CONSTANTS.WHITE)
     hero = Hero()
@@ -24,7 +30,23 @@ def startGame(username: User) -> GameRecord:
     CONSTANTS.aircraftGroup.add(hero)
     # CONSTANTS.weaponBulletGroup.add(testbullet)
     CONSTANTS.aircraftGroup.add(SmallEnemy(200, 20))
-    while gameContinue:
+    while True:
+        if gamePause:
+            try:
+                mess = queue.get(True, 0.2)
+            except:
+                pass
+            if mess == "continue":
+                mess = ""
+                gamePause = False
+            if mess == "esc":
+                mess = ""
+                gameover()
+                break
+            pygame.display.flip()
+            CONSTANTS.mainClock.tick(CONSTANTS.FPS)
+            pygame.event.pump()
+            continue
         CONSTANTS.screen.fill(CONSTANTS.WHITE)
         CONSTANTS.aircraftGroup.update()
         CONSTANTS.weaponBulletGroup.update()
@@ -33,9 +55,19 @@ def startGame(username: User) -> GameRecord:
                 # 退出pygame
                 pygame.quit()
                 break
+        mess = ""
         mess = hero.moveByKeyboard(pygame.key.get_pressed())
         if mess == "Pause":
-            pass
+            gamePause = True
+            while mess == "Pause":
+                mess = hero.moveByKeyboard(pygame.key.get_pressed())
+                pygame.event.pump()
+            pauseThreading = threading.Thread(
+                target=pasueMain, name="loadresource", args=(queue,)
+            )
+            pauseThreading.daemon = True
+            pauseThreading.start()
+
         if mess == "GameOver":
             gameContinue = False
 
@@ -54,9 +86,13 @@ def startGame(username: User) -> GameRecord:
         updateUI(heroScore, hero)
         pygame.display.flip()
         CONSTANTS.mainClock.tick(CONSTANTS.FPS)
+        pygame.event.pump()
 
     return gameRecord
 
+
+def gameover():
+    pass
 
 def doGroupCollode(aircraft, bullet):
     if aircraft.HP > 0:
