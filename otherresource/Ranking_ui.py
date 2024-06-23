@@ -16,26 +16,26 @@ from PyQt5.QtWidgets import QScrollArea, QApplication, QWidget
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("Rank")
-        MainWindow.setEnabled(False)
-        MainWindow.resize(700, 530)
+        # MainWindow.setEnabled(False)
+        # MainWindow.resize(700, 530)
 
-        MainWindow.setMinimumSize(QtCore.QSize(750, 530))
-        MainWindow.setMaximumSize(QtCore.QSize(750, 530))
+        MainWindow.setMinimumSize(QtCore.QSize(800, 530))
+        MainWindow.setMaximumSize(QtCore.QSize(800, 530))
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.tableWidget = QtWidgets.QTableWidget(self.centralwidget)
         # self.tableWidget.setEnabled(True)
-        self.tableWidget.setGeometry(QtCore.QRect(30, 10, 650, 500))
+        self.tableWidget.setGeometry(QtCore.QRect(30, 10, 750, 500))
         self.tableWidget.setAutoFillBackground(False)
         self.tableWidget.setObjectName("tableWidget")
         self.tableWidget.setColumnCount(4)
         self.tableWidget.setRowCount(12)
-        self.tableWidget.setVerticalScrollBarPolicy(
-            QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOn
-        )
-        self.tableWidget.setHorizontalScrollBarPolicy(
-            QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOn
-        )
+        # self.tableWidget.setVerticalScrollBarPolicy(
+        #     QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOn
+        # )
+        # self.tableWidget.setHorizontalScrollBarPolicy(
+        #     QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOn
+        # )
         # item = QtWidgets.QTableWidgetItem()
         # self.tableWidget.setVerticalHeaderItem(0, item)
 
@@ -80,6 +80,7 @@ class Ui_MainWindow(object):
         self.tableWidget.setSortingEnabled(False)
 
         i = 0
+       
         rankingList = getRankingList()
 
 

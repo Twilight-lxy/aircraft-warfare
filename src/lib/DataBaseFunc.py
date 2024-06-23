@@ -86,7 +86,8 @@ def getRankingList()->list:#list:
     records = cur.fetchall()
     table_list = []
     for r in records:
-        table_list.append(list(r))
+        record = GameRecord(r[1],r[2],r[3])
+        table_list.append(record)
     cur.close()
     conn.close()#关闭数据库连接
-    return list[table_list]
+    return table_list
