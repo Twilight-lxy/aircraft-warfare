@@ -1,4 +1,5 @@
 from concurrent.futures import thread
+import multiprocessing
 import threading
 from queue import Queue
 import time
@@ -20,9 +21,12 @@ from src.classes.ResourceDict import ResourceDict, AllResourceDict
 import src.lib.LoginAndRegester
 import src.lib.MainPage
 import src.lib.MainGame
-
-
+import src.lib.rankingList
+import otherresource.Ranking_ui
+from src.lib.rankingList import showRankingList
+from multiprocessing import Process
 def initGame():
+    
     CONSTANTS.mainClock = pygame.time.Clock()
     pygame.init()
     CONSTANTS.superResourceDict = ResourceDict()
@@ -107,7 +111,10 @@ def loadresource():
 def main():
     initGame()
     src.lib.Logo.movingLogoFromTo()
-    username = None
+    queue = multiprocessing.Queue()
+    queue.put(("close"))
+    global killaim
+    killaim=None
     while True:
         if username == None:
             username = src.lib.LoginPage.logIn()
@@ -115,9 +122,16 @@ def main():
         if retmess == "start":
             username=src.lib.MainGame.startGame(username)
         elif retmess == "ranking":
-            pass  # showRankingList()
-        elif retmess == "changePassword":
-            changePassword(username)
+            closemess = ""
+            try:
+                closemess = queue.get(False)
+            except:
+                pass
+            if closemess == "close":
+                p1 = Process(target=showRankingList,args=(queue,))
+                p1.start()
+                killaim = p1
+                
         elif retmess == "back":
             username = None
             pass
@@ -131,9 +145,15 @@ def main():
 
 
 if __name__ == "__main__":
+    global killaim
+    killaim=None
     try:
         main()
     except pygame.error:
+        try:
+            killaim.kill()
+        except:
+            pass
         print("GoodBye")
     except:
         traceback.print_exc()

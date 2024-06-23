@@ -55,12 +55,16 @@ def userUpdate(user:User)->bool:
     conn.close()
     return False
 
+#添加记录
 def addToRankingList(gameRecord:GameRecord)->list:#list:
     conn = sqlite3.connect("otherresource/record.db")#连接数据库
     cur = conn.cursor()#创建游标
-    username = GameRecord.getUname()
-    userid = GameRecord.getRid()
-    userscore = GameRecord.getUscore()
+    username = gameRecord.getUsername()
+    cur.execute("SELECT MAX(Uid) FROM record")#设置id
+    max_id = cur.fetchone()[0]
+    gameRecord.setUid(str(int(max_id) + 1))
+    userid = gameRecord.getUid()
+    userscore = gameRecord.getUscore()
     now = datetime.now()#获取当前日期和时间
     formatted_datetime = now.strftime('%Y-%m-%d %H:%M:%S')#格式化日期和时间
     sql = "insert into record(Rid,Uname,Uscore,Rtime) values(?,?,?,?)"
@@ -73,5 +77,17 @@ def addToRankingList(gameRecord:GameRecord)->list:#list:
     cur.close()
     conn.close()#关闭数据库连接
     return list[table_list]
-    
 
+#获取记录
+def getRankingList()->list:#list:
+    conn = sqlite3.connect("otherresource/record.db")#连接数据库
+    cur = conn.cursor()#创建游标
+    cur.execute("select * from record")
+    records = cur.fetchall()
+    table_list = []
+    for r in records:
+        record = GameRecord(r[1],r[2],r[3])
+        table_list.append(record)
+    cur.close()
+    conn.close()#关闭数据库连接
+    return table_list
