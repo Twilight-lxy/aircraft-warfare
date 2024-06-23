@@ -61,9 +61,11 @@ SCORE = "Score"  # 得分
 BULLETSOUND = "BulletSound"  # 射击音效
 FIREINTERVAL = "FireInterval"  # 射速
 AIRCRAFTGUN = "AircraftGun"
+MACHINGGUN = "MachingGun"
 BULLETNUM = "BulletNum"
 # 子弹
 NORMALBULLET = "normalBullet"  # 普通子弹
+GUNBULLET = "GunBullet"
 DAMAGEVALUE = "DamageValue"  # 伤害
 # 英雄
 HEROAIRCRAFT = "HeroAircraft"  # 英雄

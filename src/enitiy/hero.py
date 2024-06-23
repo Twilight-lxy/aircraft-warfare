@@ -2,6 +2,7 @@ import copy
 import pygame
 from pygame.sprite import Group
 from pygame.time import Clock
+from src.enitiy.machingGun import MachingGun
 from src.classes.ResourceDict import ResourceDict, AllResourceDict
 from src.classes.Aircraft import Aircraft
 import src.lib.Constants as CONSTANTS
@@ -18,9 +19,7 @@ class Hero(Aircraft):
             ).copyAllResourceDict(),
         )
         self.moveTo(CONSTANTS.WIDTH / 2, CONSTANTS.HEIGHT - self.rect.height / 2)
-        weapon1=AircraftGun(True, self.getMidX(), self.getMidY())
-        weapon1.fireInterval = 100
-        self.weaponList = [None,weapon1,AircraftGun(True, self.getMidX(), self.getMidY())]
+        self.weaponList = [None,MachingGun(True,self.getMidX(), self.getMidY()),AircraftGun(True, self.getMidX(), self.getMidY())]
         self.nowWeapon = 1
         self.normalWeapon = self.weaponList[1]
         # self.setAutoDeath(True)
@@ -29,7 +28,7 @@ class Hero(Aircraft):
         self.fuel = self.allRes.getValue(CONSTANTS.HIGHSPEEDMOVEFUEL)
         self.highSpeedMoveSpeed= self.allRes.getValue(CONSTANTS.HIGHSPEEDMOVESPEED)
 
-    def loadHeroAllResource() -> AllResourceDict:
+    def loadAllResource() -> AllResourceDict:
         allRes = AllResourceDict()
         normalImage = pygame.image.load("images/me2.png").convert_alpha()
         allRes.addImage(CONSTANTS.NORMALIMAGE, normalImage)

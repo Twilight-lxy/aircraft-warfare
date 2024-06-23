@@ -5,7 +5,7 @@ from pygame.time import Clock
 from src.classes.ResourceDict import ResourceDict, AllResourceDict
 from src.classes.Aircraft import Aircraft
 import src.lib.Constants as CONSTANTS
-from src.enitiy.aircraftGun import AircraftGun
+from src.enitiy.machingGun import MachingGun
 
 class SmallEnemy(Aircraft):
     def __init__(self,x,y):
@@ -16,12 +16,12 @@ class SmallEnemy(Aircraft):
             ).copyAllResourceDict()
         )
         self.moveTo(x, y)
-        self.normalWeapon = AircraftGun(False, self.getMidX(), self.Y)
+        self.normalWeapon = MachingGun(False, self.getMidX(), self.Y)
         self.setAutoMove(True)
         self.setAutoDeath(True)
         self.setAutoUseWeapon(True)
 
-    def loadSmallEnemyAllResource() -> AllResourceDict:
+    def loadAllResource() -> AllResourceDict:
         allRes = AllResourceDict()
         normalImage = pygame.image.load("images/enemy1.png").convert_alpha()
         allRes.addImage(CONSTANTS.NORMALIMAGE, normalImage)

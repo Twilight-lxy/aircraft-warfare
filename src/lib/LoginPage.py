@@ -8,7 +8,7 @@ from src.lib.textBox import draw_text_box
 def logIn() -> str:
     while not CONSTANTS.threadQueue.empty():
         CONSTANTS.threadQueue.get()
-    mess, username = ("login", "null")
+    mess, username = ("logined", "null")
     mouseInloginTextBox = False
     mouseInQuitTextBox = False
     while True:

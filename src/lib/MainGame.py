@@ -1,4 +1,5 @@
 from queue import Queue
+import random
 import threading
 import time
 import pygame
@@ -22,6 +23,7 @@ def startGame(username: User):
     CONSTANTS.weaponBulletGroup = pygame.sprite.Group()
     gamePause = False
     queue = Queue()
+    addMessQueue = Queue()
     mess = ""
     pygame.mixer.music.play(-1)
     CONSTANTS.screen.fill(CONSTANTS.WHITE)
@@ -29,7 +31,12 @@ def startGame(username: User):
     # testbullet = NormalBullet(False,100,10)
     CONSTANTS.aircraftGroup.add(hero)
     # CONSTANTS.weaponBulletGroup.add(testbullet)
-    CONSTANTS.aircraftGroup.add(SmallEnemy(200, 20))
+    # CONSTANTS.aircraftGroup.add(SmallEnemy(200, 20))
+    addEnemyThread = threading.Thread(
+        target=addEnemy, name="addEnemy", args=(addMessQueue, CONSTANTS.aircraftGroup)
+    )
+    addEnemyThread.daemon = True
+    addEnemyThread.start()
     while True:
         if gamePause:
             try:
@@ -41,6 +48,8 @@ def startGame(username: User):
                 gamePause = False
             if mess == "esc":
                 mess = ""
+                addMessQueue.put("STOP")
+                addEnemyThread.join()
                 return username
             pygame.display.flip()
             CONSTANTS.mainClock.tick(CONSTANTS.FPS)
@@ -52,23 +61,25 @@ def startGame(username: User):
         for event in pygame.event.get():  # 获取用户事件
             if event.type == pygame.QUIT:  # 如果事件为关闭窗口
                 # 退出pygame
-                pygame.quit()
+                gamePause = True
+                mess = "esc"
                 break
-        mess = ""
-        mess = hero.moveByKeyboard(pygame.key.get_pressed())
-        if mess == "Pause":
+        keymess = ""
+        keymess = hero.moveByKeyboard(pygame.key.get_pressed())
+        if keymess == "Pause":
             gamePause = True
-            while mess == "Pause":
-                mess = hero.moveByKeyboard(pygame.key.get_pressed())
+            while keymess == "Pause":
+                keymess = hero.moveByKeyboard(pygame.key.get_pressed())
                 pygame.event.pump()
             pauseThreading = threading.Thread(
                 target=pasueMain, name="loadresource", args=(queue,)
             )
             pauseThreading.daemon = True
             pauseThreading.start()
-
-        if mess == "GameOver":
-            gameContinue = False
+            addMessQueue.put(pauseThreading)
+        if keymess == "GameOver":
+            gamePause = False
+            mess == "esc"
 
         CONSTANTS.weaponBulletGroup.draw(CONSTANTS.screen)
         CONSTANTS.aircraftGroup.draw(CONSTANTS.screen)
@@ -101,6 +112,31 @@ def doGroupCollode(aircraft, bullet):
             return addScore
     return 0
 
+
+def addEnemy(queue:Queue,airGroup):
+    lastAddSmallEnemyTime=0
+    while True:
+        time.sleep(0.5)
+        mess = None
+        nowTime = pygame.time.get_ticks()
+        try:
+            mess = queue.get(False)
+        except:
+            pass
+        if(mess == "STOP"):
+            break
+        elif (mess!=None):
+            try:
+                mess.join()
+            except:
+                pass
+        if len(CONSTANTS.aircraftGroup.sprites())>20:
+            time.sleep(0.5)
+            continue
+        if nowTime-lastAddSmallEnemyTime > 1000:  
+            if random.randint(1,100) > 50:
+                airGroup.add(SmallEnemy(random.randint(20,CONSTANTS.WIDTH), 20))
+            lastAddSmallEnemyTime=nowTime
 
 def updateUI(heroScore, hero: Hero):
     draw_text_box(
@@ -159,7 +195,9 @@ def updateUI(heroScore, hero: Hero):
 
     info = hero.weaponState()
     mess = None
-    if pygame.time.get_ticks() - info[4] < 10:
+    if info[2] <= 0:
+        mess = ("EMPTY", CONSTANTS.RED, 0)
+    elif pygame.time.get_ticks() - info[4] < 10:
         mess = ("FIRE", CONSTANTS.BLUE, 0)
     elif pygame.time.get_ticks() - info[4] < info[5]:
         mess = ("Loading", CONSTANTS.RED, 1)
@@ -241,8 +279,8 @@ def updateUI(heroScore, hero: Hero):
         textBoxHeight=40,
         autoWidth=False,
         autoHeight=False,
-        textBoxColor=mess[1],
-        textBoxSideWidth=mess[2],
+        textBoxColor=CONSTANTS.BLACK,
+        textBoxSideWidth=1,
     )
 
     info = hero.weaponState(2)
@@ -297,8 +335,8 @@ def updateUI(heroScore, hero: Hero):
         textBoxHeight=40,
         autoWidth=False,
         autoHeight=False,
-        textBoxColor=mess[1],
-        textBoxSideWidth=mess[2],
+        textBoxColor=CONSTANTS.BLACK,
+        textBoxSideWidth=1,
     )
 
     info = hero.weaponState(3)
@@ -353,6 +391,6 @@ def updateUI(heroScore, hero: Hero):
         textBoxHeight=40,
         autoWidth=False,
         autoHeight=False,
-        textBoxColor=mess[1],
-        textBoxSideWidth=mess[2],
+        textBoxColor=CONSTANTS.BLACK,
+        textBoxSideWidth=1,
     )

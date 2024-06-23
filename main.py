@@ -3,6 +3,8 @@ import threading
 from queue import Queue
 import time
 import pygame
+from src.enitiy.gunBullet import GunBullet
+from src.enitiy.machingGun import MachingGun
 from src.lib.changePassword import changePassword
 from src.enitiy.smallEnemy import SmallEnemy
 import src.lib.LoginPage
@@ -77,19 +79,27 @@ def loadresource():
     CONSTANTS.threadQueue.put(("loading", "10"))
     backgroundImage = pygame.image.load("images/background.png").convert()
     CONSTANTS.superResourceDict.addResourse(
-        CONSTANTS.HEROAIRCRAFT, Hero.loadHeroAllResource()
+        CONSTANTS.HEROAIRCRAFT, Hero.loadAllResource()
     )
     CONSTANTS.superResourceDict.addResourse(
-        CONSTANTS.AIRCRAFTGUN, AircraftGun.loadAircraftGunAllResource()
+        CONSTANTS.AIRCRAFTGUN, AircraftGun.loadAllResource()
     )
     CONSTANTS.superResourceDict.addResourse(
-        CONSTANTS.NORMALBULLET, NormalBullet.loadNormalBulletAllResource()
+        CONSTANTS.NORMALBULLET, NormalBullet.loadAllResource()
     )
     CONSTANTS.superResourceDict.addResourse(
-        CONSTANTS.SMALLENEMY, SmallEnemy.loadSmallEnemyAllResource()
+        CONSTANTS.SMALLENEMY, SmallEnemy.loadAllResource()
     )
+
+    CONSTANTS.superResourceDict.addResourse(
+        CONSTANTS.MACHINGGUN, MachingGun.loadAllResource()
+    )
+    CONSTANTS.superResourceDict.addResourse(
+        CONSTANTS.GUNBULLET, GunBullet.loadAllResource()
+    )
+
     CONSTANTS.threadQueue.put(("loading", "20"))
-    soundResourceDict = src.lib.LoadResource.loadSoundResource()
+    # soundResourceDict = src.lib.LoadResource.loadSoundResource()
     CONSTANTS.threadQueue.put(("loading", "100"))
     CONSTANTS.threadQueue.put(("loaded", "100"))
 

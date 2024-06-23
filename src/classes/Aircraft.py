@@ -31,11 +31,18 @@ class Aircraft(MobileEntity):
     def update(self):
         super().update()
         if self.isAutoUseWeapon:
-            self.useWeapon()
+            self.useWeapon(True)
 
-    def useWeapon(self):
+    def useWeapon(self,isAuto:bool=False):
         self.normalWeapon.updateLoadedXY(self.getMidX(), self.getMidY())
-        self.normalWeapon.openFire()
+        if isAuto:
+            nowtime=pygame.time.get_ticks()
+            if nowtime - self.normalWeapon.lastOpenFireTick > self.normalWeapon.fireInterval:
+                if random.randint(1,100) > 80:
+                    self.normalWeapon.openFire()
+                self.normalWeapon.lastOpenFireTick = nowtime
+        else:
+            self.normalWeapon.openFire()
 
     def setAutoUseWeapon(self, isAutoUseWeapon: bool):
         self.isAutoUseWeapon = isAutoUseWeapon
