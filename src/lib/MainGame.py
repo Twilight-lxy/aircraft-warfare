@@ -53,6 +53,9 @@ def startGame(username: User):
                 addMessQueue.put("STOP")
                 addEnemyThread.join()
                 addToRankingList(GameRecord(username,heroScore,""))
+                # gameOverMess(heroScore)
+                # 显示游戏结束界面，显示分数，一个按钮，返回主界面
+                
                 return username
             pygame.display.flip()
             CONSTANTS.mainClock.tick(CONSTANTS.FPS)
