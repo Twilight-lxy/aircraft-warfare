@@ -19,7 +19,7 @@ class SmallEnemy(Aircraft):
         self.normalWeapon = AircraftGun(False, self.getMidX(), self.Y)
         self.setAutoMove(True)
         self.setAutoDeath(True)
-        # self.setAutoUseWeapon(True)
+        self.setAutoUseWeapon(True)
 
     def loadSmallEnemyAllResource() -> AllResourceDict:
         allRes = AllResourceDict()

@@ -28,16 +28,18 @@ class MobileEntity(pygame.sprite.Sprite):
         self.deathing = -1
         self.autoDeathOn = False
         self.lastdeath = 0
-
+        self.HP = self.allRes.getValue(CONSTANTS.HP)
+        self.fullHp = self.allRes.getValue(CONSTANTS.HP)
+        self.damageValue=self.allRes.getValue(CONSTANTS.DAMAGEVALUE)
     def setAutoMove(
-        self, autoMoveOn: bool = True, autoMoveSpeedX: int = 0, autoMoveSpeedY: int = 1
+        self, autoMoveOn: bool = True, autoMoveSpeedX: int = 0, autoMoveSpeedY: int = 0
     ):
         self.autoMoveOn = autoMoveOn
         x = self.allRes.getValue(CONSTANTS.AUTOMOVESPEEDX)
         y = self.allRes.getValue(CONSTANTS.AUTOMOVESPEEDY)
-        if x != -1:
+        if x != -1 and autoMoveSpeedX == 0:
             autoMoveSpeedX = x
-        if y != -1:
+        if y != -1 and autoMoveSpeedY == 0:
             autoMoveSpeedY = y
         self.autoMoveSpeedX = autoMoveSpeedX
         self.autoMoveSpeedY = autoMoveSpeedY
@@ -121,7 +123,7 @@ class MobileEntity(pygame.sprite.Sprite):
             isOUT = True
         elif self.Y + self.rect.height / 2 >= CONSTANTS.HEIGHT:
             isOUT = True
-        if isOUT or self.allRes.getValue(CONSTANTS.HP) <= 0:
+        if isOUT or self.HP <= 0:
             self.death()
 
     def setAutoDeath(self, autoDeath: bool):
@@ -140,4 +142,6 @@ class MobileEntity(pygame.sprite.Sprite):
         return newCopy
 
     def hit(self, hitAim):
-        pass
+        if hitAim.iFF == self.iFF:
+            return
+        hitAim.HP -= self.damageValue

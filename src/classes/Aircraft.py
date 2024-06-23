@@ -1,3 +1,4 @@
+import random
 import pygame
 from src.classes.AircraftWeapon import AircraftWeapon
 from src.classes.MobileEntity import MobileEntity
@@ -35,15 +36,6 @@ class Aircraft(MobileEntity):
     def useWeapon(self):
         self.normalWeapon.updateLoadedXY(self.getMidX(), self.getMidY())
         self.normalWeapon.openFire()
-
-    def hit(self, hitAim):
-        if hitAim.iFF == self.iFF:
-            return
-        hitAim.allRes.updateValue(
-            CONSTANTS.HP,
-            hitAim.allRes.getValue(CONSTANTS.HP)
-            - self.allRes.getValue(CONSTANTS.DAMAGEVALUE),
-        )
 
     def setAutoUseWeapon(self, isAutoUseWeapon: bool):
         self.isAutoUseWeapon = isAutoUseWeapon

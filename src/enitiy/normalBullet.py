@@ -17,10 +17,11 @@ class NormalBullet(WeaponBullet):
     ):
         super().__init__(iFF, CONSTANTS.superResourceDict.getResource(CONSTANTS.NORMALBULLET).copyAllResourceDict())
         self.moveTo(FireX, FireY)
-        if iFF == True:
-            self.allRes.updateValue(CONSTANTS.AUTOMOVESPEEDX, self.allRes.getValue(CONSTANTS.AUTOMOVESPEEDX) * -1)
-            self.allRes.updateValue(CONSTANTS.AUTOMOVESPEEDY, self.allRes.getValue(CONSTANTS.AUTOMOVESPEEDY) * -1)
         self.setAutoMove(True)
+        if iFF == True:
+            self.autoMoveSpeedX*=-1
+            self.autoMoveSpeedY*=-1
+        
 
     def loadNormalBulletAllResource() -> AllResourceDict:
         allRes = AllResourceDict()
@@ -30,7 +31,7 @@ class NormalBullet(WeaponBullet):
         allRes.addValue(CONSTANTS.AUTOMOVESPEEDY, 10)
         allRes.addValue(CONSTANTS.DEATHIMAGENUM, 0)
         allRes.addValue(CONSTANTS.HP, 10)
-        allRes.addValue(CONSTANTS.DAMAGEVALUE, 1000)
+        allRes.addValue(CONSTANTS.DAMAGEVALUE, 10)
         allRes.addValue(CONSTANTS.NAME, "Normal")
         return allRes
 

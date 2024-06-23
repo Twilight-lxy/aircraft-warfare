@@ -30,11 +30,3 @@ class WeaponBullet(MobileEntity):
         newCopy.__class__ = WeaponBullet
         return newCopy
 
-    def hit(self, hitAim):
-        if hitAim.iFF == self.iFF:
-            return
-        hitAim.allRes.updateValue(
-            CONSTANTS.HP,
-            hitAim.allRes.getValue(CONSTANTS.HP)
-            - self.allRes.getValue(CONSTANTS.DAMAGEVALUE),
-        )

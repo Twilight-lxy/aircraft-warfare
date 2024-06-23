@@ -59,13 +59,11 @@ def startGame(username: User) -> GameRecord:
 
 
 def doGroupCollode(aircraft, bullet):
-    if aircraft.allRes.getValue(CONSTANTS.HP) > 0:
+    if aircraft.HP > 0:
         aircraft.hit(bullet)
-        aircraft.update()
-    if aircraft.allRes.getValue(CONSTANTS.HP) > 0:
+    if aircraft.HP > 0:
         bullet.hit(aircraft)
-        bullet.update()
-    if aircraft.allRes.getValue(CONSTANTS.HP) <= 0:
+    if aircraft.HP <= 0 and aircraft.deathing == -1:
         addScore = aircraft.allRes.getValue(CONSTANTS.KILLSCORE)
         if addScore != -1:
             return addScore
@@ -94,14 +92,12 @@ def updateUI(heroScore, hero: Hero):
         CONSTANTS.HEIGHT + 1,
         100,
         40,
-        CONSTANTS.superResourceDict.getResource(CONSTANTS.HEROAIRCRAFT).getValue(
-            CONSTANTS.HP
-        ),
-        hero.allRes.getValue(CONSTANTS.HP),
+        hero.fullHp,
+        hero.HP,
     )
     draw_text_box(
         fontSize=15,
-        mess=" HP: " + str(hero.allRes.getValue(CONSTANTS.HP)),
+        mess=" HP: " + str(hero.HP),
         textBoxMidX=50,
         textBoxMidY=CONSTANTS.HEIGHT + 21,
         textBoxWidth=100,
@@ -114,15 +110,13 @@ def updateUI(heroScore, hero: Hero):
         CONSTANTS.HEIGHT + 42,
         100,
         40,
-        CONSTANTS.superResourceDict.getResource(CONSTANTS.HEROAIRCRAFT).getValue(
-            CONSTANTS.HIGHSPEEDMOVEFUEL
-        ),
-        hero.allRes.getValue(CONSTANTS.HIGHSPEEDMOVEFUEL),
+        hero.fullfuel,
+        hero.fuel,
         color_full=CONSTANTS.BLUE,
     )
     draw_text_box(
         fontSize=15,
-        mess=" FUEL: " + str(hero.allRes.getValue(CONSTANTS.HIGHSPEEDMOVEFUEL)),
+        mess=" FUEL: " + str(hero.fuel),
         textBoxMidX=50,
         textBoxMidY=CONSTANTS.HEIGHT + 62,
         textBoxWidth=100,

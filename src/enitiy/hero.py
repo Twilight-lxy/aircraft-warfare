@@ -18,10 +18,16 @@ class Hero(Aircraft):
             ).copyAllResourceDict(),
         )
         self.moveTo(CONSTANTS.WIDTH / 2, CONSTANTS.HEIGHT - self.rect.height / 2)
+        weapon1=AircraftGun(True, self.getMidX(), self.getMidY())
+        weapon1.fireInterval = 100
         self.weaponList = [None,weapon1,AircraftGun(True, self.getMidX(), self.getMidY())]
         self.nowWeapon = 1
         self.normalWeapon = self.weaponList[1]
         # self.setAutoDeath(True)
+        self.speed = self.allRes.getValue(CONSTANTS.MOVESPEED)
+        self.fullfuel = self.allRes.getValue(CONSTANTS.HIGHSPEEDMOVEFUEL)
+        self.fuel = self.allRes.getValue(CONSTANTS.HIGHSPEEDMOVEFUEL)
+        self.highSpeedMoveSpeed= self.allRes.getValue(CONSTANTS.HIGHSPEEDMOVESPEED)
 
     def loadHeroAllResource() -> AllResourceDict:
         allRes = AllResourceDict()
@@ -66,12 +72,11 @@ class Hero(Aircraft):
             self.normalWeapon = self.weaponList[3]
         
         self.changeImage(CONSTANTS.NORMALIMAGE)
-        speed = self.allRes.getValue(CONSTANTS.MOVESPEED)
-        fuel = self.allRes.getValue(CONSTANTS.HIGHSPEEDMOVEFUEL)
         ismove = False
         isInHighSpeed = False
-        if isDowm(CONSTANTS.HIGHSPEEDCONTROKEYLIST, keyPressedList) and fuel > 0:
-            speed += self.allRes.getValue(CONSTANTS.HIGHSPEEDMOVESPEED)
+        speed = self.speed
+        if isDowm(CONSTANTS.HIGHSPEEDCONTROKEYLIST, keyPressedList) and self.fuel > 0:
+            speed += self.highSpeedMoveSpeed
             isInHighSpeed = True
         if isDowm(CONSTANTS.LEFTCONTROKEYLIST, keyPressedList):
             self.move(x=self.X - speed)
@@ -88,7 +93,7 @@ class Hero(Aircraft):
         if isInHighSpeed:
             self.changeImage(CONSTANTS.HIGHSPEEDIMAGE)
             if ismove:
-                self.allRes.updateValue(CONSTANTS.HIGHSPEEDMOVEFUEL, fuel - 1)
+                self.fuel-=1
         if isDowm(CONSTANTS.FIRECONTROKEYLIST, keyPressedList):
             self.useWeapon()
 
@@ -112,7 +117,7 @@ class Hero(Aircraft):
             self.weaponList[id].bulltNum,
             self.weaponList[id].fullbulltNum,
             self.weaponList[id].lastOpenFireTick,
-            self.weaponList[id].allRes.getValue(CONSTANTS.FIREINTERVAL),
+            self.weaponList[id].fireInterval,
         )
 
         return info
