@@ -14,6 +14,8 @@ from src.classes.ResourceDict import ResourceDict, AllResourceDict
 import src.lib.LoginAndRegester
 import src.lib.MainPage
 import src.lib.MainGame
+import src.lib.rankingList
+import otherresource.Ranking_ui
 
 
 def initGame():
@@ -171,7 +173,7 @@ def main():
         if retmess == "start":
             src.lib.MainGame.startGame(username)
         elif retmess == "ranking":
-            pass  # showRankingList()
+            src.lib.rankingList.showRankingList()
         elif retmess == "back":
             pass
         else:
