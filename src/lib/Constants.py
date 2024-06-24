@@ -11,6 +11,7 @@ threadQueue: Queue
 mainClock: Clock
 weaponBulletGroup: pygame.sprite.Group
 aircraftGroup: pygame.sprite.Group
+hero = None
 # 窗口大小
 WIDTH, HEIGHT = int(480), int(700)
 UIHEIGHT = int(123)
@@ -51,6 +52,7 @@ DEATHSOUND = "DeathSound"  # 死亡音效
 MOVESPEED = "MoveSpeed"  # XY移动速度
 MOVESPEEDX = "MoveSpeedX"  # X移动速度
 MOVESPEEDY = "MoveSpeedY"  # Y移动速度
+MAXMOVESPEED = "MaxMoveSpeed" # 最大总移动速度
 AUTOMOVESPEEDX = "AutoMoveSpeedX"  # X自动移动速度
 AUTOMOVESPEEDY = "AutoMoveSpeedY"  # Y自动移动速度
 DEATHIMAGENUM = "DeathImageNum"  # 死亡模型数量
@@ -64,11 +66,14 @@ AIRCRAFTGUN = "AircraftGun"
 MACHINGGUN = "MachingGun"
 BULLETNUM = "BulletNum"
 UNIVERSALLAUNCHER = "universalLauncher"
+MISSILELAUNCHER = "MissileLauncher"
+MAXLOCKTIME = "MaxLockTime"
 # 子弹
 NORMALBULLET = "normalBullet"  # 普通子弹
 GUNBULLET = "GunBullet"
 DAMAGEVALUE = "DamageValue"  # 伤害
-ADDHPBULLET ="AddHpBullet"
+ADDHPBULLET = "AddHpBullet"
+MISSILE = "Missile"
 # 英雄
 HEROAIRCRAFT = "HeroAircraft"  # 英雄
 HIGHSPEEDIMAGE = "HighSpeedImage"  # 加速模型

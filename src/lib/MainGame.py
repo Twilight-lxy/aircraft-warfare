@@ -4,6 +4,7 @@ import threading
 import time
 import pygame
 from pygame import Surface
+from src.enitiy.missile import Missile
 from src.enitiy.addHpBullet import AddHpBullet
 from src.lib.DataBaseFunc import addToRankingList
 from src.enitiy.bigEnemy import BigEnemy
@@ -31,6 +32,7 @@ def startGame(username: User):
     pygame.mixer.music.play(-1)
     CONSTANTS.screen.fill(CONSTANTS.WHITE)
     hero = Hero()
+    CONSTANTS.hero = hero
     # testbullet = NormalBullet(False,100,10)
     CONSTANTS.aircraftGroup.add(hero)
     # CONSTANTS.weaponBulletGroup.add(testbullet)
@@ -84,9 +86,11 @@ def startGame(username: User):
         if keymess == "GameOver":
             gamePause = True
             mess = "esc"
-
-        CONSTANTS.weaponBulletGroup.draw(CONSTANTS.screen)
-        CONSTANTS.aircraftGroup.draw(CONSTANTS.screen)
+        try:
+            CONSTANTS.weaponBulletGroup.draw(CONSTANTS.screen)
+            CONSTANTS.aircraftGroup.draw(CONSTANTS.screen)
+        except:
+            print("draw error!")
         groupCollideAns = pygame.sprite.groupcollide(
             CONSTANTS.aircraftGroup, CONSTANTS.weaponBulletGroup, 0, 0
         )
@@ -112,6 +116,8 @@ def startGame(username: User):
 
 
 def doGroupCollode(aircraft, bullet, doCanBeBullet:bool=False):
+    if not collideMask(aircraft.mask , bullet.mask ,(aircraft.X,aircraft.Y),(bullet.X,bullet.Y)):
+        return 0
     if aircraft == bullet:
         return 0
     if aircraft.HP > 0:
@@ -130,6 +136,8 @@ def doGroupCollode(aircraft, bullet, doCanBeBullet:bool=False):
             return addScore
     return 0
 
+def collideMask(mask1, mask2, pos1, pos2): #用于检测Mask碰撞的函数
+    return mask1.overlap(mask2, (pos2[0] - pos1[0], pos2[1] - pos1[1]))
 
 def addEnemy(queue:Queue,airGroup):
     lastAddSmallEnemyTime=0
@@ -156,7 +164,8 @@ def addEnemy(queue:Queue,airGroup):
         if nowTime-lastAddSmallEnemyTime > 1000:
             random.seed()
             if random.randint(1,100) > 10:
-                airGroup.add(SmallEnemy(random.randint(20,CONSTANTS.WIDTH), 20))
+                # airGroup.add(Missile(False,50, 200,CONSTANTS.hero))
+                # airGroup.add(SmallEnemy(random.randint(20,CONSTANTS.WIDTH), 20))
                 airGroup.add(BigEnemy(random.randint(20,CONSTANTS.WIDTH), 20))
             lastAddSmallEnemyTime=nowTime
         time.sleep(0.5)

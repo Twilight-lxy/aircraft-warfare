@@ -1,4 +1,6 @@
 import pygame
+from src.enitiy.missileLauncher import MissileLauncher
+from src.enitiy.missile import Missile
 from src.enitiy.bigEnemy import BigEnemy
 from src.enitiy.addHpBullet import AddHpBullet
 from src.enitiy.aircraftGun import AircraftGun
@@ -41,6 +43,12 @@ def loadresource():
     )
     CONSTANTS.superResourceDict.addResourse(
         CONSTANTS.BIGENEMY, BigEnemy.loadAllResource()
+    )
+    CONSTANTS.superResourceDict.addResourse(
+        CONSTANTS.MISSILE, Missile.loadAllResource()
+    )
+    CONSTANTS.superResourceDict.addResourse(
+        CONSTANTS.MISSILELAUNCHER, MissileLauncher.loadAllResource()
     )
     CONSTANTS.threadQueue.put(("loading", "20"))
     # soundResourceDict = src.lib.LoadResource.loadSoundResource()

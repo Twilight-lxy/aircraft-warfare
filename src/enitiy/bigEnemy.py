@@ -2,6 +2,7 @@ import copy
 import pygame
 from pygame.sprite import Group
 from pygame.time import Clock
+from src.enitiy.missileLauncher import MissileLauncher
 from src.classes.ResourceDict import ResourceDict, AllResourceDict
 from src.classes.Aircraft import Aircraft
 import src.lib.Constants as CONSTANTS
@@ -16,8 +17,7 @@ class BigEnemy(Aircraft):
             ).copyAllResourceDict()
         )
         self.moveTo(x, y)
-        self.normalWeapon = MachingGun(False, self.getMidX(), self.Y)
-        self.normalWeapon.isPlaySound = False
+        self.normalWeapon = MissileLauncher(False,self.getMidX(),self.getMidY(),CONSTANTS.hero)
         self.setAutoMove(True)
         self.setAutoDeath(True)
         self.setAutoUseWeapon(True)

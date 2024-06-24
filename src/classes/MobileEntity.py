@@ -32,6 +32,7 @@ class MobileEntity(pygame.sprite.Sprite):
         self.fullHp = self.allRes.getValue(CONSTANTS.HP)
         self.damageValue = self.allRes.getValue(CONSTANTS.DAMAGEVALUE)
         self.canBeBullet = True
+        self.mask = pygame.mask.from_surface(self.image)
 
     def setAutoMove(
         self, autoMoveOn: bool = True, autoMoveSpeedX: int = 0, autoMoveSpeedY: int = 0
@@ -83,6 +84,7 @@ class MobileEntity(pygame.sprite.Sprite):
     def changeImage(self, ImageResourceName):
         self.image = self.allRes.getImage(ImageResourceName)
         self.rect = pygame.Rect(self.image.get_rect())
+        self.mask = pygame.mask.from_surface(self.image)
         self.move()
 
     def getMidX(self):
