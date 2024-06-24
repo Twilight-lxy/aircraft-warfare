@@ -9,8 +9,7 @@ superResourceDict: ResourceDict
 screen: pygame.display.set_mode
 threadQueue: Queue
 mainClock: Clock
-weaponBulletGroup: pygame.sprite.Group
-aircraftGroup: pygame.sprite.Group
+allEnemyGroup: pygame.sprite.Group
 hero = None
 # 窗口大小
 WIDTH, HEIGHT = int(480), int(700)
@@ -39,6 +38,9 @@ WEAPON2CONTROKEYLIST = [pygame.K_2]
 WEAPON3CONTROKEYLIST = [pygame.K_3]
 
 # 单位资源及属性名称
+EntityType = "Entity"
+AircraftType = "Aircraft"
+BulletType = "Bullet"
 # 通用
 NAME = "Name"  # 名称
 NORMALIMAGE = "NormalImage"  # 基础模型

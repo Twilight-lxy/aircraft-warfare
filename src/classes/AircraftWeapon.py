@@ -36,7 +36,7 @@ class AircraftWeapon:
         if nowtime - self.lastOpenFireTick > self.fireInterval and self.bulltNum>0:
             newBullet = self.getNewWeaponBullet()
             newBullet.moveTo(self.loadedX,self.loadedY)
-            CONSTANTS.weaponBulletGroup.add(newBullet)
+            CONSTANTS.allEnemyGroup.add(newBullet)
             if self.isPlaySound:
                 try:
                     pygame.mixer.find_channel().play(self.fireSound)

@@ -18,7 +18,7 @@ class WeaponBullet(MobileEntity):
         autoMoveSpeedX: int = 0,
         autoMoveSpeedY: int = 0,
     ):
-        super().__init__(iFF, allRes, X, Y, autoMoveOn, autoMoveSpeedX, autoMoveSpeedY)
+        super().__init__(iFF, allRes, X, Y, autoMoveOn, autoMoveSpeedX, autoMoveSpeedY,TYPE=CONSTANTS.BulletType)
         self.setAutoDeath(True)
 
     def update(self):

@@ -21,7 +21,7 @@ class AddHpBullet(WeaponBullet):
         if iFF == True:
             self.autoMoveSpeedX*=-1
             self.autoMoveSpeedY*=-1
-        self.serCanBeBullet(False)
+        self.setCanBeBullet(False)
 
     def loadAllResource() -> AllResourceDict:
         allRes = AllResourceDict()

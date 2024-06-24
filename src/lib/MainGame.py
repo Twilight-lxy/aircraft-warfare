@@ -25,8 +25,7 @@ from src.lib.healthBar import drawHealthBar
 def startGame(username: User):
     heroScore = 0
     gameRecord = GameRecord
-    CONSTANTS.aircraftGroup = pygame.sprite.Group()
-    CONSTANTS.weaponBulletGroup = pygame.sprite.Group()
+    CONSTANTS.allEnemyGroup = pygame.sprite.Group()
     gamePause = False
     pauseQueue = Queue()
     addMessQueue = Queue()
@@ -35,12 +34,9 @@ def startGame(username: User):
     CONSTANTS.screen.fill(CONSTANTS.WHITE)
     hero = Hero()
     CONSTANTS.hero = hero
-    # testbullet = NormalBullet(False,100,10)
-    CONSTANTS.aircraftGroup.add(hero)
-    # CONSTANTS.weaponBulletGroup.add(testbullet)
-    # CONSTANTS.aircraftGroup.add(SmallEnemy(200, 20))
+    CONSTANTS.allEnemyGroup.add(hero)
     addEnemyThread = threading.Thread(
-        target=addEnemy, name="addEnemy", args=(addMessQueue, CONSTANTS.aircraftGroup)
+        target=addEnemy, name="addEnemy", args=(addMessQueue, CONSTANTS.allEnemyGroup)
     )
     addEnemyThread.daemon = True
     addEnemyThread.start()
@@ -57,26 +53,26 @@ def startGame(username: User):
                 mess = ""
                 addMessQueue.put("STOP")
                 addEnemyThread.join()
-                addToRankingList(GameRecord(username,heroScore,""))
-                overMessQueue = Queue()
-                gameoverWindow(heroScore,overMessQueue)
-                overMess = ""
-                try:
-                    overMess = overMessQueue.get()
-                except:
-                    pass
-                if overMess == "continue":
-                    return (username,"continue")
+                addToRankingList(GameRecord(username, heroScore, ""))
+                if hero.HP <= 0:
+                    overMessQueue = Queue()
+                    gameoverWindow(heroScore, overMessQueue)
+                    overMess = ""
+                    try:
+                        overMess = overMessQueue.get()
+                    except:
+                        pass
+                    if overMess == "continue":
+                        return (username, "continue")
                 # 显示游戏结束界面，显示分数，一个按钮，返回主界面
-                
-                return (username,"esc")
+
+                return (username, "esc")
             pygame.display.flip()
             CONSTANTS.mainClock.tick(CONSTANTS.FPS)
             pygame.event.pump()
             continue
         CONSTANTS.screen.fill(CONSTANTS.WHITE)
-        CONSTANTS.aircraftGroup.update()
-        CONSTANTS.weaponBulletGroup.update()
+        CONSTANTS.allEnemyGroup.update()
         for event in pygame.event.get():  # 获取用户事件
             if event.type == pygame.QUIT:  # 如果事件为关闭窗口
                 # 退出pygame
@@ -100,26 +96,15 @@ def startGame(username: User):
             gamePause = True
             mess = "esc"
         try:
-            CONSTANTS.weaponBulletGroup.draw(CONSTANTS.screen)
-            CONSTANTS.aircraftGroup.draw(CONSTANTS.screen)
+            CONSTANTS.allEnemyGroup.draw(CONSTANTS.screen)
         except:
             print("draw error!")
         groupCollideAns = pygame.sprite.groupcollide(
-            CONSTANTS.aircraftGroup, CONSTANTS.weaponBulletGroup, 0, 0
+            CONSTANTS.allEnemyGroup, CONSTANTS.allEnemyGroup, 0, 0
         )
         for hitFrom, hitlist in groupCollideAns.items():
             for hitaim in hitlist:
-                heroScore += doGroupCollode(hitFrom, hitaim,True)
-        groupCollideAns = ( pygame.sprite.groupcollide(
-            CONSTANTS.aircraftGroup, CONSTANTS.aircraftGroup, 0, 0
-        ))
-        for hitFrom, hitlist in groupCollideAns.items():
-            for hitaim in hitlist:
-                heroScore += doGroupCollode(hitFrom, hitaim)
-        # print(testsmallenemy.allRes.getValue(CONSTANTS.HP))
-        # test = NormalBullet(True,100,10)
-        # test.setAutoMove(True,0,10)
-        # CONSTANTS.weaponBulletGroup.add(test)
+                heroScore += doGroupCollide(hitFrom, hitaim)
         updateUI(heroScore, hero)
         pygame.display.flip()
         CONSTANTS.mainClock.tick(CONSTANTS.FPS)
@@ -128,34 +113,36 @@ def startGame(username: User):
     return ""
 
 
-def doGroupCollode(aircraft, bullet, doCanBeBullet:bool=False):
-    if not collideMask(aircraft.mask , bullet.mask ,(aircraft.X,aircraft.Y),(bullet.X,bullet.Y)):
+def doGroupCollide(aim1, aim2):
+    if not collideMask(aim1.mask, aim2.mask, (aim1.X, aim1.Y), (aim2.X, aim2.Y)):
         return 0
-    if aircraft == bullet:
+    if aim1 == aim2:
         return 0
-    if aircraft.HP > 0:
-        if doCanBeBullet and bullet.canBeBullet == False:
+    if aim1.HP > 0:
+        if aim1.TYPE == CONSTANTS.BulletType and aim2.canBeBullet == False:
             pass
         else:
-            aircraft.hit(bullet)
-    if aircraft.HP > 0:
-        if doCanBeBullet and aircraft.canBeBullet == False:
+            aim1.hit(aim2)
+    if aim1.HP > 0:
+        if aim1.canBeBullet == False and aim2.TYPE == CONSTANTS.BulletType:
             pass
         else:
-            bullet.hit(aircraft)
-    if aircraft.HP <= 0 and aircraft.deathing == -1:
-        addScore = aircraft.allRes.getValue(CONSTANTS.KILLSCORE)
+            aim2.hit(aim1)
+    if aim1.HP <= 0 and aim1.deathing == -1:
+        addScore = aim1.allRes.getValue(CONSTANTS.KILLSCORE)
         if addScore != -1:
             return addScore
     return 0
 
-def collideMask(mask1, mask2, pos1, pos2): #用于检测Mask碰撞的函数
+
+def collideMask(mask1, mask2, pos1, pos2):  # 用于检测Mask碰撞的函数
     return mask1.overlap(mask2, (pos2[0] - pos1[0], pos2[1] - pos1[1]))
 
-def addEnemy(queue:Queue,airGroup):
-    lastAddSmallEnemyTime=0
-    lastAddAddHpBulletTime=0
-    lastAddMiddleEnemyTime=0
+
+def addEnemy(queue: Queue, airGroup):
+    lastAddSmallEnemyTime = 0
+    lastAddAddHpBulletTime = 0
+    lastAddMiddleEnemyTime = 0
     while True:
         time.sleep(0.5)
         mess = None
@@ -164,37 +151,52 @@ def addEnemy(queue:Queue,airGroup):
             mess = queue.get(False)
         except:
             pass
-        if(mess == "STOP"):
+        if mess == "STOP":
             break
-        elif (mess!=None):
+        elif mess != None:
             try:
                 mess.join()
             except:
                 pass
-        if len(CONSTANTS.aircraftGroup.sprites())>20:
+        if len(airGroup.sprites()) > 20:
             time.sleep(0.5)
             continue
         time.sleep(0.5)
-        if nowTime-lastAddSmallEnemyTime > 1000:
+        if nowTime - lastAddSmallEnemyTime > 1000:
             random.seed()
-            if random.randint(1,100) > 10:
+            if random.randint(1, 100) > 10:
                 # airGroup.add(Missile(False,50, 200,CONSTANTS.hero))
                 # airGroup.add(SmallEnemy(random.randint(20,CONSTANTS.WIDTH), 20))
-                airGroup.add(BigEnemy(random.randint(20,CONSTANTS.WIDTH), 20))
-            lastAddSmallEnemyTime=nowTime
+                addEnemyWithoutCollide(airGroup,BigEnemy(random.randint(20, CONSTANTS.WIDTH), 20))
+            lastAddSmallEnemyTime = nowTime
         time.sleep(0.5)
-        if nowTime-lastAddMiddleEnemyTime > 1000:
+        if nowTime - lastAddMiddleEnemyTime > 1000:
             random.seed()
-            if random.randint(1,100) > 10:
-                airGroup.add(MiddleEnemy(random.randint(20,CONSTANTS.WIDTH), 20))
-            lastAddMiddleEnemyTime=nowTime
+            if random.randint(1, 100) > 10:
+                addEnemyWithoutCollide(airGroup,MiddleEnemy(random.randint(20, CONSTANTS.WIDTH), 20))
+            lastAddMiddleEnemyTime = nowTime
         time.sleep(0.5)
-        if nowTime-lastAddAddHpBulletTime > 1000:
-            random.seed()  
-            if random.randint(1,100) > 90:
-                airGroup.add(AddHpBullet(False,random.randint(20,CONSTANTS.WIDTH), 0))
-            lastAddSmallEnemyTime=nowTime
+        if nowTime - lastAddAddHpBulletTime > 1000:
+            random.seed()
+            if random.randint(1, 100) > 90:
+                addEnemyWithoutCollide(airGroup,AddHpBullet(False, random.randint(20, CONSTANTS.WIDTH), 0))
+            lastAddSmallEnemyTime = nowTime
         time.sleep(0.5)
+
+
+def addEnemyWithoutCollide(airGroup,addAim):
+    groupCollideAns = pygame.sprite.spritecollide(
+        addAim,
+        airGroup,
+        0,
+    )
+    if len(groupCollideAns) != 0:
+        for i in groupCollideAns:
+            if collideMask(addAim.mask, i.mask, (addAim.X, addAim.Y), (i.X, i.Y)):
+                return False
+    airGroup.add(addAim)
+    return True
+    
 
 def updateUI(heroScore, hero: Hero):
     draw_text_box(

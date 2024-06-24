@@ -20,7 +20,7 @@ class Aircraft(MobileEntity):
         normalWeapon: AircraftWeapon = None,
         isAutoUseWeapon: bool = False,
     ):
-        super().__init__(iFF, allRes, X, Y, autoMoveOn, autoMoveSpeedX, autoMoveSpeedY)
+        super().__init__(iFF, allRes, X, Y, autoMoveOn, autoMoveSpeedX, autoMoveSpeedY,CONSTANTS.AircraftType)
         if normalWeapon == None:
             normalWeapon = AircraftWeapon(
                 iFF, AllResourceDict(), self.getMidX(), self.getMidY()

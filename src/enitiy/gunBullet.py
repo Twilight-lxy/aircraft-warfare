@@ -26,6 +26,7 @@ class GunBullet(WeaponBullet):
         if iFF == True:
             self.autoMoveSpeedX *= -1
             self.autoMoveSpeedY *= -1
+        self.setCanBeBullet(False)
 
     def loadAllResource() -> AllResourceDict:
         allRes = AllResourceDict()

@@ -106,3 +106,19 @@ class Missile(WeaponBullet):
         newCopy.baseImage = self.image
         newCopy.__class__ = Missile
         return newCopy
+    
+    def autoDeath(self):
+        isOUT = False
+        if self.deathing != -1:
+            if pygame.time.get_ticks() - self.lastdeath < 30:
+                return
+        if self.Y + self.rect.height / 2 <= 0:
+            isOUT = True
+        elif self.Y + self.rect.height / 2 >= CONSTANTS.HEIGHT:
+            isOUT = True
+        if self.X + self.rect.width / 2 <= 0:
+            isOUT = True
+        elif self.X + self.rect.width / 2 >= CONSTANTS.WIDTH:
+            isOUT = True
+        if isOUT or self.HP <= 0:
+            self.death()

@@ -1,3 +1,4 @@
+import random
 import pygame
 from src.classes.ResourceDict import AllResourceDict
 import src.lib.Constants as CONSTANTS
@@ -14,6 +15,7 @@ class MobileEntity(pygame.sprite.Sprite):
         autoMoveOn: bool = False,
         autoMoveSpeedX: int = 0,
         autoMoveSpeedY: int = 0,
+        TYPE=CONSTANTS.EntityType,
     ):
         super().__init__()
         self.allRes = allRes
@@ -33,6 +35,7 @@ class MobileEntity(pygame.sprite.Sprite):
         self.damageValue = self.allRes.getValue(CONSTANTS.DAMAGEVALUE)
         self.canBeBullet = True
         self.mask = pygame.mask.from_surface(self.image)
+        self.TYPE = TYPE
 
     def setAutoMove(
         self, autoMoveOn: bool = True, autoMoveSpeedX: int = 0, autoMoveSpeedY: int = 0
@@ -149,13 +152,22 @@ class MobileEntity(pygame.sprite.Sprite):
             self.autoMoveOn,
             self.autoMoveSpeedX,
             self.autoMoveSpeedY,
+            self.TYPE,
         )
+        newCopy.canBeBullet = self.canBeBullet
         return newCopy
 
     def hit(self, hitAim):
         if hitAim.iFF == self.iFF:
+            if self.TYPE == CONSTANTS.AircraftType and hitAim.TYPE == CONSTANTS.AircraftType:
+                hitAim.X -= hitAim.autoMoveSpeedX
+                hitAim.move()
+                hitAim.autoMoveSpeedX*=-1
             return
         hitAim.HP -= self.damageValue
+        if hitAim.autoMoveOn == True:
+            random.seed()
+            hitAim.autoMoveSpeedX = hitAim.autoMoveSpeedY * 0.5 * random.randint(-1,1)
 
-    def serCanBeBullet(self,canBeBullet:bool):
+    def setCanBeBullet(self, canBeBullet: bool):
         self.canBeBullet = canBeBullet

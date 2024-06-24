@@ -37,11 +37,11 @@ class MissileLauncher(AircraftWeapon):
         nowtime=pygame.time.get_ticks()
         if nowtime - self.lastOpenFireTick > self.fireInterval and self.bulltNum>0:
             newBullet1 = self.getNewWeaponBullet()
-            newBullet1.moveTo(self.loadedX-10,self.loadedY)
+            newBullet1.moveTo(self.loadedX-25,self.loadedY)
             newBullet2 = self.getNewWeaponBullet()
-            newBullet2.moveTo(self.loadedX+10,self.loadedY)
-            CONSTANTS.weaponBulletGroup.add(newBullet1)
-            CONSTANTS.weaponBulletGroup.add(newBullet2)
+            newBullet2.moveTo(self.loadedX+25,self.loadedY)
+            CONSTANTS.allEnemyGroup.add(newBullet1)
+            CONSTANTS.allEnemyGroup.add(newBullet2)
             if self.isPlaySound:
                 try:
                     pygame.mixer.find_channel().play(self.fireSound)
