@@ -5,6 +5,7 @@ import time
 import pygame
 from pygame import Surface
 from src.enitiy.missile import Missile
+from src.enitiy.middleEnemy import MiddleEnemy
 from src.enitiy.addHpBullet import AddHpBullet
 from src.lib.DataBaseFunc import addToRankingList
 from src.enitiy.bigEnemy import BigEnemy
@@ -56,6 +57,9 @@ def startGame(username: User):
                 addMessQueue.put("STOP")
                 addEnemyThread.join()
                 addToRankingList(GameRecord(username,heroScore,""))
+                # gameOverMess(heroScore)
+                # 显示游戏结束界面，显示分数，一个按钮，返回主界面
+                
                 return username
             pygame.display.flip()
             CONSTANTS.mainClock.tick(CONSTANTS.FPS)
@@ -142,6 +146,7 @@ def collideMask(mask1, mask2, pos1, pos2): #用于检测Mask碰撞的函数
 def addEnemy(queue:Queue,airGroup):
     lastAddSmallEnemyTime=0
     lastAddAddHpBulletTime=0
+    lastAddMiddleEnemyTime=0
     while True:
         time.sleep(0.5)
         mess = None
@@ -168,6 +173,12 @@ def addEnemy(queue:Queue,airGroup):
                 # airGroup.add(SmallEnemy(random.randint(20,CONSTANTS.WIDTH), 20))
                 airGroup.add(BigEnemy(random.randint(20,CONSTANTS.WIDTH), 20))
             lastAddSmallEnemyTime=nowTime
+        time.sleep(0.5)
+        if nowTime-lastAddMiddleEnemyTime > 1000:
+            random.seed()
+            if random.randint(1,100) > 10:
+                airGroup.add(MiddleEnemy(random.randint(20,CONSTANTS.WIDTH), 20))
+            lastAddMiddleEnemyTime=nowTime
         time.sleep(0.5)
         if nowTime-lastAddAddHpBulletTime > 1000:
             random.seed()  
