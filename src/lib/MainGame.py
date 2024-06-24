@@ -4,6 +4,7 @@ import threading
 import time
 import pygame
 from pygame import Surface
+from src.enitiy.middleEnemy import MiddleEnemy
 from src.enitiy.addHpBullet import AddHpBullet
 from src.lib.DataBaseFunc import addToRankingList
 from src.lib.pauseWindow import pasueMain
@@ -136,6 +137,7 @@ def doGroupCollode(aircraft, bullet, doCanBeBullet:bool=False):
 def addEnemy(queue:Queue,airGroup):
     lastAddSmallEnemyTime=0
     lastAddAddHpBulletTime=0
+    lastAddMiddleEnemyTime=0
     while True:
         time.sleep(0.5)
         mess = None
@@ -160,6 +162,12 @@ def addEnemy(queue:Queue,airGroup):
             if random.randint(1,100) > 10:
                 airGroup.add(SmallEnemy(random.randint(20,CONSTANTS.WIDTH), 20))
             lastAddSmallEnemyTime=nowTime
+        time.sleep(0.5)
+        if nowTime-lastAddMiddleEnemyTime > 1000:
+            random.seed()
+            if random.randint(1,100) > 10:
+                airGroup.add(MiddleEnemy(random.randint(20,CONSTANTS.WIDTH), 20))
+            lastAddMiddleEnemyTime=nowTime
         time.sleep(0.5)
         if nowTime-lastAddAddHpBulletTime > 1000:
             random.seed()  

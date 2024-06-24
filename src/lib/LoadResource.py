@@ -1,4 +1,5 @@
 import pygame
+from src.enitiy.middleEnemy import MiddleEnemy
 from src.enitiy.addHpBullet import AddHpBullet
 from src.enitiy.aircraftGun import AircraftGun
 from src.enitiy.gunBullet import GunBullet
@@ -27,6 +28,9 @@ def loadresource():
     )
     CONSTANTS.superResourceDict.addResourse(
         CONSTANTS.SMALLENEMY, SmallEnemy.loadAllResource()
+    )
+    CONSTANTS.superResourceDict.addResourse(
+        CONSTANTS.MIDDLEENEMY, MiddleEnemy.loadAllResource()
     )
 
     CONSTANTS.superResourceDict.addResourse(
