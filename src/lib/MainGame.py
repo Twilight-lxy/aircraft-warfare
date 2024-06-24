@@ -4,6 +4,7 @@ import threading
 import time
 import pygame
 from pygame import Surface
+from src.lib.gameoverWindow import gameoverWindow
 from src.enitiy.missile import Missile
 from src.enitiy.middleEnemy import MiddleEnemy
 from src.enitiy.addHpBullet import AddHpBullet
@@ -27,7 +28,7 @@ def startGame(username: User):
     CONSTANTS.aircraftGroup = pygame.sprite.Group()
     CONSTANTS.weaponBulletGroup = pygame.sprite.Group()
     gamePause = False
-    queue = Queue()
+    pauseQueue = Queue()
     addMessQueue = Queue()
     mess = ""
     pygame.mixer.music.play(-1)
@@ -46,7 +47,7 @@ def startGame(username: User):
     while True:
         if gamePause:
             try:
-                mess = queue.get(True, 0.2)
+                mess = pauseQueue.get(True, 0.2)
             except:
                 pass
             if mess == "continue":
@@ -57,10 +58,18 @@ def startGame(username: User):
                 addMessQueue.put("STOP")
                 addEnemyThread.join()
                 addToRankingList(GameRecord(username,heroScore,""))
-                # gameOverMess(heroScore)
+                overMessQueue = Queue()
+                gameoverWindow(heroScore,overMessQueue)
+                overMess = ""
+                try:
+                    overMess = overMessQueue.get()
+                except:
+                    pass
+                if overMess == "continue":
+                    return (username,"continue")
                 # 显示游戏结束界面，显示分数，一个按钮，返回主界面
                 
-                return username
+                return (username,"esc")
             pygame.display.flip()
             CONSTANTS.mainClock.tick(CONSTANTS.FPS)
             pygame.event.pump()
@@ -82,7 +91,7 @@ def startGame(username: User):
                 keymess = hero.moveByKeyboard(pygame.key.get_pressed())
                 pygame.event.pump()
             pauseThreading = threading.Thread(
-                target=pasueMain, name="pasueMain", args=(queue,)
+                target=pasueMain, name="pasueMain", args=(pauseQueue,)
             )
             pauseThreading.daemon = True
             pauseThreading.start()

@@ -87,12 +87,18 @@ def main():
     global killaim
     killaim = None
     username = None
+    retmess = ""
     while True:
         if username == None:
             username = src.lib.LoginPage.logIn()
-        retmess = src.lib.MainPage.mainPage(username)
+        if retmess == "":
+            retmess = src.lib.MainPage.mainPage(username)
         if retmess == "start":
-            username = src.lib.MainGame.startGame(username)
+            username , iscontinue = src.lib.MainGame.startGame(username)
+            if iscontinue == "continue":
+                retmess = "start"
+            else:
+                retmess = ""
         elif retmess == "ranking":
             closemess = ""
             try:
