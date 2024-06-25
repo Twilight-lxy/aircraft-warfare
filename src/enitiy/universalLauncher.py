@@ -20,7 +20,6 @@ class UniversalLauncher(AircraftWeapon):
             loadedX,
             loadedY,
         )
-        self.setNewWeaponBullet()
 
     def loadAllResource() -> AllResourceDict:
         allRes = AllResourceDict()

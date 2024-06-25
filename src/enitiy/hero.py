@@ -2,6 +2,8 @@ import copy
 import pygame
 from pygame.sprite import Group
 from pygame.time import Clock
+from src.enitiy.bombBullet import BombBullet
+from src.enitiy.universalLauncher import UniversalLauncher
 from src.enitiy.machingGun import MachingGun
 from src.classes.ResourceDict import ResourceDict, AllResourceDict
 from src.classes.Aircraft import Aircraft
@@ -19,13 +21,21 @@ class Hero(Aircraft):
             ).copyAllResourceDict(),
         )
         self.moveTo(CONSTANTS.WIDTH / 2, CONSTANTS.HEIGHT - self.rect.height / 2)
-        self.weaponList = [None,MachingGun(True,self.getMidX(), self.getMidY()),AircraftGun(True, self.getMidX(), self.getMidY())]
+        self.weaponList = [
+            None,
+            MachingGun(True, self.getMidX(), self.getMidY()),
+            AircraftGun(True, self.getMidX(), self.getMidY()),
+            UniversalLauncher(True, self.getMidX(), self.getMidY()),
+        ]
+        self.weaponList[3].setNewWeaponBullet(
+            BombBullet(True, self.getMidX(), self.getMidY())
+        )
         self.nowWeapon = 1
         self.normalWeapon = self.weaponList[1]
         self.speed = self.allRes.getValue(CONSTANTS.MOVESPEED)
         self.fullfuel = self.allRes.getValue(CONSTANTS.HIGHSPEEDMOVEFUEL)
         self.fuel = self.allRes.getValue(CONSTANTS.HIGHSPEEDMOVEFUEL)
-        self.highSpeedMoveSpeed= self.allRes.getValue(CONSTANTS.HIGHSPEEDMOVESPEED)
+        self.highSpeedMoveSpeed = self.allRes.getValue(CONSTANTS.HIGHSPEEDMOVESPEED)
 
     def loadAllResource() -> AllResourceDict:
         allRes = AllResourceDict()
@@ -60,16 +70,25 @@ class Hero(Aircraft):
             return "Pause"
         if self.deathing == 0:
             return "GameOver"
-        if isDowm(CONSTANTS.WEAPON1CONTROKEYLIST, keyPressedList) and self.weaponState(1)[0]!='None':
+        if (
+            isDowm(CONSTANTS.WEAPON1CONTROKEYLIST, keyPressedList)
+            and self.weaponState(1)[0] != "None"
+        ):
             self.nowWeapon = 1
             self.normalWeapon = self.weaponList[1]
-        if isDowm(CONSTANTS.WEAPON2CONTROKEYLIST, keyPressedList) and self.weaponState(2)[0]!='None':
+        if (
+            isDowm(CONSTANTS.WEAPON2CONTROKEYLIST, keyPressedList)
+            and self.weaponState(2)[0] != "None"
+        ):
             self.nowWeapon = 2
             self.normalWeapon = self.weaponList[2]
-        if isDowm(CONSTANTS.WEAPON3CONTROKEYLIST, keyPressedList) and self.weaponState(3)[0]!='None':
+        if (
+            isDowm(CONSTANTS.WEAPON3CONTROKEYLIST, keyPressedList)
+            and self.weaponState(3)[0] != "None"
+        ):
             self.nowWeapon = 3
             self.normalWeapon = self.weaponList[3]
-        
+
         self.changeImage(CONSTANTS.NORMALIMAGE)
         ismove = False
         isInHighSpeed = False
@@ -92,7 +111,7 @@ class Hero(Aircraft):
         if isInHighSpeed:
             self.changeImage(CONSTANTS.HIGHSPEEDIMAGE)
             if ismove:
-                self.fuel-=1
+                self.fuel -= 1
         if isDowm(CONSTANTS.FIRECONTROKEYLIST, keyPressedList):
             self.useWeapon()
 
@@ -108,8 +127,8 @@ class Hero(Aircraft):
         nowtime = pygame.time.get_ticks()
         if id == 0:
             id = self.nowWeapon
-        if len(self.weaponList)<id+1:
-            return ("None","None",0,0,0,0)
+        if len(self.weaponList) < id + 1:
+            return ("None", "None", 0, 0, 0, 0)
         info = (
             self.weaponList[id].allRes.getValue(CONSTANTS.NAME),
             self.weaponList[id].weaponBullet.allRes.getValue(CONSTANTS.NAME),
@@ -121,8 +140,7 @@ class Hero(Aircraft):
 
         return info
 
-    
     def update(self):
         super().update()
-        if self.HP<=0:
+        if self.HP <= 0:
             self.setAutoDeath(True)

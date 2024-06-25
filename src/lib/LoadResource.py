@@ -1,4 +1,6 @@
 import pygame
+from src.enitiy.universalLauncher import UniversalLauncher
+from src.enitiy.bombBullet import BombBullet
 from src.enitiy.missileLauncher import MissileLauncher
 from src.enitiy.missile import Missile
 from src.enitiy.bigEnemy import BigEnemy
@@ -20,45 +22,27 @@ def loadresource():
     pygame.mixer.music.set_volume(0.1)
     CONSTANTS.threadQueue.put(("loading", "10"))
     backgroundImage = pygame.image.load("images/background.png").convert()
-    CONSTANTS.superResourceDict.addResourse(
-        CONSTANTS.HEROAIRCRAFT, Hero.loadAllResource()
-    )
-    CONSTANTS.superResourceDict.addResourse(
-        CONSTANTS.AIRCRAFTGUN, AircraftGun.loadAllResource()
-    )
-    CONSTANTS.superResourceDict.addResourse(
-        CONSTANTS.NORMALBULLET, NormalBullet.loadAllResource()
-    )
-    CONSTANTS.superResourceDict.addResourse(
-        CONSTANTS.SMALLENEMY, SmallEnemy.loadAllResource()
-    )
-    CONSTANTS.superResourceDict.addResourse(
-        CONSTANTS.MIDDLEENEMY, MiddleEnemy.loadAllResource()
-    )
+    loadResourceByClassName(CONSTANTS.HEROAIRCRAFT,Hero)
+    loadResourceByClassName(CONSTANTS.MACHINGGUN,MachingGun)
+    loadResourceByClassName(CONSTANTS.AIRCRAFTGUN,AircraftGun)
+    loadResourceByClassName(CONSTANTS.MISSILELAUNCHER,MissileLauncher)
+    loadResourceByClassName(CONSTANTS.UNIVERSALLAUNCHER,UniversalLauncher)
+    loadResourceByClassName(CONSTANTS.NORMALBULLET,NormalBullet)
+    loadResourceByClassName(CONSTANTS.GUNBULLET,GunBullet)
+    loadResourceByClassName(CONSTANTS.MISSILE,Missile)
+    loadResourceByClassName(CONSTANTS.ADDHPBULLET,AddHpBullet)
+    loadResourceByClassName(CONSTANTS.BOMBMULLET,BombBullet)
+    loadResourceByClassName(CONSTANTS.SMALLENEMY,SmallEnemy)
+    loadResourceByClassName(CONSTANTS.MIDDLEENEMY,MiddleEnemy)
+    loadResourceByClassName(CONSTANTS.BIGENEMY,BigEnemy)
 
-    CONSTANTS.superResourceDict.addResourse(
-        CONSTANTS.MACHINGGUN, MachingGun.loadAllResource()
-    )
-    CONSTANTS.superResourceDict.addResourse(
-        CONSTANTS.GUNBULLET, GunBullet.loadAllResource()
-    )
-    CONSTANTS.superResourceDict.addResourse(
-        CONSTANTS.ADDHPBULLET, AddHpBullet.loadAllResource()
-    )
-    CONSTANTS.superResourceDict.addResourse(
-        CONSTANTS.BIGENEMY, BigEnemy.loadAllResource()
-    )
-    CONSTANTS.superResourceDict.addResourse(
-        CONSTANTS.MISSILE, Missile.loadAllResource()
-    )
-    CONSTANTS.superResourceDict.addResourse(
-        CONSTANTS.MISSILELAUNCHER, MissileLauncher.loadAllResource()
-    )
     CONSTANTS.threadQueue.put(("loading", "20"))
     # soundResourceDict = src.lib.LoadResource.loadSoundResource()
     CONSTANTS.threadQueue.put(("loading", "100"))
     CONSTANTS.threadQueue.put(("loaded", "100"))
 
+def loadResourceByClassName(CONSTANTSNAME,ClassName):
+    CONSTANTS.superResourceDict.addResourse(CONSTANTSNAME,getattr(ClassName,"loadAllResource")())
 
 # def loadSoundResource() -> ResourceDict:
 #     resourceDict = ResourceDict()

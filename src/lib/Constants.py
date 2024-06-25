@@ -77,6 +77,7 @@ GUNBULLET = "GunBullet"
 DAMAGEVALUE = "DamageValue"  # 伤害
 ADDHPBULLET = "AddHpBullet"
 MISSILE = "Missile"
+BOMBMULLET = "BombBullet"
 # 英雄
 HEROAIRCRAFT = "HeroAircraft"  # 英雄
 HIGHSPEEDIMAGE = "HighSpeedImage"  # 加速模型

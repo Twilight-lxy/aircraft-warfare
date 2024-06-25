@@ -143,6 +143,7 @@ def addEnemy(queue: Queue, airGroup):
     lastAddSmallEnemyTime = 0
     lastAddAddHpBulletTime = 0
     lastAddMiddleEnemyTime = 0
+    lastAddBigEnemyTime = 0
     while True:
         time.sleep(0.5)
         mess = None
@@ -164,23 +165,27 @@ def addEnemy(queue: Queue, airGroup):
         time.sleep(0.5)
         if nowTime - lastAddSmallEnemyTime > 1000:
             random.seed()
-            if random.randint(1, 100) > 10:
-                # airGroup.add(Missile(False,50, 200,CONSTANTS.hero))
-                # airGroup.add(SmallEnemy(random.randint(20,CONSTANTS.WIDTH), 20))
-                addEnemyWithoutCollide(airGroup,BigEnemy(random.randint(20, CONSTANTS.WIDTH), 20))
+            if random.randint(1, 100) > 25:
+                addEnemyWithoutCollide(airGroup,SmallEnemy(random.randint(20, CONSTANTS.WIDTH), 20))
             lastAddSmallEnemyTime = nowTime
         time.sleep(0.5)
         if nowTime - lastAddMiddleEnemyTime > 1000:
             random.seed()
-            if random.randint(1, 100) > 10:
+            if random.randint(1, 100) > 50:
                 addEnemyWithoutCollide(airGroup,MiddleEnemy(random.randint(20, CONSTANTS.WIDTH), 20))
             lastAddMiddleEnemyTime = nowTime
+        time.sleep(0.5)
+        if nowTime - lastAddBigEnemyTime > 1000:
+            random.seed()
+            if random.randint(1, 100) > 75:
+                addEnemyWithoutCollide(airGroup,BigEnemy(random.randint(20, CONSTANTS.WIDTH), 20))
+            lastAddBigEnemyTime = nowTime
         time.sleep(0.5)
         if nowTime - lastAddAddHpBulletTime > 1000:
             random.seed()
             if random.randint(1, 100) > 90:
                 addEnemyWithoutCollide(airGroup,AddHpBullet(False, random.randint(20, CONSTANTS.WIDTH), 0))
-            lastAddSmallEnemyTime = nowTime
+            lastAddAddHpBulletTime = nowTime
         time.sleep(0.5)
 
 
