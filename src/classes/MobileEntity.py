@@ -2,7 +2,7 @@ import random
 import pygame
 from src.classes.ResourceDict import AllResourceDict
 import src.lib.Constants as CONSTANTS
-
+from src.lib.playSound import playSound
 
 class MobileEntity(pygame.sprite.Sprite):
 
@@ -101,9 +101,9 @@ class MobileEntity(pygame.sprite.Sprite):
         if self.deathing == -1:
             self.deathing = self.allRes.getValue(CONSTANTS.DEATHIMAGENUM)
             try:
-                pygame.mixer.find_channel().play(
-                    self.allRes.getSound(CONSTANTS.DEATHSOUND)
-                )
+                # pygame.mixer.find_channel().play(self.allRes.getSound(CONSTANTS.DEATHSOUND))
+                # CONSTANTS.soundQueue.put(self.allRes.getSound(CONSTANTS.DEATHSOUND))
+                playSound(self.allRes.getSound(CONSTANTS.DEATHSOUND))
             except:
                 pass
         if self.deathing != -1:

@@ -24,8 +24,9 @@ class MachingGun(AircraftWeapon):
 
     def loadAllResource() -> AllResourceDict:
         allRes = AllResourceDict()
-        deathSound = pygame.mixer.Sound("sound/bullet.wav")
-        deathSound.set_volume(0.5)
+        # deathSound = pygame.mixer.Sound("sound/bullet.wav")
+        # deathSound.set_volume(0.5)
+        deathSound = "sound/bullet.wav"
         allRes.addSound(CONSTANTS.BULLETSOUND, deathSound)
         allRes.addValue(CONSTANTS.FIREINTERVAL, 100)
         allRes.addValue(CONSTANTS.NAME, "MachingGun")

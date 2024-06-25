@@ -24,8 +24,9 @@ class UniversalLauncher(AircraftWeapon):
 
     def loadAllResource() -> AllResourceDict:
         allRes = AllResourceDict()
-        deathSound = pygame.mixer.Sound("sound/supply.wav")
-        deathSound.set_volume(1)
+        # deathSound = pygame.mixer.Sound("sound/supply.wav")
+        # deathSound.set_volume(1)
+        deathSound = "sound/supply.wav"
         allRes.addSound(CONSTANTS.BULLETSOUND, deathSound)
         allRes.addValue(CONSTANTS.FIREINTERVAL, 5000)
         allRes.addValue(CONSTANTS.NAME, "UniversalLauncher")

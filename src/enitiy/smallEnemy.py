@@ -35,8 +35,9 @@ class SmallEnemy(Aircraft):
         deathImage4 = pygame.image.load("images/enemy1_down1.png").convert_alpha()
         allRes.addImage(CONSTANTS.DEATHIMAGED, deathImage4)
         allRes.addValue(CONSTANTS.DEATHIMAGENUM, 4)
-        deathSound = pygame.mixer.Sound("sound/enemy1_down.wav")
-        deathSound.set_volume(0.2)
+        # deathSound = pygame.mixer.Sound("sound/enemy1_down.wav")
+        # deathSound.set_volume(0.2)
+        deathSound = "sound/enemy1_down.wav"
         allRes.addSound(CONSTANTS.DEATHSOUND, deathSound)
         allRes.addValue(CONSTANTS.AUTOMOVESPEEDX, 0)
         allRes.addValue(CONSTANTS.AUTOMOVESPEEDY, 1)

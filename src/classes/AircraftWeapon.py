@@ -1,6 +1,7 @@
 import copy
 import pygame
 from pygame.sprite import Group
+from src.lib.playSound import playSound
 from src.classes.ResourceDict import AllResourceDict
 import src.lib.Constants as CONSTANTS
 
@@ -39,7 +40,9 @@ class AircraftWeapon:
             CONSTANTS.allEnemyGroup.add(newBullet)
             if self.isPlaySound:
                 try:
-                    pygame.mixer.find_channel().play(self.fireSound)
+                    # pygame.mixer.find_channel().play(self.fireSound)
+                    # CONSTANTS.soundQueue.put(self.fireSound)
+                    playSound(self.fireSound)
                 except:
                     pass
             self.lastOpenFireTick = pygame.time.get_ticks()

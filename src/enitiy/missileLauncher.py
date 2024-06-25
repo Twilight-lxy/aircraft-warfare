@@ -6,8 +6,7 @@ from src.classes.ResourceDict import AllResourceDict
 import src.lib.Constants as CONSTANTS
 from src.classes.AircraftWeapon import AircraftWeapon
 from src.enitiy.gunBullet import GunBullet
-
-
+from src.lib.playSound import playSound
 class MissileLauncher(AircraftWeapon):
     def __init__(
         self,
@@ -26,8 +25,9 @@ class MissileLauncher(AircraftWeapon):
 
     def loadAllResource() -> AllResourceDict:
         allRes = AllResourceDict()
-        deathSound = pygame.mixer.Sound("sound/supply.wav")
-        deathSound.set_volume(1)
+        # deathSound = pygame.mixer.Sound("sound/supply.wav")
+        # deathSound.set_volume(1)
+        deathSound = "sound/supply.wav"
         allRes.addSound(CONSTANTS.BULLETSOUND, deathSound)
         allRes.addValue(CONSTANTS.FIREINTERVAL, 1000)
         allRes.addValue(CONSTANTS.NAME, "MissileLauncher")
@@ -44,7 +44,9 @@ class MissileLauncher(AircraftWeapon):
             CONSTANTS.allEnemyGroup.add(newBullet2)
             if self.isPlaySound:
                 try:
-                    pygame.mixer.find_channel().play(self.fireSound)
+                    # CONSTANTS.soundQueue.put(self.fireSound)  
+                    # pygame.mixer.find_channel().play(self.fireSound)
+                    playSound(self.fireSound)
                 except:
                     pass
             self.lastOpenFireTick = pygame.time.get_ticks()

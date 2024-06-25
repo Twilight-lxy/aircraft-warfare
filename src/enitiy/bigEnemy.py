@@ -40,8 +40,9 @@ class BigEnemy(Aircraft):
         allRes.addImage(CONSTANTS.DEATHIMAGEF, deathImage6)
         
         allRes.addValue(CONSTANTS.DEATHIMAGENUM, 6)
-        deathSound = pygame.mixer.Sound("sound/enemy1_down.wav")
-        deathSound.set_volume(0.2)
+        # deathSound = pygame.mixer.Sound("sound/enemy1_down.wav")
+        # deathSound.set_volume(0.2)
+        deathSound = "sound/enemy1_down.wav"
         allRes.addSound(CONSTANTS.DEATHSOUND, deathSound)
         allRes.addValue(CONSTANTS.AUTOMOVESPEEDX, 0)
         allRes.addValue(CONSTANTS.AUTOMOVESPEEDY, 1)

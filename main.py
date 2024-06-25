@@ -4,6 +4,7 @@ import threading
 from queue import Queue
 import time
 import pygame
+from src.lib.playSound import initplaySound, playSound
 from src.enitiy.bigEnemy import BigEnemy
 from src.enitiy.gunBullet import GunBullet
 from src.enitiy.machingGun import MachingGun
@@ -72,6 +73,8 @@ def initGame():
         pygame.display.flip()
         (mess, per) = CONSTANTS.threadQueue.get(True, 20)
     loadResourceThreading.join()
+    CONSTANTS.playSoundPool=Queue()
+    initplaySound()
     pygame.mixer.music.play()
     time.sleep(1)
     CONSTANTS.screen.fill(CONSTANTS.WHITE)
@@ -85,9 +88,15 @@ def main():
     queue = multiprocessing.Queue()
     queue.put(("close"))
     global killaim
-    killaim = None
+    killaim = []
     username = None
     retmess = ""
+    
+    # CONSTANTS.soundQueue = multiprocessing.Queue()
+    # soundPlayProcess = Process(target=playSound, args=(CONSTANTS.soundQueue,))
+    # soundPlayProcess.start()    
+    # killaim.append(soundPlayProcess)
+
     while True:
         if username == None:
             username = src.lib.LoginPage.logIn()
@@ -108,8 +117,7 @@ def main():
             if closemess == "close":
                 p1 = Process(target=showRankingList, args=(queue,))
                 p1.start()
-                killaim = p1
-
+                killaim.append(p1)
         elif retmess == "back":
             username = None
             pass
@@ -128,10 +136,11 @@ if __name__ == "__main__":
     try:
         main()
     except pygame.error:
-        try:
-            killaim.kill()
-        except:
-            pass
+        for i in killaim:
+            try:
+                i.kill()
+            except:
+                pass
         print("GoodBye")
     except:
         traceback.print_exc()

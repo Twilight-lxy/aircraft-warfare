@@ -11,6 +11,7 @@ threadQueue: Queue
 mainClock: Clock
 allEnemyGroup: pygame.sprite.Group
 hero = None
+playSoundPool: Queue
 # 窗口大小
 WIDTH, HEIGHT = int(480), int(700)
 UIHEIGHT = int(123)
