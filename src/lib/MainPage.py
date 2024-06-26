@@ -1,22 +1,21 @@
 import multiprocessing
 import pygame
 import src.lib.Constants as CONSTANTS
-from src.classes.User import User, UserException
+from src.classes.User import User
 from src.lib.Logo import showLogo
 from src.lib.textBox import draw_text_box
 
 
-def mainPage(
-    username: User,
-    changequeue: multiprocessing.Queue
-) -> str:
+def mainPage(username: User, changequeue: multiprocessing.Queue) -> str:
     mouseInchangeUserTextBox = False
     mouseInStartTextBox = False
     mouseInRankingTextBox = False
     mouseInQuitTextBox = False
     while True:
         CONSTANTS.screen.fill(CONSTANTS.WHITE)
-        CONSTANTS.screen.blit(CONSTANTS.superResourceDict.getResource(CONSTANTS.BGIMAGE), (0, 0))
+        CONSTANTS.screen.blit(
+            CONSTANTS.superResourceDict.getResource(CONSTANTS.BGIMAGE), (0, 0)
+        )
         showLogo(0, 100)
         try:
             username = changequeue.get(False)

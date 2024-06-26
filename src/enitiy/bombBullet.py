@@ -1,9 +1,5 @@
-import copy
 import math
 import pygame
-from pygame.sprite import Group
-from pygame.time import Clock
-from src.classes.MobileEntity import MobileEntity
 from src.classes.ResourceDict import AllResourceDict
 import src.lib.Constants as CONSTANTS
 from src.classes.WeaponBullet import WeaponBullet
@@ -16,14 +12,18 @@ class BombBullet(WeaponBullet):
         FireX: int,
         FireY: int,
     ):
-        super().__init__(iFF, CONSTANTS.superResourceDict.getResource(CONSTANTS.BOMBMULLET).copyAllResourceDict())
+        super().__init__(
+            iFF,
+            CONSTANTS.superResourceDict.getResource(
+                CONSTANTS.BOMBMULLET
+            ).copyAllResourceDict(),
+        )
         self.moveTo(FireX, FireY)
         self.setAutoMove(True)
         if iFF == True:
-            self.autoMoveSpeedX*=-1
-            self.autoMoveSpeedY*=-1
+            self.autoMoveSpeedX *= -1
+            self.autoMoveSpeedY *= -1
         self.setCanBeBullet(True)
-        
 
     def loadAllResource() -> AllResourceDict:
         allRes = AllResourceDict()
@@ -43,32 +43,36 @@ class BombBullet(WeaponBullet):
         deathImage6 = pygame.image.load("ColorImages/boom/boom01.png").convert_alpha()
         allRes.addImage(CONSTANTS.DEATHIMAGEF, deathImage6)
         allRes.addValue(CONSTANTS.DEATHIMAGENUM, 6)
-        # deathSound = pygame.mixer.Sound("sound/enemy1_down.wav")
-        # deathSound.set_volume(0.2)
         deathSound = "sound/use_bomb.wav"
         allRes.addSound(CONSTANTS.DEATHSOUND, deathSound)
         allRes.addValue(CONSTANTS.AUTOMOVESPEEDX, 0)
         allRes.addValue(CONSTANTS.AUTOMOVESPEEDY, 1)
         allRes.addValue(CONSTANTS.DAMAGEVALUE, 5000)
         allRes.addValue(CONSTANTS.HP, 10)
-        allRes.addValue(CONSTANTS.KILLSCORE,5)
+        allRes.addValue(CONSTANTS.KILLSCORE, 5)
         allRes.addValue(CONSTANTS.NAME, "BombBullet")
         return allRes
 
     def hit(self, hitAim):
-        totScore = 0      
+        totScore = 0
         for i in CONSTANTS.allEnemyGroup.sprites():
             if i.iFF != self.iFF:
-                if math.sqrt((self.getMidX()-i.getMidX())**2 + (self.getMidY()-i.getMidY())**2) < 250:
+                if (
+                    math.sqrt(
+                        (self.getMidX() - i.getMidX()) ** 2
+                        + (self.getMidY() - i.getMidY()) ** 2
+                    )
+                    < 250
+                ):
                     i.HP = 0
-                    totScore +=i.killScore
+                    totScore += i.killScore
         super().hit(hitAim)
-        hitAim.killScore+=totScore
-    
+        hitAim.killScore += totScore
+
     def createCopy(self):
         newCopy = super().createCopy()
-        newCopy.__class__=BombBullet
+        newCopy.__class__ = BombBullet
         return newCopy
-    
-    def update(self):            
+
+    def update(self):
         super().update()

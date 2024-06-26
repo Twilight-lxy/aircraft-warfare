@@ -3,9 +3,8 @@ import pygame
 from src.lib.healthBar import drawHealthBar
 from src.classes.AircraftWeapon import AircraftWeapon
 from src.classes.MobileEntity import MobileEntity
-from src.classes.ResourceDict import ResourceDict, AllResourceDict
+from src.classes.ResourceDict import AllResourceDict
 import src.lib.Constants as CONSTANTS
-from pygame.sprite import Group
 
 
 class Aircraft(MobileEntity):
@@ -21,7 +20,16 @@ class Aircraft(MobileEntity):
         normalWeapon: AircraftWeapon = None,
         isAutoUseWeapon: bool = False,
     ):
-        super().__init__(iFF, allRes, X, Y, autoMoveOn, autoMoveSpeedX, autoMoveSpeedY,CONSTANTS.AircraftType)
+        super().__init__(
+            iFF,
+            allRes,
+            X,
+            Y,
+            autoMoveOn,
+            autoMoveSpeedX,
+            autoMoveSpeedY,
+            CONSTANTS.AircraftType,
+        )
         if normalWeapon == None:
             normalWeapon = AircraftWeapon(
                 iFF, AllResourceDict(), self.getMidX(), self.getMidY()
@@ -36,13 +44,16 @@ class Aircraft(MobileEntity):
         if self.isAutoUseWeapon:
             self.useWeapon(True)
 
-    def useWeapon(self,isAuto:bool=False):
+    def useWeapon(self, isAuto: bool = False):
         self.normalWeapon.updateLoadedXY(self.getMidX(), self.getMidY())
         if isAuto:
-            nowtime=pygame.time.get_ticks()
-            if nowtime - self.normalWeapon.lastOpenFireTick > self.normalWeapon.fireInterval:
+            nowtime = pygame.time.get_ticks()
+            if (
+                nowtime - self.normalWeapon.lastOpenFireTick
+                > self.normalWeapon.fireInterval
+            ):
                 random.seed()
-                if random.randint(1,100) > 90:
+                if random.randint(1, 100) > 90:
                     self.normalWeapon.openFire()
                 self.normalWeapon.lastOpenFireTick = nowtime
         else:
@@ -52,21 +63,31 @@ class Aircraft(MobileEntity):
         self.isAutoUseWeapon = isAutoUseWeapon
 
     def createCopy(self):
-        newCopy=super().createCopy()
+        newCopy = super().createCopy()
         newCopy.__class__ = Aircraft
         return newCopy
-    
+
     def hit(self, hitAim):
         if hitAim.iFF == self.iFF:
-            if self.TYPE == CONSTANTS.AircraftType and hitAim.TYPE == CONSTANTS.AircraftType:
+            if (
+                self.TYPE == CONSTANTS.AircraftType
+                and hitAim.TYPE == CONSTANTS.AircraftType
+            ):
                 hitAim.X -= hitAim.autoMoveSpeedX
                 hitAim.move()
-                hitAim.autoMoveSpeedX*=-1
+                hitAim.autoMoveSpeedX *= -1
         if hitAim.TYPE == CONSTANTS.AircraftType and hitAim.autoMoveOn == True:
             random.seed()
-            hitAim.autoMoveSpeedX = hitAim.autoMoveSpeedY * random.randint(-1,1)
+            hitAim.autoMoveSpeedX = hitAim.autoMoveSpeedY * random.randint(-1, 1)
         super().hit(hitAim)
 
     def drawHp(self):
         if self.HP != self.fullHp:
-            drawHealthBar(self.rect.x,self.rect.y-5,self.rect.width,5,self.fullHp,self.HP,)
+            drawHealthBar(
+                self.rect.x,
+                self.rect.y - 5,
+                self.rect.width,
+                5,
+                self.fullHp,
+                self.HP,
+            )

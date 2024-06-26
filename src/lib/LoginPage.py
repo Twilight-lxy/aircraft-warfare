@@ -1,9 +1,9 @@
 import pygame
 from src.lib.LoginAndRegester import getLoginMess
 import src.lib.Constants as CONSTANTS
-from src.classes.User import User, UserException
 from src.lib.Logo import showLogo
 from src.lib.textBox import draw_text_box
+
 
 def logIn() -> str:
     while not CONSTANTS.threadQueue.empty():
@@ -13,7 +13,9 @@ def logIn() -> str:
     mouseInQuitTextBox = False
     while True:
         CONSTANTS.screen.fill(CONSTANTS.WHITE)
-        CONSTANTS.screen.blit(CONSTANTS.superResourceDict.getResource(CONSTANTS.BGIMAGE), (0, 0))
+        CONSTANTS.screen.blit(
+            CONSTANTS.superResourceDict.getResource(CONSTANTS.BGIMAGE), (0, 0)
+        )
         showLogo(0, 100)
         loginTextBox = draw_text_box(
             mess="login or register",

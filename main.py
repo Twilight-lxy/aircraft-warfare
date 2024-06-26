@@ -1,30 +1,21 @@
-from concurrent.futures import thread
 import multiprocessing
 import threading
 from queue import Queue
 import time
 import pygame
 from src.lib.playSound import initplaySound, playSound
-from src.enitiy.bigEnemy import BigEnemy
-from src.enitiy.gunBullet import GunBullet
-from src.enitiy.machingGun import MachingGun
 from src.lib.changePassword import changePassword
-from src.enitiy.smallEnemy import SmallEnemy
 import src.lib.LoginPage
-from src.enitiy.aircraftGun import AircraftGun
-from src.enitiy.hero import Hero
-from src.enitiy.normalBullet import NormalBullet
 import src.lib.Constants as CONSTANTS
 import src.lib.LoadResource
 import traceback
 import src.lib.Logo
 import src.lib.textBox
-from src.classes.ResourceDict import ResourceDict, AllResourceDict
+from src.classes.ResourceDict import ResourceDict
 import src.lib.LoginAndRegester
 import src.lib.MainPage
 import src.lib.MainGame
 import src.lib.rankingList
-import otherresource.Ranking_ui
 from src.lib.rankingList import showRankingList
 from multiprocessing import Process
 
@@ -38,19 +29,23 @@ def initGame():
     CONSTANTS.threadQueue = Queue()
     pygame.mixer.init()
     pygame.display.set_caption("飞机大战")
-    loadResourceThreading = threading.Thread(target=src.lib.LoadResource.loadresource, name="loadresource")
+    loadResourceThreading = threading.Thread(
+        target=src.lib.LoadResource.loadresource, name="loadresource"
+    )
     loadResourceThreading.daemon = True
     loadResourceThreading.start()
     mess, per = ("load", "0")
     backgroundImage = pygame.image.load("images/background.png").convert()
-    CONSTANTS.superResourceDict.addResourse(CONSTANTS.GAMEBGIMAGE,backgroundImage)
+    CONSTANTS.superResourceDict.addResourse(CONSTANTS.GAMEBGIMAGE, backgroundImage)
     backgroundImage = pygame.transform.scale(backgroundImage, CONSTANTS.WINDOWS_SIZE)
-    CONSTANTS.superResourceDict.addResourse(CONSTANTS.BGIMAGE,backgroundImage)
+    CONSTANTS.superResourceDict.addResourse(CONSTANTS.BGIMAGE, backgroundImage)
     while not CONSTANTS.threadQueue.empty():
         CONSTANTS.threadQueue.get()
     while True:
         CONSTANTS.screen.fill(CONSTANTS.WHITE)
-        CONSTANTS.screen.blit(CONSTANTS.superResourceDict.getResource(CONSTANTS.BGIMAGE), (0, 0))
+        CONSTANTS.screen.blit(
+            CONSTANTS.superResourceDict.getResource(CONSTANTS.BGIMAGE), (0, 0)
+        )
         src.lib.Logo.showLogo()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -78,7 +73,7 @@ def initGame():
         pygame.display.flip()
         (mess, per) = CONSTANTS.threadQueue.get(True, 20)
     loadResourceThreading.join()
-    CONSTANTS.playSoundPool=Queue()
+    CONSTANTS.playSoundPool = Queue()
     initplaySound()
     pygame.mixer.music.play()
     time.sleep(1)
@@ -98,19 +93,14 @@ def main():
     killaim = []
     username = None
     retmess = ""
-    
-    # CONSTANTS.soundQueue = multiprocessing.Queue()
-    # soundPlayProcess = Process(target=playSound, args=(CONSTANTS.soundQueue,))
-    # soundPlayProcess.start()    
-    # killaim.append(soundPlayProcess)
 
     while True:
         if username == None:
             username = src.lib.LoginPage.logIn()
         if retmess == "":
-            retmess = src.lib.MainPage.mainPage(username,changequeue)
+            retmess = src.lib.MainPage.mainPage(username, changequeue)
         if retmess == "start":
-            username , iscontinue = src.lib.MainGame.startGame(username)
+            username, iscontinue = src.lib.MainGame.startGame(username)
             if iscontinue == "continue":
                 retmess = "start"
             else:
@@ -133,7 +123,7 @@ def main():
             except:
                 pass
             if closemess == "close":
-                p2 = Process(target=changePassword, args=(username,queue,changequeue))
+                p2 = Process(target=changePassword, args=(username, queue, changequeue))
                 p2.start()
                 killaim.append(p2)
         elif retmess == "back":
@@ -163,4 +153,3 @@ if __name__ == "__main__":
         print("GoodBye")
     except:
         traceback.print_exc()
-        # input()

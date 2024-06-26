@@ -1,11 +1,8 @@
-import copy
 import pygame
-from pygame.sprite import Group
-from pygame.time import Clock
 from src.enitiy.bombBullet import BombBullet
 from src.enitiy.universalLauncher import UniversalLauncher
 from src.enitiy.machingGun import MachingGun
-from src.classes.ResourceDict import ResourceDict, AllResourceDict
+from src.classes.ResourceDict import AllResourceDict
 from src.classes.Aircraft import Aircraft
 import src.lib.Constants as CONSTANTS
 from src.enitiy.aircraftGun import AircraftGun
@@ -52,8 +49,6 @@ class Hero(Aircraft):
         deathImage4 = pygame.image.load("images/me_destroy_1.png").convert_alpha()
         allRes.addImage(CONSTANTS.DEATHIMAGED, deathImage4)
         allRes.addValue(CONSTANTS.DEATHIMAGENUM, 4)
-        # deathSound = pygame.mixer.Sound("sound/me_down.wav")
-        # deathSound.set_volume(0.2)
         deathSound = "sound/me_down.wav"
         allRes.addSound(CONSTANTS.DEATHSOUND, deathSound)
         allRes.addValue(CONSTANTS.MOVESPEED, 5)

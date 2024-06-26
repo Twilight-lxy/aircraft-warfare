@@ -70,7 +70,6 @@ class AllResourceDict:
         try:
             return self.soundResourceDict.getResource(resourceName)
         except:
-            # return pygame.mixer.Sound("sound/nonesound.wav")
             return ""
 
     def removeSound(self, resourceName: str) -> None:

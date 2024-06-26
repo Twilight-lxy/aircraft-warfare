@@ -1,5 +1,4 @@
 import pygame
-from pygame import surface
 from pygame.time import Clock
 from src.classes.ResourceDict import ResourceDict
 from queue import Queue
@@ -39,12 +38,12 @@ WEAPON2CONTROKEYLIST = [pygame.K_2]
 WEAPON3CONTROKEYLIST = [pygame.K_3]
 
 # 单位资源及属性名称
-EntityType = "Entity"   # 
+EntityType = "Entity"  #
 AircraftType = "Aircraft"
 BulletType = "Bullet"
 # 通用
-BGIMAGE ="BackGroundImage"
-GAMEBGIMAGE ="GameBackGroundImage"
+BGIMAGE = "BackGroundImage"
+GAMEBGIMAGE = "GameBackGroundImage"
 NAME = "Name"  # 名称
 NORMALIMAGE = "NormalImage"  # 基础模型
 DEATHIMAGEA = "DeathImageA"  # 死亡模型1
@@ -57,7 +56,7 @@ DEATHSOUND = "DeathSound"  # 死亡音效
 MOVESPEED = "MoveSpeed"  # XY移动速度
 MOVESPEEDX = "MoveSpeedX"  # X移动速度
 MOVESPEEDY = "MoveSpeedY"  # Y移动速度
-MAXMOVESPEED = "MaxMoveSpeed" # 最大总移动速度
+MAXMOVESPEED = "MaxMoveSpeed"  # 最大总移动速度
 AUTOMOVESPEEDX = "AutoMoveSpeedX"  # X自动移动速度
 AUTOMOVESPEEDY = "AutoMoveSpeedY"  # Y自动移动速度
 DEATHIMAGENUM = "DeathImageNum"  # 死亡模型数量
@@ -89,5 +88,5 @@ HIGHSPEEDMOVESPEED = "HighSpeedMoveSpeed"  # 加速移动速度增量
 HIGHSPEEDMOVEFUEL = "HighSpeedMoveFule"  # 加速移动燃料
 # 敌人
 SMALLENEMY = "SmallEnemy"  # 小型敌人
-MIDDLEENEMY = "MiddleEnemy" #中型敌人
+MIDDLEENEMY = "MiddleEnemy"  # 中型敌人
 BIGENEMY = "BigEnemy"  # 大型敌人

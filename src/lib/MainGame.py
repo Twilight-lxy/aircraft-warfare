@@ -3,11 +3,9 @@ import random
 import threading
 import time
 import pygame
-from pygame import Surface
 from src.enitiy.addFuelBullet import AddFuelBullet
 from src.enitiy.addBulletBullet import AddBulletBullet
 from src.lib.gameoverWindow import gameoverWindow
-from src.enitiy.missile import Missile
 from src.enitiy.middleEnemy import MiddleEnemy
 from src.enitiy.addHpBullet import AddHpBullet
 from src.lib.DataBaseFunc import addToRankingList
@@ -17,9 +15,7 @@ from src.enitiy.smallEnemy import SmallEnemy
 import src.lib.Constants as CONSTANTS
 from src.classes.GameRecord import GameRecord
 from src.classes.User import User
-from src.classes.ResourceDict import ResourceDict
 from src.enitiy.hero import Hero
-from src.enitiy.normalBullet import NormalBullet
 from src.lib.textBox import draw_text_box
 from src.lib.healthBar import drawHealthBar
 
@@ -34,7 +30,9 @@ def startGame(username: User):
     mess = ""
     pygame.mixer.music.play(-1)
     CONSTANTS.screen.fill(CONSTANTS.WHITE)
-    CONSTANTS.screen.blit(CONSTANTS.superResourceDict.getResource(CONSTANTS.BGIMAGE), (0, 0))
+    CONSTANTS.screen.blit(
+        CONSTANTS.superResourceDict.getResource(CONSTANTS.BGIMAGE), (0, 0)
+    )
     hero = Hero()
     CONSTANTS.hero = hero
     CONSTANTS.allEnemyGroup.add(hero)
@@ -75,7 +73,9 @@ def startGame(username: User):
             pygame.event.pump()
             continue
         CONSTANTS.screen.fill(CONSTANTS.WHITE)
-        CONSTANTS.screen.blit(CONSTANTS.superResourceDict.getResource(CONSTANTS.BGIMAGE), (0, 0))
+        CONSTANTS.screen.blit(
+            CONSTANTS.superResourceDict.getResource(CONSTANTS.BGIMAGE), (0, 0)
+        )
         CONSTANTS.allEnemyGroup.update()
         for event in pygame.event.get():  # 获取用户事件
             if event.type == pygame.QUIT:  # 如果事件为关闭窗口
@@ -181,36 +181,51 @@ def addEnemy(queue: Queue, airGroup):
         if nowTime > 1000 and nowTime - lastAddSmallEnemyTime > 1000:
             random.seed()
             if random.randint(1, 100) > 20:
-                addEnemyWithoutCollide(airGroup,SmallEnemy(random.randint(20, CONSTANTS.WIDTH), 20))
+                addEnemyWithoutCollide(
+                    airGroup, SmallEnemy(random.randint(20, CONSTANTS.WIDTH), 20)
+                )
             lastAddSmallEnemyTime = nowTime
-        if nowTime > 6000 and  nowTime - lastAddMiddleEnemyTime > 2000:
+        if nowTime > 6000 and nowTime - lastAddMiddleEnemyTime > 2000:
             random.seed()
             if random.randint(1, 100) > 50:
-                addEnemyWithoutCollide(airGroup,MiddleEnemy(random.randint(20, CONSTANTS.WIDTH), 20))
+                addEnemyWithoutCollide(
+                    airGroup, MiddleEnemy(random.randint(20, CONSTANTS.WIDTH), 20)
+                )
             lastAddMiddleEnemyTime = nowTime
-        if  nowTime > 15000 and nowTime - lastAddBigEnemyTime > 2000:
+        if nowTime > 15000 and nowTime - lastAddBigEnemyTime > 2000:
             random.seed()
             if random.randint(1, 100) > 75:
-                addEnemyWithoutCollide(airGroup,BigEnemy(random.randint(20, CONSTANTS.WIDTH), 20))
+                addEnemyWithoutCollide(
+                    airGroup, BigEnemy(random.randint(20, CONSTANTS.WIDTH), 20)
+                )
             lastAddBigEnemyTime = nowTime
-        
+
         if nowTime > 20000 and nowTime - lastAddAddHpBulletTime > 10000:
             random.seed()
             if random.randint(1, 100) > 90:
-                addEnemyWithoutCollide(airGroup,AddHpBullet(False, random.randint(20, CONSTANTS.WIDTH), 0))
+                addEnemyWithoutCollide(
+                    airGroup, AddHpBullet(False, random.randint(20, CONSTANTS.WIDTH), 0)
+                )
             lastAddAddHpBulletTime = nowTime
         if nowTime > 20000 and nowTime - lastAddBUlletBulletTime > 10000:
             random.seed()
             if random.randint(1, 100) > 50:
-                addEnemyWithoutCollide(airGroup,AddBulletBullet(False, random.randint(20, CONSTANTS.WIDTH), 0))
+                addEnemyWithoutCollide(
+                    airGroup,
+                    AddBulletBullet(False, random.randint(20, CONSTANTS.WIDTH), 0),
+                )
             lastAddBUlletBulletTime = nowTime
         if nowTime > 20000 and nowTime - lastAddFuelBulletTime > 10000:
             random.seed()
             if random.randint(1, 100) > 75:
-                addEnemyWithoutCollide(airGroup,AddFuelBullet(False, random.randint(20, CONSTANTS.WIDTH), 0))
+                addEnemyWithoutCollide(
+                    airGroup,
+                    AddFuelBullet(False, random.randint(20, CONSTANTS.WIDTH), 0),
+                )
             lastAddFuelBulletTime = nowTime
 
-def addEnemyWithoutCollide(airGroup,addAim):
+
+def addEnemyWithoutCollide(airGroup, addAim):
     groupCollideAns = pygame.sprite.spritecollide(
         addAim,
         airGroup,
@@ -222,7 +237,7 @@ def addEnemyWithoutCollide(airGroup,addAim):
                 return False
     airGroup.add(addAim)
     return True
-    
+
 
 def updateUI(heroScore, hero: Hero):
     draw_text_box(
@@ -233,11 +248,6 @@ def updateUI(heroScore, hero: Hero):
         textBoxWidth=10,
         textBoxHeight=40,
     )
-    # pygame.draw.rect(
-    #     CONSTANTS.screen,
-    #     CONSTANTS.WHITE,
-    #     (0, CONSTANTS.HEIGHT, CONSTANTS.WIDTH, CONSTANTS.UIHEIGHT),
-    # )
     pygame.draw.rect(
         CONSTANTS.screen, CONSTANTS.BLACK, (0, CONSTANTS.HEIGHT, CONSTANTS.WIDTH, 1)
     )

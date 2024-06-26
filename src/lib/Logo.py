@@ -1,6 +1,5 @@
 import time
 import pygame
-from pygame.surface import Surface
 import src.lib.Constants as CONSTANTS
 
 LOGO_A = [
@@ -38,7 +37,9 @@ def movingLogoFromTo(
     speed: int = 10,
 ) -> None:
     CONSTANTS.screen.fill(CONSTANTS.WHITE)
-    CONSTANTS.screen.blit(CONSTANTS.superResourceDict.getResource(CONSTANTS.BGIMAGE), (0, 0))
+    CONSTANTS.screen.blit(
+        CONSTANTS.superResourceDict.getResource(CONSTANTS.BGIMAGE), (0, 0)
+    )
     showLogo()
     pygame.display.flip()
     nowX = startX
@@ -49,7 +50,9 @@ def movingLogoFromTo(
         nowX += speedX
         nowY += speedY
         CONSTANTS.screen.fill(CONSTANTS.WHITE)
-        CONSTANTS.screen.blit(CONSTANTS.superResourceDict.getResource(CONSTANTS.BGIMAGE), (0, 0))
+        CONSTANTS.screen.blit(
+            CONSTANTS.superResourceDict.getResource(CONSTANTS.BGIMAGE), (0, 0)
+        )
         showLogo(nowX, nowY)
         pygame.display.flip()
         time.sleep(0.05)

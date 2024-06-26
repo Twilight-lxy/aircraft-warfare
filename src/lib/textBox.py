@@ -1,5 +1,4 @@
 import pygame
-from pygame.surface import Surface
 from src.lib.typrDefine import ColorType, FontType
 import src.lib.Constants as CONSTANTS
 

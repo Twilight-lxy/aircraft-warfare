@@ -1,7 +1,4 @@
-import copy
 import pygame
-from pygame.sprite import Group
-from pygame.time import Clock
 from src.classes.MobileEntity import MobileEntity
 from src.classes.ResourceDict import AllResourceDict
 import src.lib.Constants as CONSTANTS

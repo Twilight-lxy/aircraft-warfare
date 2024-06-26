@@ -1,8 +1,5 @@
-import copy
 import pygame
-from pygame.sprite import Group
-from pygame.time import Clock
-from src.classes.ResourceDict import ResourceDict, AllResourceDict
+from src.classes.ResourceDict import AllResourceDict
 from src.classes.Aircraft import Aircraft
 import src.lib.Constants as CONSTANTS
 from src.enitiy.machingGun import MachingGun
@@ -35,8 +32,6 @@ class MiddleEnemy(Aircraft):
         deathImage4 = pygame.image.load("images/enemy2_down1.png").convert_alpha()
         allRes.addImage(CONSTANTS.DEATHIMAGED, deathImage4)
         allRes.addValue(CONSTANTS.DEATHIMAGENUM, 4)
-        # deathSound = pygame.mixer.Sound("sound/enemy1_down.wav")
-        # deathSound.set_volume(0.2)
         deathSound = "sound/enemy1_down.wav"
         allRes.addSound(CONSTANTS.DEATHSOUND, deathSound)
         allRes.addValue(CONSTANTS.AUTOMOVESPEEDX, 0)

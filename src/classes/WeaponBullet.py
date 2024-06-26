@@ -1,7 +1,3 @@
-import pygame
-from pygame.sprite import Group
-from pygame.time import Clock
-
 from src.classes.ResourceDict import AllResourceDict
 from src.classes.MobileEntity import MobileEntity
 import src.lib.Constants as CONSTANTS
@@ -18,7 +14,16 @@ class WeaponBullet(MobileEntity):
         autoMoveSpeedX: int = 0,
         autoMoveSpeedY: int = 0,
     ):
-        super().__init__(iFF, allRes, X, Y, autoMoveOn, autoMoveSpeedX, autoMoveSpeedY,TYPE=CONSTANTS.BulletType)
+        super().__init__(
+            iFF,
+            allRes,
+            X,
+            Y,
+            autoMoveOn,
+            autoMoveSpeedX,
+            autoMoveSpeedY,
+            TYPE=CONSTANTS.BulletType,
+        )
         self.setAutoDeath(True)
 
     def update(self):

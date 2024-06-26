@@ -1,9 +1,5 @@
-import copy
 import math
 import pygame
-from pygame.sprite import Group
-from pygame.time import Clock
-from src.classes.MobileEntity import MobileEntity
 from src.classes.ResourceDict import AllResourceDict
 import src.lib.Constants as CONSTANTS
 from src.classes.WeaponBullet import WeaponBullet
@@ -67,7 +63,6 @@ class Missile(WeaponBullet):
         if self.aim == None:
             super().autoMove()
         else:
-            # print(self.maxLockTime, pygame.time.get_ticks())
             if self.maxLockTime > pygame.time.get_ticks():
                 dx = self.aim.getMidX() - self.getMidX()
                 dy = self.aim.getMidY() - self.getMidY()
@@ -106,7 +101,7 @@ class Missile(WeaponBullet):
         newCopy.baseImage = self.image
         newCopy.__class__ = Missile
         return newCopy
-    
+
     def autoDeath(self):
         isOUT = False
         if self.deathing != -1:
