@@ -152,6 +152,7 @@ def collideMask(mask1, mask2, pos1, pos2):  # 用于检测Mask碰撞的函数
 
 
 def addEnemy(queue: Queue, airGroup):
+    startTime = pygame.time.get_ticks()
     lastAddSmallEnemyTime = 0
     lastAddMiddleEnemyTime = 0
     lastAddBigEnemyTime = 0
@@ -162,7 +163,7 @@ def addEnemy(queue: Queue, airGroup):
     while True:
         time.sleep(0.5)
         mess = None
-        nowTime = pygame.time.get_ticks()
+        nowTime = pygame.time.get_ticks() - startTime
         try:
             mess = queue.get(False)
         except:

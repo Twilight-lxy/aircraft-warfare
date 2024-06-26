@@ -63,7 +63,10 @@ def playSoundTask(soundPath):
         return
     sound = getSound(soundPath)
     if sound.__class__ == pygame.mixer.Sound:
-        pygame.mixer.find_channel().play(sound)
+        try:
+            pygame.mixer.find_channel().play(sound)
+        except:
+            pass
 
 @lru_cache(maxsize=32)
 def getSound(path):
