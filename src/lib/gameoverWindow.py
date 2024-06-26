@@ -22,11 +22,6 @@ def gameoverWindow(gameScore,threadQueue:Queue):
     root.geometry(rsize)
     root.resizable(width=False,height=False)
 
-    canvas = tk.Canvas(root, width=400, height=200)
-    canvas.pack()
-    img = tk.PhotoImage(file="images/background.png")
-    canvas.create_image(0, 0, anchor="nw", image=img)
-
     menu = tk.Label(root, text='游戏结束', font='Any 30')
     menu.place(x=120, y=0)
     score = tk.Label(root, text='分数:' + str(gameScore), font='Any 25')
