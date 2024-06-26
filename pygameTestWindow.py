@@ -1,3 +1,4 @@
+import time
 import pygame
 from src.lib.pauseWindow import pasueMain
 import src.lib.Constants as CONSTANTS
@@ -13,8 +14,13 @@ def init():
     pygame.display.set_caption("PygamTest")
 
 def main():
+    init()
+    tick = pygame.time.get_ticks()
+    print(tick)
+    time.sleep(1)
+    tick = pygame.time.get_ticks()
+    print(tick)
     # clock = pygame.time.Clock()
-    # init()
     # screen.fill(WHITE)
     # loadevent = pygame.event.Event(pygame.USEREVENT,tip="load")
     # pygame.event.post(loadevent)
@@ -49,9 +55,9 @@ def main():
     #                     clock.tick(1)
     #     clock.tick(30)
     #     pygame.display.flip()
-    queue = Queue()
-    pasueMain(queue)
-    getLoginMess(queue)
+    # queue = Queue()
+    # pasueMain(queue)
+    # getLoginMess(queue)
 
 if __name__ == "__main__":
     try:

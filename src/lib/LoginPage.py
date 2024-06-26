@@ -8,11 +8,12 @@ from src.lib.textBox import draw_text_box
 def logIn() -> str:
     while not CONSTANTS.threadQueue.empty():
         CONSTANTS.threadQueue.get()
-    mess, username = ("login", "null")
+    mess, username = ("logined", "null")
     mouseInloginTextBox = False
     mouseInQuitTextBox = False
     while True:
         CONSTANTS.screen.fill(CONSTANTS.WHITE)
+        CONSTANTS.screen.blit(CONSTANTS.superResourceDict.getResource(CONSTANTS.BGIMAGE), (0, 0))
         showLogo(0, 100)
         loginTextBox = draw_text_box(
             mess="login or register",

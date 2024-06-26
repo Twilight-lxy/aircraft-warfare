@@ -15,12 +15,17 @@ class AddBulletBullet(WeaponBullet):
         FireX: int,
         FireY: int,
     ):
-        super().__init__(iFF, CONSTANTS.superResourceDict.getResource(CONSTANTS.ADDBULLETBULLET).copyAllResourceDict())
+        super().__init__(
+            iFF,
+            CONSTANTS.superResourceDict.getResource(
+                CONSTANTS.ADDBULLETBULLET
+            ).copyAllResourceDict(),
+        )
         self.moveTo(FireX, FireY)
         self.setAutoMove(True)
         if iFF == True:
-            self.autoMoveSpeedX*=-1
-            self.autoMoveSpeedY*=-1
+            self.autoMoveSpeedX *= -1
+            self.autoMoveSpeedY *= -1
         self.setCanBeBullet(False)
 
     def loadAllResource() -> AllResourceDict:
@@ -28,7 +33,7 @@ class AddBulletBullet(WeaponBullet):
         normalImage = pygame.image.load("images/bullet_supply.png").convert_alpha()
         allRes.addImage(CONSTANTS.NORMALIMAGE, normalImage)
         allRes.addValue(CONSTANTS.AUTOMOVESPEEDX, 0)
-        allRes.addValue(CONSTANTS.AUTOMOVESPEEDY, 10)
+        allRes.addValue(CONSTANTS.AUTOMOVESPEEDY, 7.5)
         allRes.addValue(CONSTANTS.DEATHIMAGENUM, 0)
         allRes.addValue(CONSTANTS.HP, 10)
         allRes.addValue(CONSTANTS.DAMAGEVALUE, 0)
@@ -37,10 +42,12 @@ class AddBulletBullet(WeaponBullet):
 
     def hit(self, hitAim):
         if hitAim.TYPE == CONSTANTS.AircraftType:
-            hitAim.normalWeapon.bulltNum = hitAim.normalWeapon.fullbulltNum
+            hitAim.normalWeapon.bulltNum += hitAim.normalWeapon.fullbulltNum * 0.1
+            if hitAim.normalWeapon.bulltNum > hitAim.normalWeapon.fullbulltNum:
+                hitAim.normalWeapon.bulltNum = hitAim.normalWeapon.fullbulltNum
         super().hit(hitAim)
-    
+
     def createCopy(self):
         newCopy = super().createCopy()
-        newCopy.__class__=AddBulletBullet
+        newCopy.__class__ = AddBulletBullet
         return newCopy

@@ -29,7 +29,7 @@ class MissileLauncher(AircraftWeapon):
         # deathSound.set_volume(1)
         deathSound = "sound/supply.wav"
         allRes.addSound(CONSTANTS.BULLETSOUND, deathSound)
-        allRes.addValue(CONSTANTS.FIREINTERVAL, 1000)
+        allRes.addValue(CONSTANTS.FIREINTERVAL, 500)
         allRes.addValue(CONSTANTS.NAME, "MissileLauncher")
         allRes.addValue(CONSTANTS.BULLETNUM,10)
         return allRes

@@ -49,7 +49,7 @@ class Missile(WeaponBullet):
         allRes.addValue(CONSTANTS.DAMAGEVALUE, 200)
         allRes.addValue(CONSTANTS.NAME, "Missile")
         allRes.addValue(CONSTANTS.MAXMOVESPEED, 5)
-        allRes.addValue(CONSTANTS.MAXLOCKTIME, 500)
+        allRes.addValue(CONSTANTS.MAXLOCKTIME, 1000)
         return allRes
 
     def hit(self, hitAim):

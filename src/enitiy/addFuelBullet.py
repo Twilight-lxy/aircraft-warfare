@@ -15,12 +15,17 @@ class AddFuelBullet(WeaponBullet):
         FireX: int,
         FireY: int,
     ):
-        super().__init__(iFF, CONSTANTS.superResourceDict.getResource(CONSTANTS.ADDFUELBULLET).copyAllResourceDict())
+        super().__init__(
+            iFF,
+            CONSTANTS.superResourceDict.getResource(
+                CONSTANTS.ADDFUELBULLET
+            ).copyAllResourceDict(),
+        )
         self.moveTo(FireX, FireY)
         self.setAutoMove(True)
         if iFF == True:
-            self.autoMoveSpeedX*=-1
-            self.autoMoveSpeedY*=-1
+            self.autoMoveSpeedX *= -1
+            self.autoMoveSpeedY *= -1
         self.setCanBeBullet(False)
 
     def loadAllResource() -> AllResourceDict:
@@ -28,7 +33,7 @@ class AddFuelBullet(WeaponBullet):
         normalImage = pygame.image.load("images/fuel.png").convert_alpha()
         allRes.addImage(CONSTANTS.NORMALIMAGE, normalImage)
         allRes.addValue(CONSTANTS.AUTOMOVESPEEDX, 0)
-        allRes.addValue(CONSTANTS.AUTOMOVESPEEDY, 10)
+        allRes.addValue(CONSTANTS.AUTOMOVESPEEDY, 7.5)
         allRes.addValue(CONSTANTS.DEATHIMAGENUM, 0)
         allRes.addValue(CONSTANTS.HP, 10)
         allRes.addValue(CONSTANTS.DAMAGEVALUE, 0)
@@ -38,12 +43,14 @@ class AddFuelBullet(WeaponBullet):
     def hit(self, hitAim):
         if hitAim.TYPE == CONSTANTS.AircraftType:
             try:
-                hitAim.fuel = hitAim.fullfuel
+                hitAim.fuel += hitAim.fullfuel * 0.1
+                if hitAim.fuel > hitAim.fullfuel:
+                    hitAim.fuel = hitAim.fullfuel
             except:
                 pass
         super().hit(hitAim)
-    
+
     def createCopy(self):
         newCopy = super().createCopy()
-        newCopy.__class__=AddFuelBullet
+        newCopy.__class__ = AddFuelBullet
         return newCopy

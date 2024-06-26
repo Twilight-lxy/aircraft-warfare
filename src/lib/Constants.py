@@ -44,6 +44,7 @@ AircraftType = "Aircraft"
 BulletType = "Bullet"
 # 通用
 BGIMAGE ="BackGroundImage"
+GAMEBGIMAGE ="GameBackGroundImage"
 NAME = "Name"  # 名称
 NORMALIMAGE = "NormalImage"  # 基础模型
 DEATHIMAGEA = "DeathImageA"  # 死亡模型1

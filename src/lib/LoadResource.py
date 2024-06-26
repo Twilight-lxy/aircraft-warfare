@@ -22,8 +22,6 @@ def loadresource():
     CONSTANTS.threadQueue.put(("loading", "0"))
     pygame.mixer.music.load("sound/game_music.ogg")
     pygame.mixer.music.set_volume(0.1)
-    backgroundImage = pygame.image.load("images/background.png").convert()
-    CONSTANTS.superResourceDict.addResourse(CONSTANTS.BGIMAGE,backgroundImage)
     CONSTANTS.threadQueue.put(("loading", "10"))
     loadResourceByClassName(CONSTANTS.HEROAIRCRAFT,Hero)
     loadResourceByClassName(CONSTANTS.MACHINGGUN,MachingGun)

@@ -24,7 +24,6 @@ LOGO_A = [
 
 
 def showLogo(x: int = 0, y: int = (CONSTANTS.HEIGHT / 2 - 100)) -> None:
-    CONSTANTS.screen.fill(CONSTANTS.WHITE)
     logoFont = pygame.font.SysFont(CONSTANTS.DEFALTFONT, 10)
     for i, line in enumerate(LOGO_A):
         text_surface = logoFont.render(line, True, CONSTANTS.BLACK)
@@ -38,6 +37,8 @@ def movingLogoFromTo(
     endY: int = 100,
     speed: int = 10,
 ) -> None:
+    CONSTANTS.screen.fill(CONSTANTS.WHITE)
+    CONSTANTS.screen.blit(CONSTANTS.superResourceDict.getResource(CONSTANTS.BGIMAGE), (0, 0))
     showLogo()
     pygame.display.flip()
     nowX = startX
@@ -47,6 +48,8 @@ def movingLogoFromTo(
     while not (nowX == endX and nowY == endY):
         nowX += speedX
         nowY += speedY
+        CONSTANTS.screen.fill(CONSTANTS.WHITE)
+        CONSTANTS.screen.blit(CONSTANTS.superResourceDict.getResource(CONSTANTS.BGIMAGE), (0, 0))
         showLogo(nowX, nowY)
         pygame.display.flip()
         time.sleep(0.05)

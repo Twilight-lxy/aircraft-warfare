@@ -22,7 +22,7 @@ class BombBullet(WeaponBullet):
         if iFF == True:
             self.autoMoveSpeedX*=-1
             self.autoMoveSpeedY*=-1
-        self.setCanBeBullet(False)
+        self.setCanBeBullet(True)
         
 
     def loadAllResource() -> AllResourceDict:
@@ -48,9 +48,9 @@ class BombBullet(WeaponBullet):
         deathSound = "sound/use_bomb.wav"
         allRes.addSound(CONSTANTS.DEATHSOUND, deathSound)
         allRes.addValue(CONSTANTS.AUTOMOVESPEEDX, 0)
-        allRes.addValue(CONSTANTS.AUTOMOVESPEEDY, 0.5)
-        allRes.addValue(CONSTANTS.DAMAGEVALUE, 1000)
-        allRes.addValue(CONSTANTS.HP, 20)
+        allRes.addValue(CONSTANTS.AUTOMOVESPEEDY, 1)
+        allRes.addValue(CONSTANTS.DAMAGEVALUE, 5000)
+        allRes.addValue(CONSTANTS.HP, 10)
         allRes.addValue(CONSTANTS.KILLSCORE,5)
         allRes.addValue(CONSTANTS.NAME, "BombBullet")
         return allRes

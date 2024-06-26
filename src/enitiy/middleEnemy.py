@@ -42,8 +42,8 @@ class MiddleEnemy(Aircraft):
         allRes.addValue(CONSTANTS.AUTOMOVESPEEDX, 0)
         allRes.addValue(CONSTANTS.AUTOMOVESPEEDY, 1)
         allRes.addValue(CONSTANTS.DAMAGEVALUE, 15)
-        allRes.addValue(CONSTANTS.HP, 25)
-        allRes.addValue(CONSTANTS.KILLSCORE,10)
+        allRes.addValue(CONSTANTS.HP, 80)
+        allRes.addValue(CONSTANTS.KILLSCORE,15)
         allRes.addValue(CONSTANTS.NAME, "MiddleEnemy")
         return allRes
     def hit(self, hitAim):

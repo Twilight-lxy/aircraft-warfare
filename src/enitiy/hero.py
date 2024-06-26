@@ -57,7 +57,7 @@ class Hero(Aircraft):
         deathSound = "sound/me_down.wav"
         allRes.addSound(CONSTANTS.DEATHSOUND, deathSound)
         allRes.addValue(CONSTANTS.MOVESPEED, 5)
-        allRes.addValue(CONSTANTS.HIGHSPEEDMOVESPEED, 10)
+        allRes.addValue(CONSTANTS.HIGHSPEEDMOVESPEED, 8)
         allRes.addValue(CONSTANTS.HIGHSPEEDMOVEFUEL, 1000)
         allRes.addValue(CONSTANTS.HP, 1000)
         allRes.addValue(CONSTANTS.DAMAGEVALUE, 10)

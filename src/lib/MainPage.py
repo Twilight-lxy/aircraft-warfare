@@ -14,6 +14,7 @@ def mainPage(
     mouseInQuitTextBox = False
     while True:
         CONSTANTS.screen.fill(CONSTANTS.WHITE)
+        CONSTANTS.screen.blit(CONSTANTS.superResourceDict.getResource(CONSTANTS.BGIMAGE), (0, 0))
         showLogo(0, 100)
         welcomeTextBox = draw_text_box(
             mess="Welcome " + username + " !",

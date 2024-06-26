@@ -78,8 +78,6 @@ class MobileEntity(pygame.sprite.Sprite):
         self.move()
 
     def update(self):
-        if self.HP > self.fullHp:
-            self.HP = self.fullHp
         if self.autoMoveOn:
             self.autoMove()
         if self.autoDeathOn:

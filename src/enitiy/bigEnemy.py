@@ -47,8 +47,8 @@ class BigEnemy(Aircraft):
         allRes.addValue(CONSTANTS.AUTOMOVESPEEDX, 0)
         allRes.addValue(CONSTANTS.AUTOMOVESPEEDY, 1)
         allRes.addValue(CONSTANTS.DAMAGEVALUE, 20)
-        allRes.addValue(CONSTANTS.HP, 70)
-        allRes.addValue(CONSTANTS.KILLSCORE,20)
+        allRes.addValue(CONSTANTS.HP, 400)
+        allRes.addValue(CONSTANTS.KILLSCORE,50)
         allRes.addValue(CONSTANTS.NAME, "BigEnemy")
         return allRes
     def hit(self, hitAim):

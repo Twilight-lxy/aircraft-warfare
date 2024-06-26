@@ -28,6 +28,6 @@ class UniversalLauncher(AircraftWeapon):
         deathSound = "sound/supply.wav"
         allRes.addSound(CONSTANTS.BULLETSOUND, deathSound)
         allRes.addValue(CONSTANTS.FIREINTERVAL, 5000)
-        allRes.addValue(CONSTANTS.NAME, "UniversalLauncher")
+        allRes.addValue(CONSTANTS.NAME, "Bobm Launcher")
         allRes.addValue(CONSTANTS.BULLETNUM,10)
         return allRes

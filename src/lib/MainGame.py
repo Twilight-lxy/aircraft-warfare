@@ -34,6 +34,7 @@ def startGame(username: User):
     mess = ""
     pygame.mixer.music.play(-1)
     CONSTANTS.screen.fill(CONSTANTS.WHITE)
+    CONSTANTS.screen.blit(CONSTANTS.superResourceDict.getResource(CONSTANTS.BGIMAGE), (0, 0))
     hero = Hero()
     CONSTANTS.hero = hero
     CONSTANTS.allEnemyGroup.add(hero)
@@ -74,6 +75,7 @@ def startGame(username: User):
             pygame.event.pump()
             continue
         CONSTANTS.screen.fill(CONSTANTS.WHITE)
+        CONSTANTS.screen.blit(CONSTANTS.superResourceDict.getResource(CONSTANTS.BGIMAGE), (0, 0))
         CONSTANTS.allEnemyGroup.update()
         for event in pygame.event.get():  # 获取用户事件
             if event.type == pygame.QUIT:  # 如果事件为关闭窗口
@@ -122,12 +124,18 @@ def doGroupCollide(aim1, aim2):
         return 0
     if aim1 == aim2:
         return 0
+    aim1hitaim2 = False
+    aim2hitaim1 = False
     if aim1.HP > 0:
+        aim1hitaim2 = True
+    if aim2.HP > 0:
+        aim2hitaim1 = True
+    if aim1hitaim2:
         if aim1.TYPE == CONSTANTS.BulletType and aim2.canBeBullet == False:
             pass
         else:
             aim1.hit(aim2)
-    if aim1.HP > 0:
+    if aim2hitaim1:
         if aim1.canBeBullet == False and aim2.TYPE == CONSTANTS.BulletType:
             pass
         else:
@@ -145,11 +153,12 @@ def collideMask(mask1, mask2, pos1, pos2):  # 用于检测Mask碰撞的函数
 
 def addEnemy(queue: Queue, airGroup):
     lastAddSmallEnemyTime = 0
-    lastAddAddHpBulletTime = 0
     lastAddMiddleEnemyTime = 0
     lastAddBigEnemyTime = 0
+
     lastAddBUlletBulletTime = 0
     lastAddFuelBulletTime = 0
+    lastAddAddHpBulletTime = 0
     while True:
         time.sleep(0.5)
         mess = None
@@ -165,37 +174,38 @@ def addEnemy(queue: Queue, airGroup):
                 mess.join()
             except:
                 pass
-        if len(airGroup.sprites()) > 20:
+        if len(airGroup.sprites()) > 100:
             time.sleep(0.5)
             continue
-        if nowTime - lastAddSmallEnemyTime > 1000:
+        if nowTime > 1000 and nowTime - lastAddSmallEnemyTime > 1000:
             random.seed()
-            if random.randint(1, 100) > 25:
+            if random.randint(1, 100) > 20:
                 addEnemyWithoutCollide(airGroup,SmallEnemy(random.randint(20, CONSTANTS.WIDTH), 20))
             lastAddSmallEnemyTime = nowTime
-        if nowTime - lastAddMiddleEnemyTime > 1000:
+        if nowTime > 6000 and  nowTime - lastAddMiddleEnemyTime > 2000:
             random.seed()
             if random.randint(1, 100) > 50:
                 addEnemyWithoutCollide(airGroup,MiddleEnemy(random.randint(20, CONSTANTS.WIDTH), 20))
             lastAddMiddleEnemyTime = nowTime
-        if nowTime - lastAddBigEnemyTime > 1000:
+        if  nowTime > 15000 and nowTime - lastAddBigEnemyTime > 2000:
             random.seed()
             if random.randint(1, 100) > 75:
                 addEnemyWithoutCollide(airGroup,BigEnemy(random.randint(20, CONSTANTS.WIDTH), 20))
             lastAddBigEnemyTime = nowTime
-        if nowTime - lastAddAddHpBulletTime > 1000:
+        
+        if nowTime > 20000 and nowTime - lastAddAddHpBulletTime > 10000:
             random.seed()
             if random.randint(1, 100) > 90:
                 addEnemyWithoutCollide(airGroup,AddHpBullet(False, random.randint(20, CONSTANTS.WIDTH), 0))
             lastAddAddHpBulletTime = nowTime
-        if nowTime - lastAddBUlletBulletTime > 1000:
+        if nowTime > 20000 and nowTime - lastAddBUlletBulletTime > 10000:
             random.seed()
-            if random.randint(1, 100) > 80:
+            if random.randint(1, 100) > 50:
                 addEnemyWithoutCollide(airGroup,AddBulletBullet(False, random.randint(20, CONSTANTS.WIDTH), 0))
             lastAddBUlletBulletTime = nowTime
-        if nowTime - lastAddFuelBulletTime > 1000:
+        if nowTime > 20000 and nowTime - lastAddFuelBulletTime > 10000:
             random.seed()
-            if random.randint(1, 100) > 80:
+            if random.randint(1, 100) > 75:
                 addEnemyWithoutCollide(airGroup,AddFuelBullet(False, random.randint(20, CONSTANTS.WIDTH), 0))
             lastAddFuelBulletTime = nowTime
 
@@ -222,16 +232,16 @@ def updateUI(heroScore, hero: Hero):
         textBoxWidth=10,
         textBoxHeight=40,
     )
-    pygame.draw.rect(
-        CONSTANTS.screen,
-        CONSTANTS.WHITE,
-        (0, CONSTANTS.HEIGHT, CONSTANTS.WIDTH, CONSTANTS.UIHEIGHT),
-    )
+    # pygame.draw.rect(
+    #     CONSTANTS.screen,
+    #     CONSTANTS.WHITE,
+    #     (0, CONSTANTS.HEIGHT, CONSTANTS.WIDTH, CONSTANTS.UIHEIGHT),
+    # )
     pygame.draw.rect(
         CONSTANTS.screen, CONSTANTS.BLACK, (0, CONSTANTS.HEIGHT, CONSTANTS.WIDTH, 1)
     )
     drawHealthBar(
-        1,
+        16,
         CONSTANTS.HEIGHT + 1,
         100,
         40,
@@ -241,7 +251,7 @@ def updateUI(heroScore, hero: Hero):
     draw_text_box(
         fontSize=15,
         mess=" HP: " + str(hero.HP),
-        textBoxMidX=50,
+        textBoxMidX=66,
         textBoxMidY=CONSTANTS.HEIGHT + 21,
         textBoxWidth=100,
         textBoxHeight=40,
@@ -249,7 +259,7 @@ def updateUI(heroScore, hero: Hero):
         autoHeight=False,
     )
     drawHealthBar(
-        1,
+        16,
         CONSTANTS.HEIGHT + 42,
         100,
         40,
@@ -260,7 +270,7 @@ def updateUI(heroScore, hero: Hero):
     draw_text_box(
         fontSize=15,
         mess=" FUEL: " + str(hero.fuel),
-        textBoxMidX=50,
+        textBoxMidX=66,
         textBoxMidY=CONSTANTS.HEIGHT + 62,
         textBoxWidth=100,
         textBoxHeight=40,
@@ -280,7 +290,7 @@ def updateUI(heroScore, hero: Hero):
         mess = ("StandBy", CONSTANTS.GREEN, 0)
     if mess[0] == "Loading":
         drawHealthBar(
-            1,
+            16,
             CONSTANTS.HEIGHT + 82,
             100,
             40,
@@ -292,7 +302,7 @@ def updateUI(heroScore, hero: Hero):
     draw_text_box(
         fontSize=15,
         mess=mess[0],
-        textBoxMidX=51,
+        textBoxMidX=66,
         textBoxMidY=CONSTANTS.HEIGHT + 103,
         textBoxWidth=100,
         textBoxHeight=40,
@@ -314,7 +324,7 @@ def updateUI(heroScore, hero: Hero):
     draw_text_box(
         fontSize=15,
         mess="Weapon-1",
-        textBoxMidX=152,
+        textBoxMidX=182,
         textBoxMidY=CONSTANTS.HEIGHT + 21,
         textBoxWidth=100,
         textBoxHeight=40,
@@ -326,7 +336,7 @@ def updateUI(heroScore, hero: Hero):
     draw_text_box(
         fontSize=15,
         mess=info[0],
-        textBoxMidX=152,
+        textBoxMidX=182,
         textBoxMidY=CONSTANTS.HEIGHT + 62,
         textBoxWidth=100,
         textBoxHeight=40,
@@ -337,7 +347,7 @@ def updateUI(heroScore, hero: Hero):
     )
 
     drawHealthBar(
-        102,
+        132,
         CONSTANTS.HEIGHT + 82,
         100,
         40,
@@ -348,7 +358,7 @@ def updateUI(heroScore, hero: Hero):
     draw_text_box(
         fontSize=15,
         mess=mess[0],
-        textBoxMidX=152,
+        textBoxMidX=182,
         textBoxMidY=CONSTANTS.HEIGHT + 103,
         textBoxWidth=100,
         textBoxHeight=40,
@@ -370,7 +380,7 @@ def updateUI(heroScore, hero: Hero):
     draw_text_box(
         fontSize=15,
         mess="Weapon-2",
-        textBoxMidX=253,
+        textBoxMidX=298,
         textBoxMidY=CONSTANTS.HEIGHT + 21,
         textBoxWidth=100,
         textBoxHeight=40,
@@ -382,7 +392,7 @@ def updateUI(heroScore, hero: Hero):
     draw_text_box(
         fontSize=15,
         mess=info[0],
-        textBoxMidX=253,
+        textBoxMidX=298,
         textBoxMidY=CONSTANTS.HEIGHT + 62,
         textBoxWidth=100,
         textBoxHeight=40,
@@ -393,7 +403,7 @@ def updateUI(heroScore, hero: Hero):
     )
 
     drawHealthBar(
-        204,
+        248,
         CONSTANTS.HEIGHT + 82,
         100,
         40,
@@ -404,7 +414,7 @@ def updateUI(heroScore, hero: Hero):
     draw_text_box(
         fontSize=15,
         mess=mess[0],
-        textBoxMidX=253,
+        textBoxMidX=298,
         textBoxMidY=CONSTANTS.HEIGHT + 103,
         textBoxWidth=100,
         textBoxHeight=40,
@@ -426,7 +436,7 @@ def updateUI(heroScore, hero: Hero):
     draw_text_box(
         fontSize=15,
         mess="Weapon-3",
-        textBoxMidX=355,
+        textBoxMidX=414,
         textBoxMidY=CONSTANTS.HEIGHT + 21,
         textBoxWidth=100,
         textBoxHeight=40,
@@ -438,7 +448,7 @@ def updateUI(heroScore, hero: Hero):
     draw_text_box(
         fontSize=15,
         mess=info[0],
-        textBoxMidX=355,
+        textBoxMidX=414,
         textBoxMidY=CONSTANTS.HEIGHT + 62,
         textBoxWidth=100,
         textBoxHeight=40,
@@ -449,7 +459,7 @@ def updateUI(heroScore, hero: Hero):
     )
 
     drawHealthBar(
-        305,
+        364,
         CONSTANTS.HEIGHT + 82,
         100,
         40,
@@ -460,7 +470,7 @@ def updateUI(heroScore, hero: Hero):
     draw_text_box(
         fontSize=15,
         mess=mess[0],
-        textBoxMidX=355,
+        textBoxMidX=414,
         textBoxMidY=CONSTANTS.HEIGHT + 103,
         textBoxWidth=100,
         textBoxHeight=40,
