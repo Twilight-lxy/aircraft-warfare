@@ -43,18 +43,22 @@ def checkLogin(user:User)->bool:
     return False
 
 #修改
-def userUpdate(user:User)->bool:
+def userUpdate(oldusername:str,user:User)->bool:
     conn = sqlite3.connect("otherresource/userMess.db")#连接数据库
     cur = conn.cursor()#创建游标
     username = user.getUname()#获得name
     password = user.getUpassword()#获得password
-    if username and password:
-        sql = "update userMess set Upassword=? where Uname=?"
-        cur.execute(sql,(password,username))
+    sql = "update userMess set Uname=?,Upassword=? where Uname=?"
+    cur.execute(sql,(username,password,oldusername))
+    data = cur.fetchall()
+    if data:
         return True
     conn.commit()
     cur.close()
     conn.close()
+
+
+    return True
     return False
 
 #添加记录

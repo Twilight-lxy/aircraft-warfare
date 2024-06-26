@@ -126,7 +126,7 @@ def main():
             except:
                 pass
             if closemess == "close":
-                p2 = Process(target=changePassword, args=(queue,))
+                p2 = Process(target=changePassword, args=(username,queue,))
                 p2.start()
                 killaim.append(p2)
         elif retmess == "back":

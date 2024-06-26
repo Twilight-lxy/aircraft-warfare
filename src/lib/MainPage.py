@@ -8,7 +8,7 @@ from src.lib.textBox import draw_text_box
 def mainPage(
     username: User
 ) -> str:
-    mouseInWelcomeTextBox = False
+    mouseInchangeUserTextBox = False
     mouseInStartTextBox = False
     mouseInRankingTextBox = False
     mouseInQuitTextBox = False
@@ -23,12 +23,21 @@ def mainPage(
             textBoxMidY=350,
             textBoxMidX=CONSTANTS.WIDTH / 2,
         )
+        changeUserTextBox = draw_text_box(
+            mess="Change User Info",
+            fontSize=25,
+            textBoxHeight=50,
+            textBoxWidth=300,
+            textBoxMidY=450,
+            textBoxMidX=CONSTANTS.WIDTH / 2,
+        )
+
         startTextBox = draw_text_box(
             mess="START",
             fontSize=25,
             textBoxHeight=50,
             textBoxWidth=300,
-            textBoxMidY=450,
+            textBoxMidY=550,
             textBoxMidX=CONSTANTS.WIDTH / 2,
         )
         rankingTextBox = draw_text_box(
@@ -36,7 +45,7 @@ def mainPage(
             fontSize=25,
             textBoxHeight=50,
             textBoxWidth=300,
-            textBoxMidY=550,
+            textBoxMidY=650,
             textBoxMidX=CONSTANTS.WIDTH / 2,
         )
         quitTextBox = draw_text_box(
@@ -44,7 +53,7 @@ def mainPage(
             fontSize=25,
             textBoxHeight=50,
             textBoxWidth=300,
-            textBoxMidY=650,
+            textBoxMidY=750,
             textBoxMidX=CONSTANTS.WIDTH / 2,
         )
         for event in pygame.event.get():
@@ -53,10 +62,10 @@ def mainPage(
                 break
             if event.type == pygame.MOUSEMOTION:
                 mouse_position = pygame.mouse.get_pos()
-                if welcomeTextBox.collidepoint(mouse_position):
-                    mouseInWelcomeTextBox = True
+                if changeUserTextBox.collidepoint(mouse_position):
+                    mouseInchangeUserTextBox = True
                 else:
-                    mouseInWelcomeTextBox = False
+                    mouseInchangeUserTextBox = False
 
                 if startTextBox.collidepoint(mouse_position):
                     mouseInStartTextBox = True
@@ -73,7 +82,7 @@ def mainPage(
                 else:
                     mouseInQuitTextBox = False
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if mouseInWelcomeTextBox:
+                if mouseInchangeUserTextBox:
                     return "changePassword"
                 if mouseInStartTextBox:
                     return "start"
@@ -81,13 +90,13 @@ def mainPage(
                     return "ranking"
                 if mouseInQuitTextBox:
                     return "back"
-        if mouseInWelcomeTextBox:
-            welcomeTextBox = draw_text_box(
-                mess="Welcome " + username + " !",
+        if mouseInchangeUserTextBox:
+            changeUserTextBox = draw_text_box(
+                mess="Change User Info",
                 fontSize=25,
                 textBoxHeight=50,
                 textBoxWidth=300,
-                textBoxMidY=350,
+                textBoxMidY=450,
                 textBoxMidX=CONSTANTS.WIDTH / 2,
                 textColor=CONSTANTS.WHITE,
                 textBoxSideWidth=0,
@@ -98,7 +107,7 @@ def mainPage(
                 fontSize=25,
                 textBoxHeight=50,
                 textBoxWidth=300,
-                textBoxMidY=450,
+                textBoxMidY=550,
                 textBoxMidX=CONSTANTS.WIDTH / 2,
                 textColor=CONSTANTS.WHITE,
                 textBoxSideWidth=0,
@@ -109,7 +118,7 @@ def mainPage(
                 fontSize=25,
                 textBoxHeight=50,
                 textBoxWidth=300,
-                textBoxMidY=550,
+                textBoxMidY=650,
                 textBoxMidX=CONSTANTS.WIDTH / 2,
                 textColor=CONSTANTS.WHITE,
                 textBoxSideWidth=0,
@@ -120,7 +129,7 @@ def mainPage(
                 fontSize=25,
                 textBoxHeight=50,
                 textBoxWidth=300,
-                textBoxMidY=650,
+                textBoxMidY=750,
                 textBoxMidX=CONSTANTS.WIDTH / 2,
                 textColor=CONSTANTS.WHITE,
                 textBoxSideWidth=0,
