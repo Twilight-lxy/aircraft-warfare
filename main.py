@@ -92,6 +92,7 @@ def main():
     CONSTANTS.screen.fill(CONSTANTS.WHITE)
     src.lib.Logo.movingLogoFromTo()
     queue = multiprocessing.Queue()
+    changequeue = multiprocessing.Queue()
     queue.put(("close"))
     global killaim
     killaim = []
@@ -108,7 +109,7 @@ def main():
         if username == None:
             username = src.lib.LoginPage.logIn()
         if retmess == "":
-            retmess = src.lib.MainPage.mainPage(username)
+            retmess = src.lib.MainPage.mainPage(username,changequeue)
         if retmess == "start":
             username , iscontinue = src.lib.MainGame.startGame(username)
             if iscontinue == "continue":
@@ -132,7 +133,7 @@ def main():
             except:
                 pass
             if closemess == "close":
-                p2 = Process(target=changePassword, args=(username,queue,))
+                p2 = Process(target=changePassword, args=(username,queue,changequeue))
                 p2.start()
                 killaim.append(p2)
         elif retmess == "back":

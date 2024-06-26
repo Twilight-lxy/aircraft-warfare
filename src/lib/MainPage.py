@@ -1,3 +1,4 @@
+import multiprocessing
 import pygame
 import src.lib.Constants as CONSTANTS
 from src.classes.User import User, UserException
@@ -6,7 +7,8 @@ from src.lib.textBox import draw_text_box
 
 
 def mainPage(
-    username: User
+    username: User,
+    changequeue: multiprocessing.Queue
 ) -> str:
     mouseInchangeUserTextBox = False
     mouseInStartTextBox = False
@@ -16,6 +18,10 @@ def mainPage(
         CONSTANTS.screen.fill(CONSTANTS.WHITE)
         CONSTANTS.screen.blit(CONSTANTS.superResourceDict.getResource(CONSTANTS.BGIMAGE), (0, 0))
         showLogo(0, 100)
+        try:
+            username = changequeue.get(False)
+        except:
+            pass
         welcomeTextBox = draw_text_box(
             mess="Welcome " + username + " !",
             fontSize=25,
