@@ -1,9 +1,22 @@
+import multiprocessing
 import tkinter as tk
 
+from src.lib.DataBaseFunc import userUpdate
 from src.classes.User import User
-def update():
-    return True
-def changePassword(user:User):
+def update(username:str,password:str,repassword:str,root:tk.Tk,queue:multiprocessing.Queue):
+
+    if username==''or password=='':
+        tk.messagebox.showinfo(title='信息',message='账号或密码为空！')
+        return
+    user=User(username,password)
+    if(userUpdate(user) and password == repassword):
+        tk.messagebox.showinfo(title='信息',message='修改成功！')
+        root.destroy()
+        queue.put(("close"))
+    else:
+        tk.messagebox.showinfo(title='错误',message='修改失败！')
+    
+def changePassword(queue:multiprocessing.Queue):
     root = tk.Tk()
     root.wm_attributes("-topmost", True)
     root.title('修改密码')
@@ -24,6 +37,6 @@ def changePassword(user:User):
     e_name.place(x=120,y=25)
     e_pwd=tk.Entry(root,width=25,show='*',textvariable=password)
     e_pwd.place(x=120,y=85)
-    b1=tk.Button(root,text='提交',command=update)
+    b1=tk.Button(root,text='提交',command=lambda: update(e_name.get(),e_pwd.get(),root,queue))
     b1.place(x=200,y=140)
     root.mainloop()

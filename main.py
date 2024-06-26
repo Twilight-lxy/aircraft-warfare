@@ -98,6 +98,7 @@ def main():
     # killaim.append(soundPlayProcess)
 
     while True:
+        retmess = ""
         if username == None:
             username = src.lib.LoginPage.logIn()
         if retmess == "":
@@ -118,6 +119,16 @@ def main():
                 p1 = Process(target=showRankingList, args=(queue,))
                 p1.start()
                 killaim.append(p1)
+        elif retmess == "changePassword":
+            closemess = ""
+            try:
+                closemess = queue.get(False)
+            except:
+                pass
+            if closemess == "close":
+                p2 = Process(target=changePassword, args=(queue,))
+                p2.start()
+                killaim.append(p2)
         elif retmess == "back":
             username = None
             pass
