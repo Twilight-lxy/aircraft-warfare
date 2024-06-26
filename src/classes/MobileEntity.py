@@ -36,6 +36,7 @@ class MobileEntity(pygame.sprite.Sprite):
         self.canBeBullet = True
         self.mask = pygame.mask.from_surface(self.image)
         self.TYPE = TYPE
+        self.killScore = self.allRes.getValue(CONSTANTS.KILLSCORE)
 
     def setAutoMove(
         self, autoMoveOn: bool = True, autoMoveSpeedX: int = 0, autoMoveSpeedY: int = 0
@@ -158,16 +159,7 @@ class MobileEntity(pygame.sprite.Sprite):
         return newCopy
 
     def hit(self, hitAim):
-        if hitAim.iFF == self.iFF:
-            if self.TYPE == CONSTANTS.AircraftType and hitAim.TYPE == CONSTANTS.AircraftType:
-                hitAim.X -= hitAim.autoMoveSpeedX
-                hitAim.move()
-                hitAim.autoMoveSpeedX*=-1
-            return
         hitAim.HP -= self.damageValue
-        if hitAim.autoMoveOn == True:
-            random.seed()
-            hitAim.autoMoveSpeedX = hitAim.autoMoveSpeedY * 0.5 * random.randint(-1,1)
 
     def setCanBeBullet(self, canBeBullet: bool):
         self.canBeBullet = canBeBullet

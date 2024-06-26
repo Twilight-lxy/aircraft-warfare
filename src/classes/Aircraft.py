@@ -1,5 +1,6 @@
 import random
 import pygame
+from src.lib.healthBar import drawHealthBar
 from src.classes.AircraftWeapon import AircraftWeapon
 from src.classes.MobileEntity import MobileEntity
 from src.classes.ResourceDict import ResourceDict, AllResourceDict
@@ -30,6 +31,8 @@ class Aircraft(MobileEntity):
 
     def update(self):
         super().update()
+        if self.iFF == False:
+            self.drawHp()
         if self.isAutoUseWeapon:
             self.useWeapon(True)
 
@@ -52,3 +55,18 @@ class Aircraft(MobileEntity):
         newCopy=super().createCopy()
         newCopy.__class__ = Aircraft
         return newCopy
+    
+    def hit(self, hitAim):
+        if hitAim.iFF == self.iFF:
+            if self.TYPE == CONSTANTS.AircraftType and hitAim.TYPE == CONSTANTS.AircraftType:
+                hitAim.X -= hitAim.autoMoveSpeedX
+                hitAim.move()
+                hitAim.autoMoveSpeedX*=-1
+        if hitAim.TYPE == CONSTANTS.AircraftType and hitAim.autoMoveOn == True:
+            random.seed()
+            hitAim.autoMoveSpeedX = hitAim.autoMoveSpeedY * random.randint(-1,1)
+        super().hit(hitAim)
+
+    def drawHp(self):
+        if self.HP != self.fullHp:
+            drawHealthBar(self.rect.x,self.rect.y-5,self.rect.width,5,self.fullHp,self.HP,)

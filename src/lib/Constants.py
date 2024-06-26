@@ -39,10 +39,11 @@ WEAPON2CONTROKEYLIST = [pygame.K_2]
 WEAPON3CONTROKEYLIST = [pygame.K_3]
 
 # 单位资源及属性名称
-EntityType = "Entity"
+EntityType = "Entity"   # 
 AircraftType = "Aircraft"
 BulletType = "Bullet"
 # 通用
+BGIMAGE ="BackGroundImage"
 NAME = "Name"  # 名称
 NORMALIMAGE = "NormalImage"  # 基础模型
 DEATHIMAGEA = "DeathImageA"  # 死亡模型1
@@ -78,6 +79,8 @@ DAMAGEVALUE = "DamageValue"  # 伤害
 ADDHPBULLET = "AddHpBullet"
 MISSILE = "Missile"
 BOMBMULLET = "BombBullet"
+ADDFUELBULLET = "AddFuelBullet"
+ADDBULLETBULLET = "AddBulletBullet"
 # 英雄
 HEROAIRCRAFT = "HeroAircraft"  # 英雄
 HIGHSPEEDIMAGE = "HighSpeedImage"  # 加速模型

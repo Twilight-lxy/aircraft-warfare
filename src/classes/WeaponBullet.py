@@ -30,3 +30,5 @@ class WeaponBullet(MobileEntity):
         newCopy.__class__ = WeaponBullet
         return newCopy
 
+    def hit(self, hitAim):
+        super().hit(hitAim)

@@ -8,14 +8,14 @@ import src.lib.Constants as CONSTANTS
 from src.classes.WeaponBullet import WeaponBullet
 
 
-class AddHpBullet(WeaponBullet):
+class AddBulletBullet(WeaponBullet):
     def __init__(
         self,
         iFF: bool,
         FireX: int,
         FireY: int,
     ):
-        super().__init__(iFF, CONSTANTS.superResourceDict.getResource(CONSTANTS.ADDHPBULLET).copyAllResourceDict())
+        super().__init__(iFF, CONSTANTS.superResourceDict.getResource(CONSTANTS.ADDBULLETBULLET).copyAllResourceDict())
         self.moveTo(FireX, FireY)
         self.setAutoMove(True)
         if iFF == True:
@@ -25,20 +25,22 @@ class AddHpBullet(WeaponBullet):
 
     def loadAllResource() -> AllResourceDict:
         allRes = AllResourceDict()
-        normalImage = pygame.image.load("ColorImages/hero/hero_blood.png").convert_alpha()
+        normalImage = pygame.image.load("images/bullet_supply.png").convert_alpha()
         allRes.addImage(CONSTANTS.NORMALIMAGE, normalImage)
         allRes.addValue(CONSTANTS.AUTOMOVESPEEDX, 0)
         allRes.addValue(CONSTANTS.AUTOMOVESPEEDY, 10)
         allRes.addValue(CONSTANTS.DEATHIMAGENUM, 0)
         allRes.addValue(CONSTANTS.HP, 10)
-        allRes.addValue(CONSTANTS.DAMAGEVALUE, -100)
-        allRes.addValue(CONSTANTS.NAME, "addHpBullet")
+        allRes.addValue(CONSTANTS.DAMAGEVALUE, 0)
+        allRes.addValue(CONSTANTS.NAME, "addBulletBullet")
         return allRes
 
     def hit(self, hitAim):
+        if hitAim.TYPE == CONSTANTS.AircraftType:
+            hitAim.normalWeapon.bulltNum = hitAim.normalWeapon.fullbulltNum
         super().hit(hitAim)
     
     def createCopy(self):
         newCopy = super().createCopy()
-        newCopy.__class__=AddHpBullet
+        newCopy.__class__=AddBulletBullet
         return newCopy

@@ -4,6 +4,8 @@ import threading
 import time
 import pygame
 from pygame import Surface
+from src.enitiy.addFuelBullet import AddFuelBullet
+from src.enitiy.addBulletBullet import AddBulletBullet
 from src.lib.gameoverWindow import gameoverWindow
 from src.enitiy.missile import Missile
 from src.enitiy.middleEnemy import MiddleEnemy
@@ -114,6 +116,8 @@ def startGame(username: User):
 
 
 def doGroupCollide(aim1, aim2):
+    if aim1.iFF == aim2.iFF:
+        return 0
     if not collideMask(aim1.mask, aim2.mask, (aim1.X, aim1.Y), (aim2.X, aim2.Y)):
         return 0
     if aim1 == aim2:
@@ -129,7 +133,7 @@ def doGroupCollide(aim1, aim2):
         else:
             aim2.hit(aim1)
     if aim1.HP <= 0 and aim1.deathing == -1:
-        addScore = aim1.allRes.getValue(CONSTANTS.KILLSCORE)
+        addScore = aim1.killScore
         if addScore != -1:
             return addScore
     return 0
@@ -144,6 +148,8 @@ def addEnemy(queue: Queue, airGroup):
     lastAddAddHpBulletTime = 0
     lastAddMiddleEnemyTime = 0
     lastAddBigEnemyTime = 0
+    lastAddBUlletBulletTime = 0
+    lastAddFuelBulletTime = 0
     while True:
         time.sleep(0.5)
         mess = None
@@ -162,32 +168,36 @@ def addEnemy(queue: Queue, airGroup):
         if len(airGroup.sprites()) > 20:
             time.sleep(0.5)
             continue
-        time.sleep(0.5)
         if nowTime - lastAddSmallEnemyTime > 1000:
             random.seed()
             if random.randint(1, 100) > 25:
                 addEnemyWithoutCollide(airGroup,SmallEnemy(random.randint(20, CONSTANTS.WIDTH), 20))
             lastAddSmallEnemyTime = nowTime
-        time.sleep(0.5)
         if nowTime - lastAddMiddleEnemyTime > 1000:
             random.seed()
             if random.randint(1, 100) > 50:
                 addEnemyWithoutCollide(airGroup,MiddleEnemy(random.randint(20, CONSTANTS.WIDTH), 20))
             lastAddMiddleEnemyTime = nowTime
-        time.sleep(0.5)
         if nowTime - lastAddBigEnemyTime > 1000:
             random.seed()
             if random.randint(1, 100) > 75:
                 addEnemyWithoutCollide(airGroup,BigEnemy(random.randint(20, CONSTANTS.WIDTH), 20))
             lastAddBigEnemyTime = nowTime
-        time.sleep(0.5)
         if nowTime - lastAddAddHpBulletTime > 1000:
             random.seed()
             if random.randint(1, 100) > 90:
                 addEnemyWithoutCollide(airGroup,AddHpBullet(False, random.randint(20, CONSTANTS.WIDTH), 0))
             lastAddAddHpBulletTime = nowTime
-        time.sleep(0.5)
-
+        if nowTime - lastAddBUlletBulletTime > 1000:
+            random.seed()
+            if random.randint(1, 100) > 80:
+                addEnemyWithoutCollide(airGroup,AddBulletBullet(False, random.randint(20, CONSTANTS.WIDTH), 0))
+            lastAddBUlletBulletTime = nowTime
+        if nowTime - lastAddFuelBulletTime > 1000:
+            random.seed()
+            if random.randint(1, 100) > 80:
+                addEnemyWithoutCollide(airGroup,AddFuelBullet(False, random.randint(20, CONSTANTS.WIDTH), 0))
+            lastAddFuelBulletTime = nowTime
 
 def addEnemyWithoutCollide(airGroup,addAim):
     groupCollideAns = pygame.sprite.spritecollide(
