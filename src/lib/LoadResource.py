@@ -1,3 +1,4 @@
+import time
 import pygame
 from src.enitiy.addFuelBullet import AddFuelBullet
 from src.enitiy.addBulletBullet import AddBulletBullet
@@ -20,26 +21,36 @@ import src.lib.Constants as CONSTANTS
 
 def loadresource():
     CONSTANTS.threadQueue.put(("loading", "0"))
+    time.sleep(0.1)
     pygame.mixer.music.load("sound/game_music.ogg")
     pygame.mixer.music.set_volume(0.1)
     CONSTANTS.threadQueue.put(("loading", "10"))
+    time.sleep(0.1)
     loadResourceByClassName(CONSTANTS.HEROAIRCRAFT,Hero)
+    CONSTANTS.threadQueue.put(("loading", "20"))
+    time.sleep(0.1)
     loadResourceByClassName(CONSTANTS.MACHINGGUN,MachingGun)
     loadResourceByClassName(CONSTANTS.AIRCRAFTGUN,AircraftGun)
     loadResourceByClassName(CONSTANTS.MISSILELAUNCHER,MissileLauncher)
     loadResourceByClassName(CONSTANTS.UNIVERSALLAUNCHER,UniversalLauncher)
+    CONSTANTS.threadQueue.put(("loading", "40"))
+    time.sleep(0.1)
     loadResourceByClassName(CONSTANTS.NORMALBULLET,NormalBullet)
     loadResourceByClassName(CONSTANTS.GUNBULLET,GunBullet)
     loadResourceByClassName(CONSTANTS.MISSILE,Missile)
-    loadResourceByClassName(CONSTANTS.ADDHPBULLET,AddHpBullet)
     loadResourceByClassName(CONSTANTS.BOMBMULLET,BombBullet)
+    CONSTANTS.threadQueue.put(("loading", "80"))
+    time.sleep(0.1)
     loadResourceByClassName(CONSTANTS.SMALLENEMY,SmallEnemy)
     loadResourceByClassName(CONSTANTS.MIDDLEENEMY,MiddleEnemy)
     loadResourceByClassName(CONSTANTS.BIGENEMY,BigEnemy)
+    CONSTANTS.threadQueue.put(("loading", "90"))
+    time.sleep(0.1)
     loadResourceByClassName(CONSTANTS.ADDBULLETBULLET,AddBulletBullet)
     loadResourceByClassName(CONSTANTS.ADDFUELBULLET,AddFuelBullet)
-    CONSTANTS.threadQueue.put(("loading", "20"))
+    loadResourceByClassName(CONSTANTS.ADDHPBULLET,AddHpBullet)
     CONSTANTS.threadQueue.put(("loading", "100"))
+    time.sleep(0.1)
     CONSTANTS.threadQueue.put(("loaded", "100"))
 
 def loadResourceByClassName(CONSTANTSNAME,ClassName):
