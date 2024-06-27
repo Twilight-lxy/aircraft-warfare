@@ -127,6 +127,7 @@ def main():
                 p1.start()
                 killaim.append(p1)
         elif retmess == "changePassword":
+            retmess = ""
             closemess = ""
             try:
                 closemess = queue.get(False)
